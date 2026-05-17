@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var recentSearchesList = document.getElementById('recentSearchesList');
     var recentSearchesSection = document.getElementById('recentSearchesSection');
     var tipsSection = document.getElementById('tipsSection');
+    var noResultsMessage = document.getElementById('noResultsMessage');
 
     var recentSearches = JSON.parse(localStorage.getItem('recentSearches') || '[]');
     var currentSearchQuery = '';
@@ -184,14 +185,20 @@ document.addEventListener('DOMContentLoaded', function () {
         /* ── PLAYGROUND ADD end ── */
 
         currentCategory = category;
+        var visibleCount = 0;
         projectCards.forEach(function (card) {
             if (category === 'all' || card.getAttribute('data-category') === category) {
                 card.style.display = '';
                 card.style.animation = prefersReducedMotion() ? 'none' : 'fadeIn 0.6s ease';
+                visibleCount++;
             } else {
                 card.style.display = 'none';
             }
         });
+        
+        if (emptyState) {
+            emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
     }
 
     function moveTabFocus(fromIndex, delta) {
@@ -330,6 +337,7 @@ document.addEventListener('DOMContentLoaded', function () {
         recentSearches = recentSearches.slice(0, 10);
         localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
 
+        var visibleCount = 0;
         projectCards.forEach(function (card) {
             var category    = card.getAttribute('data-category');
             var title       = card.querySelector('h3').textContent.toLowerCase();
@@ -341,8 +349,17 @@ document.addEventListener('DOMContentLoaded', function () {
                                 description.includes(query) ||
                                 tags.includes(query);
 
-            card.style.display = (categoryMatch && searchMatch) ? '' : 'none';
+            if (categoryMatch && searchMatch) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
         });
+        
+        if (emptyState) {
+            emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
     }
 
     function closeDropdown() {
@@ -350,6 +367,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function renderRecentSearches() {
+        if (noResultsMessage) noResultsMessage.style.display = 'none';
         if (!recentSearchesSection) return;
 
         if (recentSearches.length === 0) {
@@ -416,6 +434,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function renderSuggestions(query) {
+        if (searchLoader) searchLoader.style.display = 'none';
         if (!query) { renderRecentSearches(); return; }
 
         var matches = getMatchingProjects(query);
@@ -424,8 +443,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (resultsSection) resultsSection.style.display = 'none';
             if (recentSearchesSection) recentSearchesSection.style.display = 'none';
             if (tipsSection) tipsSection.style.display = 'block';
+            if (noResultsMessage) noResultsMessage.style.display = 'block';
             return;
         }
+        
+        if (noResultsMessage) noResultsMessage.style.display = 'none';
 
         if (resultsList) {
             resultsList.innerHTML = '';
@@ -491,6 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (searchInput) searchInput.value = '';
             currentSearchQuery = '';
             searchClear.style.display = 'none';
+            if (searchLoader) searchLoader.style.display = 'none';
             applyCategoryFilter(currentCategory);
             closeDropdown();
         });

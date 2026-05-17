@@ -593,6 +593,7 @@ body {
    SEARCH DROPDOWN
 ═══════════════════════════════════════ */
 .search-dropdown {
+    display: none;
     position: absolute;
     top: 100%;
     left: 50%;

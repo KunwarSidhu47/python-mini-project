@@ -33,7 +33,6 @@ function getProjectHTML(projectName) {
         'whack-a-mole': getWhackaMoleHTML(),  
         'simon-says': getSimonSaysHTML(),
         'spot-the-difference': getSpotTheDifferenceHTML(),
-        'whack-a-mole': getWhackaMoleHTML(),
         'flappy-game': getFlappyGameHTML(),
         '2048-game': get2048GameHTML(),
     };

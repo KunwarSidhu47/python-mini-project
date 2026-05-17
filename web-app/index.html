@@ -518,6 +518,50 @@
                     Python Mini Projects
                 </h1>
             </div>
+
+            <!-- SEARCH BAR -->
+            <div class="search-section" style="flex: 1; margin: 0 2rem; margin-bottom: 0;">
+                <div class="search-wrapper">
+                    <div class="search-icon-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    <input type="text" id="projectSearch" class="search-input" placeholder="Search projects..." aria-label="Search projects">
+                    <span id="searchShortcut" class="search-shortcut"><kbd>Ctrl</kbd>+<kbd>K</kbd></span>
+                    <button type="button" id="searchClear" class="search-clear-btn" aria-label="Clear search" style="display: none;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <div id="searchLoader" class="search-loader" style="display: none;">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+                
+                <div id="searchDropdown" class="search-dropdown">
+                    <div class="dropdown-content">
+                        <div id="resultsSection" style="display: none;">
+                            <div class="dropdown-section-title">
+                                <i class="fas fa-list"></i> Results
+                            </div>
+                            <div id="resultsList" class="dropdown-list"></div>
+                        </div>
+                        <div id="recentSearchesSection" style="display: none;">
+                            <div class="dropdown-section-title">
+                                <i class="fas fa-history"></i> Recent Searches
+                            </div>
+                            <div id="recentSearchesList" class="dropdown-list"></div>
+                        </div>
+                        <div id="tipsSection" class="dropdown-tips">
+                            <div id="noResultsMessage" style="display: none; text-align: center; color: var(--danger-color); font-weight: 600; margin-bottom: 1rem; font-size: 1.1rem;">No Such Project is available!</div>
+                            <p>Search Tips:</p>
+                            <ul>
+                                <li>Type <code>game</code> for all games</li>
+                                <li>Type <code>math</code> for math tools</li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="nav-controls">
                 <button type="button" class="sound-toggle" id="soundToggle" aria-label="Mute sounds">
                     <i class="fas fa-volume-up" aria-hidden="true"></i>
@@ -869,6 +913,11 @@
                     </div>
 
                 </div><!-- /projects-grid -->
+                
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <p>No Projects right now :)</p>
+                    <p class="empty-state-hint">Try adjusting your search or category filter.</p>
+                </div>
             </div>
         </section>
 
@@ -1077,20 +1126,20 @@
     <script src="js/projects/derivative-calculator.js"></script>
     <script src="js/projects/morse-code.js"></script>
     <script src="js/projects/tower-of-hanoi.js"></script>
-    <script src="js/projects/number-converter.js"></script>
-    <script src="js/projects/typing-speed-tester.js"></script>
-    <script src="js/projects/snake.js"></script>
-    <script src="js/projects/spot-the-difference.js"></script>
-    <script src="js/projects/whack-a-mole.js"></script>
-    <script src="js/projects/tic-tac-toe.js"></script>
-    <script src="js/projects/password-forge.js"></script>
-    <script src="js/projects/emoji-memory-game.js"></script>
-    <script src="js/projects/2048-game.js"></script>
-    <script src="js/projects/rock-paper-scissor.js"></script>
-    <script src="js/projects/word-scramble.js"></script>
-    <script src="js/projects/dots-boxes.js"></script>
     <script src="js/projects/math-quiz.js"></script>
     <script src="js/projects/simon-says.js"></script>
+    <script src="js/projects/flappy-game.js"></script>
+    <script src="js/projects/tic-tac-toe.js"></script>
+    <script src="js/projects/2048-game.js"></script>
+    <script src="js/projects/dots-boxes.js"></script>
+    <script src="js/projects/emoji-memory-game.js"></script>
+    <script src="js/projects/number-converter.js"></script>
+    <script src="js/projects/password-forge.js"></script>
+    <script src="js/projects/typing-speed-tester.js"></script>
+    <script src="js/projects/whack-a-mole.js"></script>
+    <script src="js/projects/word-scramble.js"></script>
+    <script src="js/projects/snake.js"></script>
+    <script src="js/projects/spot-the-difference.js"></script>
 
     <!-- Registry: maps project names to their module functions -->
     <script src="js/projects.js"></script>
