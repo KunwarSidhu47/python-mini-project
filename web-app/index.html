@@ -500,6 +500,54 @@
         .utility-icon-typing {
             color: #5cdff6;
         }
+
+        .btn-favorite {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 9999;
+            font-size: 1.5rem;
+            outline: none;
+        }
+
+        .btn-favorite:hover {
+            transform: scale(1.15);
+            color: #ffffff;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
+        }
+
+        .btn-favorite.active {
+            background: transparent;
+            border: none;
+            color: #22c55e;
+            filter: drop-shadow(0 0 8px #22c55e) drop-shadow(0 0 16px #22c55e);
+        }
+
+        [data-theme="light"] .btn-favorite {
+            background: transparent;
+            border: none;
+        }
+
+        [data-theme="light"] .btn-favorite:hover {
+            filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.3));
+        }
+
+        [data-theme="light"] .btn-favorite.active {
+            background: transparent;
+            border: none;
+            filter: drop-shadow(0 0 8px #16a34a) drop-shadow(0 0 15px #16a34a);
+        }
     </style>
 </head>
 
@@ -638,7 +686,13 @@
                             <span class="feature-label">Playground</span>
                         </button>
                     </div>
-
+                    <button class="feature-badge tab" data-category="favorites" role="tab" aria-selected="false"
+                            tabindex="-1">
+                            <span class="feature-icon"><i class="fas fa-star"></i></span>
+                            <span class="feature-label">Favorites</span>
+                        </button>
+                    </div>
+                
                     <button class="btn-random-project" id="randomProjectBtn"
                             title="Discover a random project!">
                         <i data-lucide="dice-5"></i> Random Project
@@ -1073,6 +1127,9 @@
                         <li><a href="#main-content"
                                 onclick="document.querySelector('[data-category=\'utilities\']').click()">🔐
                                 Utilities</a></li>
+                        <li><a href="#main-content"
+                                onclick="document.querySelector('[data-category=\'favorites\']').click()">⭐
+                                Favorites</a></li>
                         <li><a href="#main-content"
                                 onclick="document.querySelector('[data-category=\'playground\']').click()">🐍
                                 Playground</a></li>
