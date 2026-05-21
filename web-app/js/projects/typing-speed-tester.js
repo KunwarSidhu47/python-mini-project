@@ -743,9 +743,6 @@ resultDetails.innerHTML = `
         // ensure pending state
         const spans = sentenceElement.querySelectorAll('span');
         spans.forEach(s => s.className = 'pending');
-        if (inputElement.scrollIntoView) {
-            inputElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
     }
 
     function setDifficulty(mode, { resetGame = false } = {}) {

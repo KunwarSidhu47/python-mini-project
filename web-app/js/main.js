@@ -669,11 +669,13 @@ if (stickyFilterBar && heroSection) {
         modalBody.style.width = '';
         modalBody.style.height = '';
 
-        var firstChild = modalBody.firstElementChild;
-        if (!firstChild) return;
+        var targetEl = Array.from(modalBody.children).find(function (el) {
+            return el.tagName.toLowerCase() !== 'style';
+        }) || modalBody.firstElementChild;
+        if (!targetEl) return;
 
-        firstChild.style.transform = '';
-        firstChild.style.transformOrigin = '';
+        targetEl.style.transform = '';
+        targetEl.style.transformOrigin = '';
 
         var computedStyle = window.getComputedStyle(modalContent);
         var paddingTop = parseFloat(computedStyle.paddingTop) || 32;
@@ -684,8 +686,8 @@ if (stickyFilterBar && heroSection) {
         var availableHeight = modalContent.clientHeight - paddingTop - paddingBottom;
         var availableWidth = modalContent.clientWidth - paddingLeft - paddingRight;
 
-        var contentHeight = firstChild.scrollHeight;
-        var contentWidth = firstChild.scrollWidth;
+        var contentHeight = targetEl.scrollHeight;
+        var contentWidth = targetEl.scrollWidth;
 
         if (contentHeight <= 0 || contentWidth <= 0) return;
 
@@ -699,8 +701,8 @@ if (stickyFilterBar && heroSection) {
         }
 
         // Apply scale transform and origins
-        firstChild.style.transform = 'scale(' + zoom + ')';
-        firstChild.style.transformOrigin = 'top center';
+        targetEl.style.transform = 'scale(' + zoom + ')';
+        targetEl.style.transformOrigin = 'top center';
 
         // Constrain wrapper block size to prevent scroll triggering
         modalBody.style.height = (contentHeight * zoom) + 'px';
@@ -718,12 +720,14 @@ if (stickyFilterBar && heroSection) {
         }
 
         var modalBody = document.getElementById('modalBody');
-        var firstChild = modalBody ? modalBody.firstElementChild : null;
-        if (firstChild) {
+        var targetEl = modalBody ? Array.from(modalBody.children).find(function (el) {
+            return el.tagName.toLowerCase() !== 'style';
+        }) || modalBody.firstElementChild : null;
+        if (targetEl) {
             modalResizeObserver = new ResizeObserver(function () {
                 requestAnimationFrame(applyModalScaling);
             });
-            modalResizeObserver.observe(firstChild);
+            modalResizeObserver.observe(targetEl);
         }
 
         window.addEventListener('resize', applyModalScaling);
