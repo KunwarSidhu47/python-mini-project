@@ -5,11 +5,17 @@ function getBinarySearchHTML() {
             <p class="project-desc">Visualize how Binary Search finds a target in a sorted array step by step</p>
             <div class="binary-container">
                 <div class="input-section">
-                    <input type="text" id="binaryArray" placeholder="Enter sorted numbers e.g. 2 5 8 12 16 23">
-                    <input type="number" id="binaryTarget" placeholder="Target number">
-                    <button class="btn-search" id="startBinary">🔍 Search</button>
-                    <button class="btn-random" id="randomBinary">🎲 Random</button>
-                </div>
+    <div class="input-group">
+        <label class="input-label">Array</label>
+        <input type="text" id="binaryArray" placeholder="Enter sorted numbers e.g. 2 5 8 12 16 23">
+    </div>
+    <div class="input-group">
+        <label class="input-label">Target</label>
+        <input type="number" id="binaryTarget" placeholder="Target number">
+    </div>
+    <button class="btn-search" id="startBinary">🔍 Search</button>
+    <button class="btn-random" id="randomBinary">🎲 Random</button>
+</div>
 
                 <div class="speed-section">
                     <label>⚡ Speed:</label>
@@ -42,6 +48,20 @@ function getBinarySearchHTML() {
                 gap: 12px;
                 margin-bottom: 1.5rem;
             }
+            .input-group {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .input-label {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                color: var(--text-secondary);
+                padding-left: 12px;
+                }
 
             #binaryArray {
                 padding: 12px 20px;
