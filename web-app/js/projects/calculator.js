@@ -326,9 +326,11 @@ function initCalculator() {
 
     function safeEval(expr) {
         try {
-            const cleaned = sanitize(expr);
-            if (!cleaned) return "";
-            return String(evaluateExpression(normalize(cleaned)));
+            if (!expr) return "";
+            let result = Function('"use strict"; return (' + format(expr) + ')')();
+            if (result === undefined) return "";
+            if (isNaN(result)) return "Error";
+            return String(result);
         } catch {
             return "Error";
         }
@@ -457,21 +459,11 @@ function initCalculator() {
         }
     }
 
-    function evaluateCurrent() {
-        const evaluated = safeEval(expression);
-        expression = evaluated || "";
-        update();
-    }
-
-    function deleteLast() {
-        clearIfError();
-        expression = expression.slice(0, -1);
-        update();
-    }
-
-    function clearExpression() {
-        expression = "";
-        update();
+ 
+    function clearIfFinished() {
+        if (expression === "Error" || expression === "NaN" || expression === "Infinity" || expression === "-Infinity") {
+            expression = "";
+        }
     }
 
     document.querySelectorAll(".calc-btn").forEach(btn => {

@@ -198,11 +198,12 @@ function getSnakeGameHTML() {
 
 // --- GAME LOGIC STATE ---
 let direction = { x: 0, y: 0 };
-let speed = 9; // System baseline operational configuration state
-let scoreMultiplier = 2; // Baseline multiplier scalar state
+let speed = 9; 
+let scoreMultiplier = 2; 
 let score = 0;
 let lastPaintTime = 0;
 let isPaused = false;
+let isGameOver = false; // 👈 Added tracking state flag
 let snakeArr = [{ x: 13, y: 10 }];
 let food = { x: 6, y: 7 };
 
@@ -215,7 +216,7 @@ const CONFIG_DIFFICULTY = {
 
 function main(ctime) {
     const canvas = document.getElementById('snakeCanvas');
-    if (!canvas) return; // Exit loop if the game modal has been closed
+    if (!canvas) return; 
 
     window.requestAnimationFrame(main);
     if ((ctime - lastPaintTime) / 1000 < 1 / speed) {
@@ -268,7 +269,12 @@ function gameEngine() {
         direction = { x: 0, y: 0 };
         document.getElementById('final-score').innerHTML = score;
         document.getElementById("game-over-overlay").classList.remove("hidden");
-        if (window.AudioManager) AudioManager.play("snake_die");
+        
+        // 🚨 CRITICAL FIX: Only play the sound ONCE right when impact happens
+        if (!isGameOver) {
+            if (window.AudioManager) AudioManager.play("snake_die");
+            isGameOver = true;
+        }
 
         // Execute persistent local evaluations
         checkAndSaveHighScore();
@@ -282,7 +288,7 @@ function gameEngine() {
 
     // Eating food
     if (snakeArr[0].y === food.y && snakeArr[0].x === food.x) {
-        score += (1 * scoreMultiplier); // Scaled multiplier calculations
+        score += (1 * scoreMultiplier); 
         document.getElementById('score').innerHTML = score;
         snakeArr.unshift({ x: snakeArr[0].x + direction.x, y: snakeArr[0].y + direction.y });
         if (window.AudioManager) AudioManager.play("snake_eat");
@@ -332,7 +338,13 @@ function restartGame() {
     snakeArr = [{ x: 13, y: 10 }];
     score = 0;
     isPaused = false;
+    isGameOver = false; // 👈 Reset the tracking flag state
     lastPaintTime = 0;
+
+    // 🚨 CRITICAL FIX: Clear the AudioManager permanent sound locks on restart
+    if (window.AudioManager) {
+        window.AudioManager.reset();
+    }
 
     // Reset UI
     const pauseBtn = document.getElementById('pauseGameBtn');
