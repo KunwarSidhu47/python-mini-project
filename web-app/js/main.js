@@ -28,6 +28,70 @@ function escapeHtml(str) {
   return d.innerHTML;
 }
 
+function safeRun(fn) {
+  try {
+    fn();
+  } catch (e) {
+    console.error("Project initialization error:", e);
+  }
+}
+
+// ============================================
+// INFO MODAL FUNCTIONS
+// ============================================
+
+function showInfoModal(title, steps) {
+    var overlay = document.getElementById('infoModalOverlay');
+    var titleEl = document.getElementById('infoModalTitle');
+    var listEl = document.getElementById('infoModalList');
+    
+    if (!overlay || !titleEl || !listEl) return;
+    
+    titleEl.textContent = title;
+    listEl.innerHTML = steps.map(function(step) {
+        return '<li>' + step + '</li>';
+    }).join('');
+    
+    overlay.classList.add('active');
+    
+    function closeModal() {
+        overlay.classList.remove('active');
+        closeBtn.removeEventListener('click', closeModal);
+        gotItBtn.removeEventListener('click', closeModal);
+        overlay.removeEventListener('click', overlayClick);
+    }
+    
+    function overlayClick(e) {
+        if (e.target === overlay) closeModal();
+    }
+    
+    var closeBtn = document.getElementById('infoModalClose');
+    var gotItBtn = document.getElementById('infoModalGotIt');
+    
+    closeBtn.addEventListener('click', closeModal);
+    gotItBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', overlayClick);
+}
+
+var currentProjectName = '';
+
+function setupModalInfoButton(projectName) {
+    currentProjectName = projectName;
+    var infoBtn = document.getElementById('modalInfoBtn');
+    if (!infoBtn) return;
+    
+    // Remove old listener by cloning
+    var newBtn = infoBtn.cloneNode(true);
+    infoBtn.parentNode.replaceChild(newBtn, infoBtn);
+    
+    newBtn.addEventListener('click', function() {
+        if (typeof getProjectInstructions === 'function') {
+            var info = getProjectInstructions(currentProjectName);
+            showInfoModal(info.title, info.steps);
+        }
+    });
+}
+
 /* ── DOMContentLoaded ──────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', function () {
   var html = document.documentElement;
@@ -93,7 +157,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var savedTheme = localStorage.getItem('theme') || 'dark';
     html.setAttribute('data-theme', savedTheme);
     syncThemeColor(savedTheme);
-    themeToggle.innerHTML = savedTheme === 'light'
+    // Prefer showing a sun icon when the site is dark (site's main theme).
+    // Show sun for dark theme, moon for light theme so reload displays sun by default.
+    themeToggle.innerHTML = savedTheme === 'dark'
       ? '<i class="fas fa-sun"></i>'
       : '<i class="fas fa-moon"></i>';
     updateThemeToggleAria(savedTheme === 'light');
@@ -104,7 +170,8 @@ document.addEventListener('DOMContentLoaded', function () {
       html.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
       syncThemeColor(next);
-      themeToggle.innerHTML = next === 'light'
+      // After toggling, show sun when the new theme is dark, moon when it's light.
+      themeToggle.innerHTML = next === 'dark'
         ? '<i class="fas fa-sun"></i>'
         : '<i class="fas fa-moon"></i>';
       updateThemeToggleAria(next === 'light');
@@ -352,6 +419,15 @@ document.addEventListener('DOMContentLoaded', function () {
           if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
           return;
         }
+    st.addEventListener("click", function () {
+      var category = st.getAttribute("data-category");
+
+      var pageCategory = document.body.getAttribute("data-page");
+      // FIX #1: Only redirect when on a subpage AND the clicked category
+      // is different from the current page. Without this guard, every click
+      // on the homepage (or any page with data-page set) triggered a redirect
+      // instead of filtering the grid in place.
+      if (pageCategory && category !== pageCategory) {
         var pageMap = {
           'all': 'index.html',
           'games': 'games.html',
@@ -361,6 +437,13 @@ document.addEventListener('DOMContentLoaded', function () {
           'playground': 'index.html?category=playground'
         };
         window.location.href = pageMap[category] || 'index.html';
+        return;
+      }
+
+      // If we're already on the matching subpage, just scroll to the grid
+      if (pageCategory && category === pageCategory) {
+        var grid = document.getElementById("projectsGrid");
+        if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
         return;
       }
 
@@ -776,6 +859,16 @@ document.addEventListener('DOMContentLoaded', function () {
       return !el.closest('[aria-hidden="true"]') && !el.classList.contains('visually-hidden');
     });
   }
+  var sel =
+    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  return Array.from(root.querySelectorAll(sel)).filter(function (el) {
+    return (
+      !el.closest('[aria-hidden="true"]') &&
+      !el.classList.contains("visually-hidden")
+    );
+  });
+}
 
   function trapFocus(modalEl) {
     var handler = function (e) {
@@ -797,7 +890,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function openProjectSafe(name, trigger) {
     if (!modal || !modalBody) return;
     lastFocusedElement = trigger || document.activeElement;
-    if (modalTitle) modalTitle.textContent = name || 'Interactive project';
     modal.classList.add('active');
     modal.setAttribute('aria-hidden', 'false');
     var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -812,6 +904,50 @@ document.addEventListener('DOMContentLoaded', function () {
         modalBody.innerHTML = '<div style="padding:1rem;color:var(--text-secondary)">Project content unavailable.</div>';
       }
       if (typeof initializeProject === 'function') initializeProject(name);
+      setupModalInfoButton(name);
+      
+      // Inject info button next to the title (works for all projects)
+var projectContent = modalBody.querySelector('.project-content');
+if (projectContent) {
+    // Try to find the title element (could be h2, or other heading)
+    var firstHeading = projectContent.querySelector('h2, h3, .resume-analyzer-copy h2, .pet-title');
+    
+    if (!firstHeading) {
+        // If no heading found, look for any element with a title-like class
+        firstHeading = projectContent.querySelector('[class*="title"], [class*="header"] h2');
+    }
+    
+    if (firstHeading && !projectContent.querySelector('.inline-info-btn')) {
+        // Create info button
+        var infoBtn = document.createElement('button');
+        infoBtn.className = 'inline-info-btn';
+        infoBtn.innerHTML = 'ⓘ';
+        infoBtn.setAttribute('aria-label', 'How to use this project');
+        
+        // Style the button
+        infoBtn.style.marginLeft = '12px';
+        infoBtn.style.background = 'none';
+        infoBtn.style.border = 'none';
+        infoBtn.style.fontSize = '1.3rem';
+        infoBtn.style.cursor = 'pointer';
+        infoBtn.style.color = 'var(--accent)';
+        infoBtn.style.verticalAlign = 'middle';
+        
+        infoBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (typeof getProjectInstructions === 'function') {
+                var info = getProjectInstructions(name);
+                showInfoModal(info.title, info.steps);
+            }
+        });
+        
+        // Make heading display inline if it's a block element
+        if (firstHeading.style.display !== 'inline-block') {
+            firstHeading.style.display = 'inline-block';
+        }
+        firstHeading.appendChild(infoBtn);
+    }
+}
     });
 
     removeTrap = trapFocus(modal);
@@ -820,7 +956,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (firstFocusable && typeof firstFocusable.focus === 'function') {
       firstFocusable.focus({ preventScroll: true });
     }
-  }
+}
 
   function closeProjectSafe() {
     if (!modal || !modal.classList.contains('active')) return;
@@ -852,6 +988,13 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ── Expose for inline use ────────────────────────────────── */
   window.openProjectSafe = openProjectSafe;
   window.closeProjectSafe = closeProjectSafe;
+
+  // FIX #3: Removed the duplicate delegated document click listener for
+  // ".btn-play" that used to live here. It conflicted with the per-card
+  // listeners wired below: the direct listener called stopPropagation(),
+  // which silently ate the event before the delegated one could fire,
+  // so neither handler reliably opened the modal. The per-card listeners
+  // below are sufficient and correct on their own.
 
   /* ═══════════════════════════════════════════════════════════════
      WIRE PROJECT CARDS
@@ -1208,8 +1351,57 @@ document.addEventListener('DOMContentLoaded', function () {
       e.preventDefault();
       var cat = a.getAttribute('data-cat');
       var tab = document.querySelector('.sidebar-tab[data-category="' + cat + '"]');
+  // FIX #2: Footer links call tab.click() which triggers the sidebar tab
+  // handler. That handler now correctly filters in place on the homepage
+  // (fix #1), so footer links automatically work once fix #1 is applied.
+  // No additional changes needed here beyond the comment for clarity.
+  document.querySelectorAll(".footer-cat-link").forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      var cat = link.getAttribute("data-cat");
+      var tab = document.querySelector(
+        '.sidebar-tab[data-category="' + cat + '"]'
+      );
       if (tab) tab.click();
     });
   });
 
 });
+/* ── Scroll Progress Bar ───────────────────────────── */
+
+var progressBar = document.getElementById("scrollProgressBar");
+
+if (progressBar) {
+  let ticking = false;
+
+  function updateScrollProgress() {
+    var scrollTop =
+      window.scrollY || document.documentElement.scrollTop;
+
+    var docHeight =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+
+    var progress = docHeight
+      ? (scrollTop / docHeight) * 100
+      : 0;
+
+    progressBar.style.width = progress + "%";
+
+    ticking = false;
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!ticking) {
+        requestAnimationFrame(updateScrollProgress);
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+
+  updateScrollProgress();
+}

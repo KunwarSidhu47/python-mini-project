@@ -18,15 +18,141 @@
 <link href="css/styles.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 </head>
-<body>
+<body class="sidebar-active">
+
+<!-- Scroll Progress Bar -->
+<div id="scrollProgressContainer" aria-label="Page scroll progress">
+  <div id="scrollProgressBar"></div>
+</div>
+
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
 <!-- Cursor Glow -->
 <div aria-hidden="true" class="cursor-glow" id="cursorGlow"></div>
+<!-- Navigation -->
+<nav aria-label="Primary" class="navbar" id="mainNavbar">
+<div class="nav-island">
+<!-- LEFT -->
+<div class="navbar-brand">
+<a class="logo-wrap" href="#">
+<!-- LOGO IMAGE -->
+<img alt="PyMini Logo" class="navbar-logo" src="assets/logo.png"/>
+<!-- TEXT -->
+<div class="logo-text">
+    <span class="logo-py">py</span>
+    <span class="logo-mini">.mini</span>
+    <span class="logo-parens">()</span>
+</div>
+<!-- SMALL TAGLINE -->
+<span class="logo-tagline">
+    games, math &amp; terminal toys
+</span>
+</a>
+</div>
+<!-- CENTER SEARCH -->
+<div class="search-box">
+<i class="fas fa-search"></i>
+<input aria-label="Search projects" id="searchInput" placeholder="Search projects or games..." type="text"/>
+</div>
+<!-- HAMBURGER TOGGLE (mobile) -->
+<button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+<i class="fas fa-bars"></i>
+</button>
+<!-- RIGHT -->
+<div class="nav-controls" id="navControls">
+    <button aria-label="Mute sounds" class="sound-toggle" id="soundToggle" type="button">
+        <i class="fas fa-volume-up"></i>
+    </button>
+    <button aria-label="Switch theme" class="theme-toggle" id="themeToggle" type="button">
+        <i class="fas fa-moon"></i>
+    </button>
+</div>
+</div>
+</nav>
+<!-- ── Sticky Category Filter Bar ─────────────────────────────── -->
+<!-- Appears below navbar when user scrolls past the hero section  -->
+<main id="main-content" tabindex="-1">
+    <section class="hero-section" aria-label="Welcome">
+        <canvas aria-hidden="true" id="boardCanvas"></canvas>
+        <div class="hero-background"></div>
+        <div aria-hidden="true" class="hero-orb hero-orb-one"></div>
+        <div aria-hidden="true" class="hero-orb hero-orb-two"></div>
+        <div aria-hidden="true" class="hero-code-snippets">
+            <div class="code-snippet snippet-one">for project in library: launch(project)</div>
+            <div class="code-snippet snippet-two">score = accuracy * focus</div>
+            <div class="code-snippet snippet-three">challenge = "typing-speed-tester"</div>
+            <div class="code-snippet snippet-four">print("tiny arcade, huge learning energy")</div>
+            <div class="code-snippet snippet-five">if curiosity &gt; 0: launch_random()</div>
+            <div class="code-snippet snippet-six">favorite_projects.append("math-quiz")</div>
+        </div>
+        <div class="container">
+            <div class="hero-shell">
+                <aside class="filter-sidebar" role="tablist" aria-label="Filter by category">
+                    <div class="sidebar-header">
+                        <span class="sidebar-title">explore</span>
+                        <span class="sidebar-badge" id="sidebarProjectCount">0</span>
+                    </div>
+                    <button aria-selected="true" class="sidebar-tab active" data-category="all" role="tab" tabindex="0">
+                        <span class="sidebar-icon"><i data-lucide="layers"></i></span>
+                        <span class="sidebar-label">all projects</span>
+                    </button>
+                    <button aria-selected="false" class="sidebar-tab" data-category="games" role="tab" tabindex="-1">
+                        <span class="sidebar-icon"><i data-lucide="gamepad-2"></i></span>
+                        <span class="sidebar-label">games</span>
+                    </button>
+                    <button aria-selected="false" class="sidebar-tab" data-category="math" role="tab" tabindex="-1">
+                        <span class="sidebar-icon"><i data-lucide="sigma"></i></span>
+                        <span class="sidebar-label">math</span>
+                    </button>
+                    <button aria-selected="false" class="sidebar-tab" data-category="utilities" role="tab" tabindex="-1">
+                        <span class="sidebar-icon"><i data-lucide="wrench"></i></span>
+                        <span class="sidebar-label">utilities</span>
+                    </button>
+                    <button aria-selected="false" class="sidebar-tab" data-category="favorites" role="tab" tabindex="-1">
+                        <span class="sidebar-icon"><i data-lucide="star"></i></span>
+                        <span class="sidebar-label">⭐ favorites</span>
+                    </button>
+                    <button aria-selected="false" class="sidebar-tab" data-category="tracker" role="tab" tabindex="-1">
+                    <span class="sidebar-icon"><i data-lucide="trophy"></i></span>
+                    <span class="sidebar-label">🏆 my progress</span>
+                    </button>
+                    <div class="sidebar-divider"></div>
+                    <button aria-selected="false" class="sidebar-tab playground-tab" data-category="playground" id="playgroundTab" role="tab" tabindex="-1">
+                        <span class="sidebar-icon"><i data-lucide="terminal"></i></span>
+                        <span class="sidebar-label">🐍 playground</span>
+                    </button>
+                    <button class="sidebar-random-btn" id="randomProjectBtnSidebar" title="Discover a random project!" type="button">
+                        <i data-lucide="shuffle"></i> surprise me
+                    </button>
+                </aside>
+                <div class="hero-content">
+                <div class="hero-kicker">Python arcade for curious beginners</div>
+                <div class="hero-title-wrapper">
+                    <h1 class="hero-title">
+                        <span class="hero-title-line">build tiny python projects</span>
+                        <span class="hero-title-line hero-title-accent">and play in a playful coding aracade</span>
+                    </h1>
+                    <div aria-hidden="true" class="python-orbit">
+                        <div class="python-orbiter">
+                            <span class="python-logo">🐍</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="hero-subtitle">Jump into browser-ready games, math experiments, and utility labs that feel rewarding from the first click.</p>
+
+                <div aria-live="polite" class="hero-typing">
+                    <span class="typing-label">Now loading:</span>
+                    <span class="typing-text" id="heroTypewriter">typing speed drills</span>
+                </div>
+                <div class="hero-meta">
+                    <span><strong id="heroProjectCount">0</strong> total projects</span>
+                    <span><strong id="heroGameCount">0</strong> games</span>
+                    <span><strong id="heroUtilityCount">0</strong> utilities</span>
+                </div>
 
 <!-- Mobile Sidebar Toggle -->
 <button type="button" class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="Toggle sidebar menu" aria-expanded="false">
-  <i class="fas fa-bars"></i>
+  <i class="fas fa-bars" aria-hidden="true"></i>
 </button>
 
 <!-- ── PRIMARY SIDEBAR DOCK ──────────────────────────────────── -->
@@ -46,9 +172,9 @@
 
   <div class="sidebar-search">
     <div class="search-box" style="position:relative">
-      <i class="fas fa-search"></i>
-      <input aria-label="Search projects" id="searchInput" placeholder="Search projects or tags..." type="text"/>
-      <div class="search-dropdown" id="searchDropdown">
+      <i class="fas fa-search" aria-hidden="true"></i>
+      <input aria-label="Search projects" id="searchInput" placeholder="Search projects or tags..." type="text" role="combobox" aria-autocomplete="list" aria-controls="resultsList" aria-expanded="false"/>
+      <div class="search-dropdown" id="searchDropdown" aria-live="polite">
         <div class="dropdown-content" id="searchDropdownContent">
           <div class="search-loader" id="searchLoader" style="display:none"><div class="spinner"></div></div>
           <div class="recent-searches-section" id="recentSearchesSection">
@@ -57,7 +183,7 @@
           </div>
           <div class="results-section" id="resultsSection" style="display:none">
             <div class="dropdown-section-title">Projects</div>
-            <div class="dropdown-list" id="resultsList"></div>
+            <div class="dropdown-list" id="resultsList" role="listbox"></div>
           </div>
           <div class="tips-section" id="tipsSection">
             <p><strong>Search tips</strong></p>
@@ -121,12 +247,7 @@
                         <h3>Calculator</h3>
                         <p>Your mathematical companion!</p>
                     </div>
-                    <div class="project-card" data-category="utilities" data-project="caesar-cipher" data-tags="utility,caesar,cipher,encryption,decryption">
-                        <img class="card-banner" src="assets/banners/caesar-cipher.jpg" alt="Caesar Cipher" loading="lazy">
-                        <div class="card-actions"><button class="btn-play">Try It</button></div>
-                        <h3>Caesar Cipher</h3>
-                        <p>Encrypt &amp; decrypt with a shift!</p>
-                    </div>
+
                     <div class="project-card" data-category="games" data-project="coin-flip" data-tags="game,random,animation,probability,heads,tails">
                         <img class="card-banner" src="assets/banners/coin-flip.jpg" alt="Coin Flip" loading="lazy">
                         <div class="card-actions"><button class="btn-play">Try It</button></div>
@@ -140,6 +261,19 @@
                         <p>Explore the 3n+1 problem!</p>
                     </div>
                     <div class="project-card" data-category="utilities" data-project="color-palette" data-tags="utility,color,palette,css,design,theme,website">
+                    <img class="card-banner" src="assets/banners/color-palette.jpg" alt="Color Palette Suggestor" loading="lazy">
+                    <div class="card-actions"><button class="btn-play">Try It</button></div>
+                    <h3>Color Palette Suggestor</h3>
+                    <p>Generate palettes + CSS snippets for any website type and mood!</p>
+                </div>
+                <div class="project-card" data-category="tracker" data-project="progress-tracker" data-tags="utility,tracker,progress,learning,projects">
+                 <img class="card-banner" src="assets/banners/progress-tracker.svg" alt="Progress Tracker" loading="lazy">
+                    <div class="card-actions"><button class="btn-play">Try It</button></div>
+                    <h3>Progress Tracker</h3>
+                    <p>Track your completed mini projects!</p>
+                </div>
+   
+    
                         <img class="card-banner" src="assets/banners/color-palette.jpg" alt="Color Palette Suggestor" loading="lazy">
                         <div class="card-actions"><button class="btn-play">Try It</button></div>
                         <h3>Color Palette Suggestor</h3>
@@ -337,11 +471,11 @@
 
   <div class="sidebar-footer">
     <div class="sidebar-controls">
-      <button aria-label="Mute sounds" class="sound-toggle" id="soundToggle" type="button">
-        <i class="fas fa-volume-up"></i>
+      <button aria-label="Mute sound" class="sound-toggle" id="soundToggle" type="button">
+        <i class="fas fa-volume-up" aria-hidden="true"></i>
       </button>
-      <button aria-label="Switch theme" class="theme-toggle" id="themeToggle" type="button">
-        <i class="fas fa-moon"></i>
+      <button aria-label="Switch to light mode" class="theme-toggle" id="themeToggle" type="button">
+        <i class="fas fa-sun" aria-hidden="true"></i>
       </button>
     </div>
   </div>
@@ -349,11 +483,11 @@
 
 
 <div class="hero-controls">
-  <button aria-label="Mute sounds" class="hero-control-btn sound-toggle" id="heroSoundToggle" type="button">
-    <i class="fas fa-volume-up"></i>
+  <button aria-label="Mute sound" class="hero-control-btn sound-toggle" id="heroSoundToggle" type="button">
+    <i class="fas fa-volume-up" aria-hidden="true"></i>
   </button>
-  <button aria-label="Switch theme" class="hero-control-btn theme-toggle" id="heroThemeToggle" type="button">
-    <i class="fas fa-moon"></i>
+  <button aria-label="Switch to light mode" class="hero-control-btn theme-toggle" id="heroThemeToggle" type="button">
+    <i class="fas fa-sun" aria-hidden="true"></i>
   </button>
 </div>
 
@@ -402,15 +536,15 @@
     <!-- ── Hero CTA Action Row ──────────────────────────────────────── -->
     <div class="hero-cta-row">
       <button class="btn-primary-hero" id="exploreBtn">
-        <i class="fas fa-rocket"></i>
+        <i class="fas fa-rocket" aria-hidden="true"></i>
         Explore Projects
       </button>
       <button class="btn-secondary-hero" id="randomProjectBtn">
-        <i class="fas fa-shuffle"></i>
+        <i class="fas fa-shuffle" aria-hidden="true"></i>
         Surprise Me
       </button>
       <a class="btn-contribution-hero" id="contributionBtn" href="https://github.com/steam-bell-92/python-mini-project/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-code-branch"></i>
+        <i class="fas fa-code-branch" aria-hidden="true"></i>
         Open Contribution
       </a>
     </div>
@@ -426,7 +560,6 @@
 
 <!-- ── Timeline Section ─────────────────────────────────────── -->
 <section class="hero-timeline-section" id="timelineSection">
-  <canvas aria-hidden="true" id="timelineCanvas"></canvas>
   <div class="timeline-background" aria-hidden="true"></div>
   <div aria-hidden="true" class="timeline-orb timeline-orb-one"></div>
   <div aria-hidden="true" class="timeline-orb timeline-orb-two"></div>
@@ -517,7 +650,7 @@
     <div class="section-header">
       <h2 class="section-heading">Projects <span id="projectCountBadge"></span></h2>
       <button class="btn-random-project" id="randomProjectBtnSidebar" type="button">
-        <i class="fas fa-shuffle"></i>
+        <i class="fas fa-shuffle" aria-hidden="true"></i>
         Surprise Me
       </button>
     </div>
@@ -565,8 +698,8 @@
             </button>
           </div>
         </div>
-        <textarea aria-label="Python code editor" autocapitalize="off" autocorrect="off" id="pythonEditor" placeholder="# Write your Python code here…
-print('Hello, World!')" spellcheck="false"></textarea>
+        <!-- CodeMirror 6 will mount here -->
+        <div id="pythonEditor" aria-label="Python code editor" role="textbox" aria-multiline="true"></div>
       </div>
 
       <div class="console-panel">
@@ -598,15 +731,16 @@ print('Hello, World!')" spellcheck="false"></textarea>
 <!-- ── Project Modal ─────────────────────────────────────────── -->
 <div aria-hidden="true" aria-labelledby="modalDialogTitle" aria-modal="true" class="modal" id="projectModal" role="dialog">
   <div class="modal-content">
-    <h2 class="modal-dialog-title visually-hidden" id="modalDialogTitle" tabindex="-1">Interactive project</h2>
-    <button aria-label="Close project dialog" class="modal-close" id="modalClose" type="button">&times;</button>
+    <div class="modal-header">
+      <button aria-label="Close project dialog" class="modal-close" id="modalClose" type="button">&times;</button>
+    </div>
     <div id="modalBody"></div>
   </div>
 </div>
 
 <!-- ── Back to Top ───────────────────────────────────────────── -->
 <button aria-label="Back to top" class="back-to-top" id="backToTop" title="Back to top" type="button">
-  <i class="fas fa-arrow-up"></i>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
 </button>
 
 <!-- ── Footer ────────────────────────────────────────────────── -->
@@ -662,6 +796,7 @@ print('Hello, World!')" spellcheck="false"></textarea>
 <script src="js/projects/rock-paper-scissor.js"></script>
 <script src="js/projects/dice-rolling.js"></script>
 <script src="js/projects/coin-flip.js"></script>
+<script src="js/projects/progress-tracker.js"></script>
 <script src="js/projects/number-guessing.js"></script>
 <script src="js/projects/binary-search.js"></script>
 <script src="js/projects/bubble-sort.js"></script>
@@ -695,19 +830,36 @@ print('Hello, World!')" spellcheck="false"></textarea>
 <script src="js/projects/snake.js"></script>
 <script src="js/projects/spot-the-difference.js"></script>
 <script src="js/projects/color-palette.js"></script>
-<script src="js/projects/ceasar-cipher.js"></script>
 <script src="js/projects/resume-analyzer.js"></script>
 <!-- Registry: maps project names to their module functions -->
+    <script src="js/projects.js"></script>
+<!--
+        playground.js MUST come before main.js so that
+        window.playgroundAPI is defined when main.js runs.
+        No Pyodide CDN tag here — Pyodide is injected lazily.
+    -->
 <script src="js/projects.js"></script>
+<!-- CodeMirror 6 – syntax-highlighted Python editor (local bundle) -->
+<script src="js/cm-editor.js"></script>
 <script src="js/playground.js"></script>
 <script src="js/main.js"></script>
 <script src="js/hero-canvas.js"></script>
 <script>lucide.createIcons();</script>
+<script src="js/fix.js"></script> 
 
     <div class="search-kbd-hint" id="searchKbdHint" aria-hidden="true">
       Press <kbd>Ctrl</kbd><span>+</span><kbd>K</kbd> to focus search
     </div>      
 
+<!-- Info Modal Popup -->
+<div id="infoModalOverlay" class="info-modal-overlay">
+  <div class="info-modal-content">
+    <button class="info-modal-close" id="infoModalClose">&times;</button>
+    <h3 id="infoModalTitle">How to Play</h3>
+    <ul id="infoModalList"></ul>
+    <button class="info-modal-btn" id="infoModalGotIt">Got it</button>
+  </div>
+</div>
 
 </body>
 </html>

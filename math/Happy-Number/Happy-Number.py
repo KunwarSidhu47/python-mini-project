@@ -1,28 +1,9 @@
 import tkinter as tk
 
-print("=" * 50)
-print("🔢 HAPPY NUMBER CHECKER & VISUALIZER 🔢")
-print("=" * 50)
-print("A happy number eventually reaches 1 when replaced by the sum of square of its digits.\n")
-
-while True:
-    print("=" * 50)
-    try:
-        user_input = input("➡️  Enter a number: ").strip()
-        if not user_input:
-            print("❌ Error: Input cannot be empty.")
-            continue
-        N = int(user_input)
-        if N <= 0:
-            print("❌ Please enter a positive number!")
-            continue
-    except ValueError:
-        print("❌ Error: Please enter a valid positive integer.")
-        continue
-
+def is_happy_number(n: int) -> tuple[bool, list[int]]:
     seen = set()
     sequence = []
-    num = N
+    num = n
 
     while num != 1 and num not in seen:
         seen.add(num)
@@ -30,16 +11,9 @@ while True:
         num = sum(int(digit) ** 2 for digit in str(num))
 
     sequence.append(num)
-    is_happy = (num == 1)
+    return num == 1, sequence
 
-    if is_happy:
-        print(f"\n✅ {N} is a HAPPY number!")
-    else:
-        print(f"\n❌ {N} is NOT a happy number!")
-
-    print("➡️  Sequence:", " → ".join(map(str, sequence)))
-    print("\n🖥️  Opening Visualizer window... Close the window to continue.")
-
+def run_visualizer(n: int, is_happy: bool, sequence: list[int]) -> None:
     # ---------------- TKINTER VISUALIZER ---------------- #
     root = tk.Tk()
     root.title("Happy Number Visualizer")
@@ -104,7 +78,7 @@ while True:
             canvas.create_line(x + 45, y, next_x - 45, y, arrow=tk.LAST, width=3, fill="#444")
 
     # Result text
-    result = f"{N} is a HAPPY Number 🎉" if is_happy else f"{N} is NOT a Happy Number ❌"
+    result = f"{n} is a HAPPY Number 🎉" if is_happy else f"{n} is NOT a Happy Number ❌"
     canvas.create_text(
         max(500, start_x + len(sequence) * spacing // 2),
         420,
@@ -118,7 +92,43 @@ while True:
 
     root.mainloop()
 
-    again = input("\n🔄 Do you want to check another number? (y/n): ").strip().lower()
-    if again != 'y':
-        print("\n👋 Thanks for using Happy Number Checker! Goodbye!\n")
-        break
+def main() -> None:
+    print("=" * 50)
+    print("🔢 HAPPY NUMBER CHECKER & VISUALIZER 🔢")
+    print("=" * 50)
+    print("A happy number eventually reaches 1 when replaced by the sum of square of its digits.\n")
+
+    while True:
+        print("=" * 50)
+        try:
+            user_input = input("➡️  Enter a number: ").strip()
+            if not user_input:
+                print("❌ Error: Input cannot be empty.")
+                continue
+            n = int(user_input)
+            if n <= 0:
+                print("❌ Please enter a positive number!")
+                continue
+        except ValueError:
+            print("❌ Error: Please enter a valid positive integer.")
+            continue
+
+        is_happy, sequence = is_happy_number(n)
+
+        if is_happy:
+            print(f"\n✅ {n} is a HAPPY number!")
+        else:
+            print(f"\n❌ {n} is NOT a happy number!")
+
+        print("➡️  Sequence:", " → ".join(map(str, sequence)))
+        print("\n🖥️  Opening Visualizer window... Close the window to continue.")
+
+        run_visualizer(n, is_happy, sequence)
+
+        again = input("\n🔄 Do you want to check another number? (y/n): ").strip().lower()
+        if again != 'y':
+            print("\n👋 Thanks for using Happy Number Checker! Goodbye!\n")
+            break
+
+if __name__ == "__main__":
+    main()
