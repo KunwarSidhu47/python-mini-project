@@ -545,27 +545,27 @@ function initTicTacToe() {
   }
  
   // ── SCREEN ──
-  function showScreen(id) {
+ function showScreen(id) {
     document.querySelectorAll(".screen").forEach(s => {
-      s.classList.toggle("screen--active", s.id === id);
+        s.classList.toggle("screen--active", s.id === id);
     });
   }
  
   // ── PILLS ──
-  document.getElementById("diff-group").style.display = "none";
+  const diffGroup = document.getElementById("diff-group");
+  if (diffGroup) diffGroup.style.display = "none";
  
   function initPills(groupId, cb) {
     const grp = document.getElementById(groupId);
     if (!grp) return;
     grp.querySelectorAll(".pill").forEach(btn => {
-      btn.addEventListener("click", () => {
-        grp.querySelectorAll(".pill").forEach(b => b.classList.remove("pill--on"));
-        btn.classList.add("pill--on");
-        cb(btn.dataset.val);
-      });
+        btn.addEventListener("click", () => {
+            grp.querySelectorAll(".pill").forEach(b => b.classList.remove("pill--on"));
+            btn.classList.add("pill--on");
+            cb(btn.dataset.val);
+        });
     });
   }
- 
   initPills("mode-group", val => {
     mode = val;
     const diffGrp = document.getElementById("diff-group");
@@ -605,9 +605,7 @@ function initTicTacToe() {
   // ── EVENT LISTENERS ──
   document.getElementById("start-btn").addEventListener("click", () => {
     p1 = document.getElementById("p1-input").value.trim() || "Player 1";
-    p2 = mode === "ai"
-      ? "Computer "
-      : (document.getElementById("p2-input").value.trim() || "Player 2");
+    p2 = mode === "ai" ? "Computer" : (document.getElementById("p2-input").value.trim() || "Player 2");
     scores = { p1: 0, p2: 0, draws: 0 };
     round = 1;
     buildBoard();

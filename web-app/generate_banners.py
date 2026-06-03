@@ -433,13 +433,14 @@ def generate_banner(name, category, filename):
     print(f"Generated HD banner: {filename}")
 
 # Project category directory mappings
+
 projects = [
     # GAMES
     ("2048 Game", "games", "2048-game.jpg"),
     ("Coin Flip", "games", "coin-flip.jpg"),
     ("Dice Rolling", "games", "dice-rolling.jpg"),
     ("Dots & Boxes AI", "games", "dots-boxes.jpg"),
-    ("Emoji Memory Game", "games", "emoji-memory.jpg"),
+    ("Emoji Memory Game", "games", "emoji-memory-game.jpg"),  # FIXED filename
     ("FLAMES Game", "games", "flames.jpg"),
     ("Flappy Game", "games", "flappy-game.jpg"),
     ("Hangman", "games", "hangman.jpg"),
@@ -447,10 +448,15 @@ projects = [
     ("Number Guessing", "games", "number-guessing.jpg"),
     ("Password Forge", "games", "password-forge.jpg"),
     ("Rock Paper Scissors", "games", "rock-paper-scissor.jpg"),
-    ("Snake Game", "games", "snake-game.jpg"),
+    ("Snake Game", "games", "snake.jpg"),
     ("Whack-a-Mole", "games", "whack-a-mole.jpg"),
     ("Word Scramble", "games", "word-scramble.jpg"),
     ("Blackjack 21", "games", "blackjack21.jpg"),
+    ("Simon Says", "games", "simon-says.jpg"),
+    ("Tic Tac Toe", "games", "tic-tac-toe.jpg"),
+    ("Spot the Difference", "games", "spot-the-difference.jpg"),
+    ("Productive Pet", "utilities", "productive-pet.jpg"),
+    ("Progress Tracker", "utilities", "progress-tracker.jpg"),
 
     # MATH
     ("AP/GP/AGP/HP Recognizer", "math", "progression-recognizer.jpg"),
@@ -463,6 +469,9 @@ projects = [
     ("Pascal's Triangle", "math", "pascal-triangle.jpg"),
     ("Prime Analyzer", "math", "prime-analyzer.jpg"),
     ("Projectile Motion", "math", "projectile-motion.jpg"),
+    ("Binary Search", "math", "binary-search.jpg"),
+    ("Bubble Sort", "math", "bubble-sort.jpg"),
+    ("Tower of Hanoi", "math", "tower-of-hanoi.jpg"),
 
     # UTILITIES
     ("Morse Code", "utilities", "morse-code.jpg"),
@@ -472,7 +481,6 @@ projects = [
     ("Color Palette Suggestor", "utilities", "color-palette.jpg"),
     ("AI Resume Analyzer", "utilities", "resume-analyzer.jpg"),
     ("Caesar Cipher", "utilities", "caesar-cipher.jpg"),
-    ("Simon Says", "games", "simon-says.jpg"),
 ]
 
 # Run generation
