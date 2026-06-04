@@ -100,6 +100,42 @@ function showInfoModal(title, steps) {
   overlay.addEventListener("click", overlayClick);
 }
 
+// Themed confirmation modal (in-page) helper
+function showConfirm(message, onConfirm, onCancel) {
+  var overlay = document.getElementById('confirmModalOverlay');
+  var msg = document.getElementById('confirmModalMessage');
+  var okBtn = document.getElementById('confirmOkBtn');
+  var cancelBtn = document.getElementById('confirmCancelBtn');
+  if (!overlay || !msg || !okBtn || !cancelBtn) {
+    // fallback to window.confirm
+    var ok = window.confirm(message);
+    if (ok && typeof onConfirm === 'function') onConfirm();
+    else if (!ok && typeof onCancel === 'function') onCancel();
+    return;
+  }
+
+  msg.textContent = message;
+  overlay.classList.add('active');
+
+  function cleanup() {
+    overlay.classList.remove('active');
+    okBtn.removeEventListener('click', okHandler);
+    cancelBtn.removeEventListener('click', cancelHandler);
+    overlay.removeEventListener('click', overlayClick);
+    document.removeEventListener('keydown', keyHandler);
+  }
+
+  function okHandler(e) { e.stopPropagation(); cleanup(); if (typeof onConfirm === 'function') onConfirm(); }
+  function cancelHandler(e) { e.stopPropagation(); cleanup(); if (typeof onCancel === 'function') onCancel(); }
+  function overlayClick(e) { if (e.target === overlay) { cancelHandler(e); } }
+  function keyHandler(e) { if (e.key === 'Escape') cancelHandler(e); }
+
+  okBtn.addEventListener('click', okHandler);
+  cancelBtn.addEventListener('click', cancelHandler);
+  overlay.addEventListener('click', overlayClick);
+  document.addEventListener('keydown', keyHandler);
+}
+
 var currentProjectName = "";
 
 function setupModalInfoButton(projectName) {
@@ -162,8 +198,6 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("load", repairLegacyHomeLayoutNow, { once: true });
 
   var html = document.documentElement;
-  var themeToggle = document.querySelector(".sidebar-dock #themeToggle");
-  var soundToggle = document.querySelector(".sidebar-dock #soundToggle");
   var backToTopButton = document.getElementById("backToTop");
   var searchInput = document.querySelector(".sidebar-dock #searchInput");
   var navSearchInput = document.getElementById("navSearchInput");
@@ -215,105 +249,53 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ── Theme Toggle ─────────────────────────────────────────── */
-  function updateThemeToggleAria(isLight) {
-    if (!themeToggle) return;
-    themeToggle.setAttribute(
-      "aria-label",
-      isLight ? "Switch to dark mode" : "Switch to light mode"
-    );
-  }
+  /* ── Sound Toggle (Multi-Element Support) ─────────────────────────── */
+  var soundToggles = document.querySelectorAll(".sound-toggle");
 
-  if (themeToggle) {
-    var savedTheme = localStorage.getItem("theme") || "dark";
-    html.setAttribute("data-theme", savedTheme);
-    syncThemeColor(savedTheme);
-    // Prefer showing a sun icon when the site is dark (site's main theme).
-    // Show sun for dark theme, moon for light theme so reload displays sun by default.
-    themeToggle.innerHTML =
-      savedTheme === "dark"
-        ? '<i class="fas fa-sun"></i>'
-        : '<i class="fas fa-moon"></i>';
-    updateThemeToggleAria(savedTheme === "light");
-
-    themeToggle.addEventListener("click", function () {
-      var current = html.getAttribute("data-theme");
-      var next = current === "light" ? "dark" : "light";
-      html.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-      syncThemeColor(next);
-      // After toggling, show sun when the new theme is dark, moon when it's light.
-      themeToggle.innerHTML =
-        next === "dark"
-          ? '<i class="fas fa-sun"></i>'
-          : '<i class="fas fa-moon"></i>';
-      updateThemeToggleAria(next === "light");
+  function updateSoundIcons() {
+    var isMuted = window.audioController
+      ? window.audioController.isMuted
+      : false;
+    var iconHtml = isMuted
+      ? '<i class="fas fa-volume-mute"></i>'
+      : '<i class="fas fa-volume-up"></i>';
+    soundToggles.forEach(function (btn) {
+      btn.innerHTML = iconHtml;
     });
   }
 
-  /* ── Sound Toggle ─────────────────────────────────────────── */
-  if (soundToggle && window.audioController) {
-    function updateSoundIcon() {
-      soundToggle.innerHTML = window.audioController.isMuted
-        ? '<i class="fas fa-volume-mute"></i>'
-        : '<i class="fas fa-volume-up"></i>';
-    }
-    updateSoundIcon();
-    soundToggle.addEventListener("click", function () {
-      if (typeof window.audioController.toggleMute === "function") {
-        window.audioController.toggleMute();
-        updateSoundIcon();
-        if (
-          !window.audioController.isMuted &&
-          typeof window.audioController.play === "function"
-        ) {
-          window.audioController.play("click");
+  if (window.audioController) {
+    updateSoundIcons();
+    soundToggles.forEach(function (toggle) {
+      toggle.addEventListener("click", function () {
+        if (typeof window.audioController.toggleMute === "function") {
+          window.audioController.toggleMute();
+          updateSoundIcons(); // Instantly updates every sound button on the screen
+          if (
+            !window.audioController.isMuted &&
+            typeof window.audioController.play === "function"
+          ) {
+            window.audioController.play("click");
+          }
         }
-      }
+      });
     });
-  } else if (soundToggle) {
-    soundToggle.addEventListener("click", function () {
-      var icon = soundToggle.querySelector("i");
-      if (icon)
-        icon.className =
-          icon.className === "fas fa-volume-up"
-            ? "fas fa-volume-mute"
-            : "fas fa-volume-up";
-    });
-  }
-
-  /* ── Hero Controls Mirror Toggles ─────────────────────────── */
-  var heroSoundToggle = document.getElementById("heroSoundToggle");
-  var heroThemeToggle = document.getElementById("heroThemeToggle");
-
-  function syncHeroControlsIcons() {
-    if (heroSoundToggle && soundToggle) {
-      var realSoundIcon = soundToggle.querySelector("i");
-      var heroSoundIcon = heroSoundToggle.querySelector("i");
-      if (realSoundIcon && heroSoundIcon) {
-        heroSoundIcon.className = realSoundIcon.className;
-      }
-    }
-    if (heroThemeToggle && themeToggle) {
-      var realThemeIcon = themeToggle.querySelector("i");
-      var heroThemeIcon = heroThemeToggle.querySelector("i");
-      if (realThemeIcon && heroThemeIcon) {
-        heroThemeIcon.className = realThemeIcon.className;
-      }
-    }
-  }
-
-  if (heroSoundToggle && soundToggle) {
-    heroSoundToggle.addEventListener("click", function () {
-      soundToggle.click();
-      setTimeout(syncHeroControlsIcons, 50);
-    });
-  }
-
-  if (heroThemeToggle && themeToggle) {
-    heroThemeToggle.addEventListener("click", function () {
-      themeToggle.click();
-      setTimeout(syncHeroControlsIcons, 50);
+  } else {
+    // Fallback if audioController isn't loaded
+    soundToggles.forEach(function (toggle) {
+      toggle.addEventListener("click", function () {
+        var icon = this.querySelector("i");
+        if (icon) {
+          var newClass =
+            icon.className === "fas fa-volume-up"
+              ? "fas fa-volume-mute"
+              : "fas fa-volume-up";
+          soundToggles.forEach(function (btn) {
+            var i = btn.querySelector("i");
+            if (i) i.className = newClass;
+          });
+        }
+      });
     });
   }
 
@@ -797,7 +779,7 @@ document.addEventListener("DOMContentLoaded", function () {
         label.addEventListener("click", function () {
           syncSearchInputs(search, searchInput);
           currentSearchQuery = search;
-          performSearch();
+          performSearch(true);
           closeDropdown();
         });
 
@@ -813,9 +795,27 @@ document.addEventListener("DOMContentLoaded", function () {
           renderRecentSearches();
         });
 
-        recentSearchesList.appendChild(item);
-      });
-    }
+          recentSearchesList.appendChild(item);
+        });
+
+        // Wire up header Clear All button (if present)
+        var headerClearBtn = document.getElementById('clearRecentBtn');
+        if (headerClearBtn) {
+          headerClearBtn.style.display = recentSearches.length ? 'inline-flex' : 'none';
+          headerClearBtn.onclick = function (e) {
+            e.stopPropagation();
+            if (!recentSearches || recentSearches.length === 0) return;
+            showConfirm('Clear all recent searches? This cannot be undone.', function () {
+              recentSearches = [];
+              localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+              renderRecentSearches();
+              closeDropdown();
+            }, function () {
+              // cancelled
+            });
+          };
+        }
+      }
 
     recentSearchesSection.style.display = "block";
     if (resultsSection) resultsSection.style.display = "none";
@@ -897,7 +897,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!searchInput) return;
     searchInput.value = title;
     currentSearchQuery = title.toLowerCase();
-    performSearch();
+    performSearch(true);
     closeDropdown();
     if (projectsSection) {
       projectsSection.scrollIntoView({
@@ -907,7 +907,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function performSearch() {
+  function performSearch(commit) {
+    if (commit === undefined) commit = true;
     var query = currentSearchQuery;
     if (!query) {
       applyCategoryFilter(currentCategory);
@@ -923,12 +924,14 @@ document.addEventListener("DOMContentLoaded", function () {
       syncStickyTabs("all");
     }
 
-    recentSearches = recentSearches.filter(function (s) {
-      return s !== query;
-    });
-    recentSearches.unshift(query);
-    recentSearches = recentSearches.slice(0, 10);
-    localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+    if (commit) {
+      recentSearches = recentSearches.filter(function (s) {
+        return s !== query;
+      });
+      recentSearches.unshift(query);
+      recentSearches = recentSearches.slice(0, 10);
+      localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+    }
 
     var visibleCount = 0;
     var favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
@@ -982,7 +985,7 @@ document.addEventListener("DOMContentLoaded", function () {
         currentSearchQuery = query;
         if (searchLoader) searchLoader.style.display = query ? "block" : "none";
         debouncedSearch(query);
-        performSearch();
+        performSearch(false);
       });
 
       input.addEventListener("focus", function () {
@@ -992,10 +995,21 @@ document.addEventListener("DOMContentLoaded", function () {
           renderRecentSearches();
       });
 
+      input.addEventListener("blur", function () {
+        if (currentSearchQuery && currentSearchQuery.trim()) {
+          performSearch(true);
+        }
+      });
+
       input.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
           closeDropdown();
           input.blur();
+        }
+        if (e.key === "Enter") {
+          e.preventDefault();
+          performSearch(true);
+          closeDropdown();
         }
       });
     });
@@ -1607,47 +1621,45 @@ if (progressBar) {
     ticking = false;
   }
 
-    window.addEventListener("scroll", () => {
-      if (!ticking) {
-        requestAnimationFrame(updateScrollProgress);
-        ticking = true;
-      }
-    });
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      requestAnimationFrame(updateScrollProgress);
+      ticking = true;
+    }
+  });
+}
+
+// URL parameters auto-open logic
+(function () {
+  const params = new URLSearchParams(window.location.search);
+  const projectParam = params.get("project");
+  if (projectParam) {
+    const match = projectCards.find(
+      (c) => c.getAttribute("data-project") === projectParam
+    );
+    if (match) {
+      setTimeout(() => {
+        openProjectSafe(projectParam, match);
+        match.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 300);
+    }
   }
-
-  // URL parameters auto-open logic
-  (function () {
-    const params = new URLSearchParams(window.location.search);
-    const projectParam = params.get("project");
-    if (projectParam) {
-      const match = projectCards.find(
-        (c) => c.getAttribute("data-project") === projectParam
-      );
-      if (match) {
-        setTimeout(() => {
-          openProjectSafe(projectParam, match);
-          match.scrollIntoView({ behavior: "smooth", block: "center" });
-        }, 300);
-      }
+  const catParam = params.get("category");
+  const valid = [
+    "all",
+    "games",
+    "math",
+    "utilities",
+    "playground",
+    "favorites",
+  ];
+  if (catParam && valid.includes(catParam)) {
+    const tab = document.querySelector(`[data-category="${catParam}"]`);
+    if (tab) {
+      setTimeout(() => tab.click(), 100);
     }
-    const catParam = params.get("category");
-    const valid = [
-      "all",
-      "games",
-      "math",
-      "utilities",
-      "playground",
-      "favorites",
-    ];
-    if (catParam && valid.includes(catParam)) {
-      const tab = document.querySelector(`[data-category="${catParam}"]`);
-      if (tab) {
-        setTimeout(() => tab.click(), 100);
-      }
-    }
-  })();
+  }
+})();
 
-  // Initial card filtering state update
-  updateProjectVisibility(currentCategory, currentSearchQuery);
-});
-
+// Initial card filtering state update
+updateProjectVisibility(currentCategory, currentSearchQuery);

@@ -10,32 +10,33 @@ from datetime import datetime
 # ── Config ────────────────────────────────────────────────────────────────────
 DATA_FILE = "completed_projects.json"
 
+# Load Project Registry from projects_registry.json
+REGISTRY_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "projects_registry.json"))
+
 ALL_PROJECTS = {
-    "🎲 Games": [
-        "Rock-Paper-Scissor",
-        "Dice-Rolling",
-        "Coin-Flip",
-        "Number-Guessing-Game",
-        "Hangman-Game",
-        "FLAMES-Game",
-    ],
-    "🔢 Math": [
-        "Fibonacci-Series",
-        "Pascals-Triangle",
-        "Armstrong-Number",
-        "Simple-Calculator",
-        "Collatz-Conjecture",
-        "Prime-Number-Analyzer",
-        "Projectile-Motion-Game",
-        "Coordinate-to-Polar-Transformation",
-        "Derivative-Calculator",
-        "AP-GP-AGP-HP-Recognizer",
-    ],
-    "🔐 Utilities": [
-        "Text-to-Morse",
-        "Tower-of-Hanoi",
-    ],
+    "🎲 Games": [],
+    "🔢 Math": [],
+    "🔐 Utilities": []
 }
+
+CATEGORY_MAP = {
+    "games": "🎲 Games",
+    "math": "🔢 Math",
+    "utilities": "🔐 Utilities"
+}
+
+try:
+    with open(REGISTRY_PATH, "r", encoding="utf-8") as f:
+        registry = json.load(f)
+    for p in registry:
+        cat_key = CATEGORY_MAP.get(p["category"])
+        if cat_key:
+            parts = p["path"].split("/")
+            if len(parts) >= 2:
+                proj_name = parts[-2]
+                ALL_PROJECTS[cat_key].append(proj_name)
+except Exception as e:
+    print(f"Error loading project registry: {e}")
 
 # Flatten for quick lookup
 ALL_PROJECT_NAMES = [p for projects in ALL_PROJECTS.values() for p in projects]
@@ -48,7 +49,26 @@ def load_data() -> dict:
     """Load saved progress from JSON file, or return a fresh state."""
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
-            return json.load(f)
+            data = json.load(f)
+        # Migrate old names to new folder names
+        migrations = {
+            "Dice-Rolling": "Roling-Dice",
+            "Coin-Flip": "Flipping-toss",
+            "Pascals-Triangle": "Pascal-Triangle"
+        }
+        completed = data.get("completed", {})
+        updated_completed = {}
+        mutated = False
+        for k, v in completed.items():
+            if k in migrations:
+                updated_completed[migrations[k]] = v
+                mutated = True
+            else:
+                updated_completed[k] = v
+        if mutated:
+            data["completed"] = updated_completed
+            save_data(data)
+        return data
     return {"completed": {}}          # {project_name: "YYYY-MM-DD HH:MM"}
 
 

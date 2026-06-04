@@ -1,0 +1,274 @@
+[
+  {
+    "name": "Rock Paper Scissors",
+    "emoji": "🪨",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Battle against the computer in this classic hand game.",
+    "keywords": [
+      "rock",
+      "paper",
+      "scissors",
+      "game",
+      "battle",
+      "computer"
+    ],
+    "path": "games/Rock-Paper-Scissor/Rock-Paper-Scissor.py"
+  },
+  {
+    "name": "Dice Rolling",
+    "emoji": "🎲",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Roll two dice and calculate your fortune with emoji dice!",
+    "keywords": [
+      "dice",
+      "roll",
+      "random",
+      "luck",
+      "board"
+    ],
+    "path": "games/Roling-Dice/Roling-Dice.py"
+  },
+  {
+    "name": "Coin Flip",
+    "emoji": "🪙",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Predict heads or tails — a quick decision maker.",
+    "keywords": [
+      "coin",
+      "flip",
+      "heads",
+      "tails",
+      "random"
+    ],
+    "path": "games/Flipping-toss/Flipping-toss.py"
+  },
+  {
+    "name": "Number Guessing Game",
+    "emoji": "🎯",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Guess the computer's secret number with smart hints.",
+    "keywords": [
+      "guess",
+      "number",
+      "hints",
+      "game",
+      "interactive"
+    ],
+    "path": "games/Number-Guessing-Game/Number-Guessing-Game.py"
+  },
+  {
+    "name": "Hangman Game",
+    "emoji": "🎮",
+    "category": "games",
+    "difficulty": "intermediate",
+    "description": "Classic word-guessing game with 6 attempts.",
+    "keywords": [
+      "hangman",
+      "word",
+      "guess",
+      "letters",
+      "classic"
+    ],
+    "path": "games/Hangman-Game/Hangman-Game.py"
+  },
+  {
+    "name": "FLAMES Game",
+    "emoji": "💖",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Discover your relationship status with two names!",
+    "keywords": [
+      "flames",
+      "love",
+      "relationship",
+      "names",
+      "fun"
+    ],
+    "path": "games/FLAMES-Game/FLAMES-Game.py"
+  },
+  {
+    "name": "Fibonacci Series",
+    "emoji": "✨",
+    "category": "math",
+    "difficulty": "beginner",
+    "description": "Generate beautiful Fibonacci sequences visually.",
+    "keywords": [
+      "fibonacci",
+      "series",
+      "sequence",
+      "math",
+      "pattern"
+    ],
+    "path": "math/Fibonacci-Series/Fibonacci-Series.py"
+  },
+  {
+    "name": "Pascal's Triangle",
+    "emoji": "🔺",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Explore mathematical beauty in Pascal's triangle.",
+    "keywords": [
+      "pascal",
+      "triangle",
+      "pattern",
+      "math",
+      "rows"
+    ],
+    "path": "math/Pascal-Triangle/Pascal-Triangle.py"
+  },
+  {
+    "name": "Armstrong Number Checker",
+    "emoji": "💎",
+    "category": "math",
+    "difficulty": "beginner",
+    "description": "Check if a number is an Armstrong number with breakdown.",
+    "keywords": [
+      "armstrong",
+      "number",
+      "checker",
+      "narcissistic",
+      "math"
+    ],
+    "path": "math/Armstrong-Number/Armstrong-Number.py"
+  },
+  {
+    "name": "Simple Calculator",
+    "emoji": "🧮",
+    "category": "math",
+    "difficulty": "beginner",
+    "description": "All basic math operations plus power and modulus.",
+    "keywords": [
+      "calculator",
+      "math",
+      "arithmetic",
+      "add",
+      "subtract"
+    ],
+    "path": "math/Simple-Calculator/Simple-Calculator.py"
+  },
+  {
+    "name": "Prime Number Analyzer",
+    "emoji": "🔱",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Check, generate, and factorize prime numbers.",
+    "keywords": [
+      "prime",
+      "factor",
+      "analyze",
+      "sieve",
+      "number theory"
+    ],
+    "path": "math/Prime-Number-Analyzer/Prime-Number-Analyzer.py"
+  },
+  {
+    "name": "Collatz Conjecture",
+    "emoji": "🔢",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Explore the famous 3n+1 sequence until it reaches 1.",
+    "keywords": [
+      "collatz",
+      "conjecture",
+      "sequence",
+      "3n+1",
+      "math"
+    ],
+    "path": "math/Collatz-Conjecture/Collatz-Conjecture.py"
+  },
+  {
+    "name": "Projectile Motion Game",
+    "emoji": "🚀",
+    "category": "math",
+    "difficulty": "advanced",
+    "description": "Launch projectiles and visualize trajectory stats with matplotlib.",
+    "keywords": [
+      "projectile",
+      "physics",
+      "simulation",
+      "trajectory",
+      "matplotlib"
+    ],
+    "path": "math/Projectile-Motion-Game/Projectile-Motion-Game.py"
+  },
+  {
+    "name": "Derivative Calculator",
+    "emoji": "∂",
+    "category": "math",
+    "difficulty": "advanced",
+    "description": "Compute first and nth polynomial derivatives at any point.",
+    "keywords": [
+      "derivative",
+      "calculus",
+      "polynomial",
+      "math",
+      "algebra"
+    ],
+    "path": "math/Derivative-Calculator/Derivative-Calculator.py"
+  },
+  {
+    "name": "Coordinate to Polar Transformation",
+    "emoji": "🧭",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Convert Cartesian (x,y) coordinates to polar form.",
+    "keywords": [
+      "polar",
+      "cartesian",
+      "coordinate",
+      "geometry",
+      "angle"
+    ],
+    "path": "math/Coordinate-to-Polar-Transformation/Coordinate-to-Polar-Transformation.py"
+  },
+  {
+    "name": "AP/GP/AGP/HP Recognizer",
+    "emoji": "📐",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Identify progression types from any number sequence.",
+    "keywords": [
+      "progression",
+      "arithmetic",
+      "geometric",
+      "harmonic",
+      "sequence"
+    ],
+    "path": "math/AP-GP-AGP-HP-Recognizer/AP-GP-AGP-HP-Recognizer.py"
+  },
+  {
+    "name": "Morse Code Translator",
+    "emoji": "📻",
+    "category": "utilities",
+    "difficulty": "beginner",
+    "description": "Translate text to Morse code and back — bidirectional.",
+    "keywords": [
+      "morse",
+      "code",
+      "translate",
+      "encrypt",
+      "dots",
+      "dashes"
+    ],
+    "path": "utilities/Text-to-Morse/Text-to-Morse.py"
+  },
+  {
+    "name": "Tower of Hanoi",
+    "emoji": "🗼",
+    "category": "utilities",
+    "difficulty": "intermediate",
+    "description": "Solve the classic Tower of Hanoi puzzle step by step.",
+    "keywords": [
+      "tower",
+      "hanoi",
+      "puzzle",
+      "recursion",
+      "algorithm"
+    ],
+    "path": "utilities/Tower-of-Hanoi/Tower-of-Hanoi.py"
+  }
+]
