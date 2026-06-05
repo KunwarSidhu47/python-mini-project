@@ -255,6 +255,4 @@ try_again_button = tk.Button(
 )
 try_again_button.pack(side=tk.LEFT, padx=5)
 
-root.mainloop()
-
- submitting this for PR
+root.mainloop()
