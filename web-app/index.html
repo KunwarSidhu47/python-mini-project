@@ -53,7 +53,7 @@
               alt="PyMini Logo"
               class="navbar-logo"
               src="assets/favicon.svg"
-            />
+            / loading="lazy">
             <div class="logo-text">
               <span class="logo-py">py</span>
               <span class="logo-mini">.mini</span>
@@ -776,54 +776,54 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="js/audio.js"></script>
-    <script src="js/audioManager.js"></script>
+    <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script defer src="js/audio.js"></script>
+    <script defer src="js/audioManager.js"></script>
 
     <!-- ALL PROJECT SCRIPTS -->
-    <script src="js/projects/rock-paper-scissor.js"></script>
-    <script src="js/projects/dice-rolling.js"></script>
-    <script src="js/projects/coin-flip.js"></script>
-    <script src="js/projects/progress-tracker.js"></script>
-    <script src="js/projects/number-guessing.js"></script>
-    <script src="js/projects/binary-search.js"></script>
-    <script src="js/projects/bubble-sort.js"></script>
-    <script src="js/projects/hangman.js"></script>
-    <script src="js/projects/flames.js"></script>
-    <script src="js/projects/fibonacci.js"></script>
-    <script src="js/projects/pascal-triangle.js"></script>
-    <script src="js/projects/calculator.js"></script>
-    <script src="js/projects/collatz.js"></script>
-    <script src="js/projects/armstrong.js"></script>
-    <script src="js/projects/prime-analyzer.js"></script>
-    <script src="js/projects/projectile-motion.js"></script>
-    <script src="js/projects/progression-recognizer.js"></script>
-    <script src="js/projects/coordinate-polar-transform.js"></script>
-    <script src="js/projects/derivative-calculator.js"></script>
-    <script src="js/projects/morse-code.js"></script>
-    <script src="js/projects/tower-of-hanoi.js"></script>
-    <script src="js/projects/math-quiz.js"></script>
-    <script src="js/projects/simon-says.js"></script>
-    <script src="js/projects/flappy-game.js"></script>
-    <script src="js/projects/tic-tac-toe.js"></script>
-    <script src="js/projects/2048-game.js"></script>
-    <script src="js/projects/dots-boxes.js"></script>
-    <script src="js/projects/emoji-memory-game.js"></script>
-    <script src="js/projects/number-converter.js"></script>
-    <script src="js/projects/password-forge.js"></script>
-    <script src="js/projects/typing-speed-tester.js"></script>
-    <script src="js/projects/productive-pet.js"></script>
-    <script src="js/projects/whack-a-mole.js"></script>
-    <script src="js/projects/word-scramble.js"></script>
-    <script src="js/projects/snake.js"></script>
-    <script src="js/projects/spot-the-difference.js"></script>
-    <script src="js/projects/color-palette.js"></script>
-    <script src="js/projects/resume-analyzer.js"></script>
-    <script src="js/projects.js"></script>
-    <script src="js/cm-editor.js"></script>
-    <script src="js/playground.js"></script>
-    <script type="module" src="js/main.js"></script>
-    <script src="js/hero-canvas.js"></script>
+    <script defer src="js/projects/rock-paper-scissor.js"></script>
+    <script defer src="js/projects/dice-rolling.js"></script>
+    <script defer src="js/projects/coin-flip.js"></script>
+    <script defer src="js/projects/progress-tracker.js"></script>
+    <script defer src="js/projects/number-guessing.js"></script>
+    <script defer src="js/projects/binary-search.js"></script>
+    <script defer src="js/projects/bubble-sort.js"></script>
+    <script defer src="js/projects/hangman.js"></script>
+    <script defer src="js/projects/flames.js"></script>
+    <script defer src="js/projects/fibonacci.js"></script>
+    <script defer src="js/projects/pascal-triangle.js"></script>
+    <script defer src="js/projects/calculator.js"></script>
+    <script defer src="js/projects/collatz.js"></script>
+    <script defer src="js/projects/armstrong.js"></script>
+    <script defer src="js/projects/prime-analyzer.js"></script>
+    <script defer src="js/projects/projectile-motion.js"></script>
+    <script defer src="js/projects/progression-recognizer.js"></script>
+    <script defer src="js/projects/coordinate-polar-transform.js"></script>
+    <script defer src="js/projects/derivative-calculator.js"></script>
+    <script defer src="js/projects/morse-code.js"></script>
+    <script defer src="js/projects/tower-of-hanoi.js"></script>
+    <script defer src="js/projects/math-quiz.js"></script>
+    <script defer src="js/projects/simon-says.js"></script>
+    <script defer src="js/projects/flappy-game.js"></script>
+    <script defer src="js/projects/tic-tac-toe.js"></script>
+    <script defer src="js/projects/2048-game.js"></script>
+    <script defer src="js/projects/dots-boxes.js"></script>
+    <script defer src="js/projects/emoji-memory-game.js"></script>
+    <script defer src="js/projects/number-converter.js"></script>
+    <script defer src="js/projects/password-forge.js"></script>
+    <script defer src="js/projects/typing-speed-tester.js"></script>
+    <script defer src="js/projects/productive-pet.js"></script>
+    <script defer src="js/projects/whack-a-mole.js"></script>
+    <script defer src="js/projects/word-scramble.js"></script>
+    <script defer src="js/projects/snake.js"></script>
+    <script defer src="js/projects/spot-the-difference.js"></script>
+    <script defer src="js/projects/color-palette.js"></script>
+    <script defer src="js/projects/resume-analyzer.js"></script>
+    <script defer src="js/projects.js"></script>
+    <script defer src="js/cm-editor.js"></script>
+    <script defer src="js/playground.js"></script>
+    <script defer type="module" src="js/main.js"></script>
+    <script defer src="js/hero-canvas.js"></script>
     <script>
       lucide.createIcons();
     </script>
@@ -1130,7 +1130,7 @@
           const starClass = isFavorite ? "fas fa-star" : "far fa-star";
 
           card.innerHTML = `
-            <img class="card-banner" src="assets/banners/${proj.project}.jpg" alt="${proj.title}" loading="lazy">
+            <img class="card-banner" src="assets/banners/${proj.project}.webp" alt="${proj.title}" loading="lazy">
             <div class="card-actions">
                 <button class="btn-play" data-project="${proj.project}">Try It</button>
                 <button class="btn-favorite" data-project="${proj.project}" aria-label="Add to favorites">

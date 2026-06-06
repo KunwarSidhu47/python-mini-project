@@ -28,7 +28,7 @@
       "luck",
       "board"
     ],
-    "path": "games/Roling-Dice/Roling-Dice.py"
+    "path": "games/Rolling-Dice/Rolling-Dice.py"
   },
   {
     "name": "Coin Flip",
@@ -43,7 +43,7 @@
       "tails",
       "random"
     ],
-    "path": "games/Flipping-toss/Flipping-toss.py"
+    "path": "games/Flipping-Toss/Flipping-Toss.py"
   },
   {
     "name": "Number Guessing Game",
@@ -270,5 +270,337 @@
       "algorithm"
     ],
     "path": "utilities/Tower-of-Hanoi/Tower-of-Hanoi.py"
+  },
+  {
+    "name": "Blackjack 21",
+    "emoji": "🃏",
+    "category": "games",
+    "difficulty": "intermediate",
+    "description": "Play a classic card game of Blackjack against the dealer.",
+    "keywords": [
+      "blackjack",
+      "card",
+      "game",
+      "casino",
+      "dealer"
+    ],
+    "path": "games/Blackjack-21/Blackjack21_cli.py"
+  },
+  {
+    "name": "Dots & Boxes AI",
+    "emoji": "🔲",
+    "category": "games",
+    "difficulty": "advanced",
+    "description": "Play the classic dots and boxes grid game against a smart AI player.",
+    "keywords": [
+      "dots",
+      "boxes",
+      "ai",
+      "grid",
+      "game"
+    ],
+    "path": "games/Dots-Boxes-AI/Dots-Boxes-AI.py"
+  },
+  {
+    "name": "Emoji Memory Game",
+    "emoji": "🍎",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Test and train your memory by repeating emoji patterns.",
+    "keywords": [
+      "emoji",
+      "memory",
+      "game",
+      "pattern",
+      "brain"
+    ],
+    "path": "games/Emoji-Memory-Game/Emoji-Memory-Game.py"
+  },
+  {
+    "name": "Number Sliding Puzzle",
+    "emoji": "🧩",
+    "category": "games",
+    "difficulty": "intermediate",
+    "description": "Arrange the shuffled number tiles in ascending order in this grid puzzle.",
+    "keywords": [
+      "sliding",
+      "puzzle",
+      "number",
+      "grid",
+      "game"
+    ],
+    "path": "games/Number-Sliding-Puzzle/Number-Sliding-Puzzle.py"
+  },
+  {
+    "name": "Password Forge",
+    "emoji": "🔥",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Survive evolving firewall rules by generating strong, conforming passwords.",
+    "keywords": [
+      "password",
+      "forge",
+      "game",
+      "generator",
+      "security"
+    ],
+    "path": "games/Password-Forge/Password-Forge.py"
+  },
+  {
+    "name": "Reverse Hangman Game",
+    "emoji": "🎮",
+    "category": "games",
+    "difficulty": "intermediate",
+    "description": "Flip the role of Hangman — you try to guess the secret word from the computer.",
+    "keywords": [
+      "hangman",
+      "reverse",
+      "word",
+      "guess",
+      "letters"
+    ],
+    "path": "games/Reverse-Hangman-Game/Reverse-Hangman-Game.py"
+  },
+  {
+    "name": "Simon Says",
+    "emoji": "🔊",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Remember and repeat the growing sequence of moves correctly.",
+    "keywords": [
+      "simon",
+      "says",
+      "memory",
+      "sequence",
+      "game"
+    ],
+    "path": "games/Simon-Says/Simon-Says.py"
+  },
+  {
+    "name": "War Card Game",
+    "emoji": "⚔️",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "A simple card-drawing war game played against another player.",
+    "keywords": [
+      "war",
+      "card",
+      "deck",
+      "player",
+      "game"
+    ],
+    "path": "games/War-Card-Game/War-Card-Game.py"
+  },
+  {
+    "name": "Whack-a-Mole",
+    "emoji": "🔨",
+    "category": "games",
+    "difficulty": "intermediate",
+    "description": "Whack the moles as they pop up on a 3x3 grid before time runs out!",
+    "keywords": [
+      "mole",
+      "whack",
+      "grid",
+      "time",
+      "speed",
+      "game"
+    ],
+    "path": "games/Whack-a-Mole/Whack-a-Mole.py"
+  },
+  {
+    "name": "Word Scramble Game",
+    "emoji": "🔠",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Unscramble jumbled words across different categories like Animals and Fruits.",
+    "keywords": [
+      "scramble",
+      "word",
+      "jumbled",
+      "guess",
+      "vocab"
+    ],
+    "path": "games/Word-Scramble-Game/Word-Scramble-Game.py"
+  },
+  {
+    "name": "Binary Search Visualizer",
+    "emoji": "🔍",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Visualize binary search step-by-step on a sorted list of numbers.",
+    "keywords": [
+      "binary",
+      "search",
+      "visualizer",
+      "algorithm",
+      "math"
+    ],
+    "path": "math/Binary-Search/Binary-Search.py"
+  },
+  {
+    "name": "Bubble Sort Visualizer",
+    "emoji": "🫧",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Watch the bubble sort algorithm sort a list of numbers step-by-step.",
+    "keywords": [
+      "bubble",
+      "sort",
+      "visualizer",
+      "algorithm",
+      "math"
+    ],
+    "path": "math/Bubble-Sort/Bubble-Sort.py"
+  },
+  {
+    "name": "Matrix Calculator",
+    "emoji": "🧮",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Perform addition, subtraction, multiplication, and transposition of matrices.",
+    "keywords": [
+      "matrix",
+      "calculator",
+      "multiplication",
+      "transpose",
+      "math"
+    ],
+    "path": "math/Matrix-Calculator/Matrix-Calculator.py"
+  },
+  {
+    "name": "Quadratic Solver",
+    "emoji": "📐",
+    "category": "math",
+    "difficulty": "beginner",
+    "description": "Solve quadratic equations and get real or complex roots interactively.",
+    "keywords": [
+      "quadratic",
+      "solver",
+      "roots",
+      "equations",
+      "math"
+    ],
+    "path": "math/Quadratic-Solver/Quadratic-Solver.py"
+  },
+  {
+    "name": "AI Resume Analyzer",
+    "emoji": "📄",
+    "category": "utilities",
+    "difficulty": "advanced",
+    "description": "Analyze resumes using NLTK to extract key skills and suggestions.",
+    "keywords": [
+      "resume",
+      "analyzer",
+      "nltk",
+      "skills",
+      "parser"
+    ],
+    "path": "utilities/AI-Resume-Analyzer/AI-Resume-Analyzer.py"
+  },
+  {
+    "name": "Budget Tracker",
+    "emoji": "💰",
+    "category": "utilities",
+    "difficulty": "intermediate",
+    "description": "Track income, expenses, and view summaries by category persistently in a CSV.",
+    "keywords": [
+      "budget",
+      "tracker",
+      "expense",
+      "income",
+      "finance"
+    ],
+    "path": "utilities/Budget-Tracker/budget_tracker.py"
+  },
+  {
+    "name": "Caesar Cipher",
+    "emoji": "🔒",
+    "category": "utilities",
+    "difficulty": "beginner",
+    "description": "Encrypt and decrypt messages using the shift-based Caesar Cipher algorithm.",
+    "keywords": [
+      "caesar",
+      "cipher",
+      "encrypt",
+      "decrypt",
+      "security"
+    ],
+    "path": "utilities/Caesar-Cipher/Caesar-Cipher.py"
+  },
+  {
+    "name": "Fake News Headline Generator",
+    "emoji": "📰",
+    "category": "utilities",
+    "difficulty": "beginner",
+    "description": "Generate funny, exaggerated fake news headlines in multiple modes.",
+    "keywords": [
+      "fake",
+      "news",
+      "headline",
+      "generator",
+      "funny"
+    ],
+    "path": "utilities/Fake-News-Headline-Generator/Fake-News-Headline-Generator.py"
+  },
+  {
+    "name": "Number System Converter",
+    "emoji": "🔢",
+    "category": "utilities",
+    "difficulty": "beginner",
+    "description": "Convert numbers interactively between Decimal, Binary, Octal, and Hexadecimal.",
+    "keywords": [
+      "number",
+      "converter",
+      "decimal",
+      "binary",
+      "hexadecimal",
+      "octal"
+    ],
+    "path": "utilities/Number-System-Converter/Number-System-Converter.py"
+  },
+  {
+    "name": "Productive Pet",
+    "emoji": "🐧",
+    "category": "utilities",
+    "difficulty": "intermediate",
+    "description": "Evolve your pet by tracking tasks and staying productive.",
+    "keywords": [
+      "pet",
+      "task",
+      "tracker",
+      "evolve",
+      "gamification"
+    ],
+    "path": "utilities/Productivity-Pet/Productivity-Pet.py"
+  },
+  {
+    "name": "Progress Tracker",
+    "emoji": "🏆",
+    "category": "utilities",
+    "difficulty": "beginner",
+    "description": "Track which mini projects you have completed on your learning journey.",
+    "keywords": [
+      "progress",
+      "tracker",
+      "completed",
+      "learning",
+      "journey"
+    ],
+    "path": "utilities/Progress-Tracker/Progress-Tracker.py"
+  },
+  {
+    "name": "Typing Speed Tester",
+    "emoji": "⌨️",
+    "category": "utilities",
+    "difficulty": "intermediate",
+    "description": "Test your typing speed (WPM) and accuracy with randomized sentences.",
+    "keywords": [
+      "typing",
+      "tester",
+      "wpm",
+      "speed",
+      "accuracy"
+    ],
+    "path": "utilities/Typing-Speed-Tester/Typing-Speed-Tester.py"
   }
 ]
