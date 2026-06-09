@@ -1,9 +1,9 @@
 function getSimonSaysHTML() {
     return `
-
+    <div class="project-content">
     <div class="game-container ui-panel">
 
-        <h1>🧠 Simon Says</h1>
+        <h2>🧠 Simon Says</h2>
 
         <p class="subtitle">
             Only follow commands that start with “Simon says”!
@@ -99,7 +99,8 @@ function getSimonSaysHTML() {
         <p id="message"></p>
 
     </div>
-
+    </div>
+    
     <style>
 
     .game-container{

@@ -1,5 +1,7 @@
 function getRockPaperScissorHTML() {
     return `
+        <div class="project-content">
+        <h2>✊ Rock Paper Scissors ✌️</h2>
         <div class="rps-game">
             <!-- Difficulty Tabs -->
             <div class="rps-difficulty-tabs">
@@ -76,6 +78,7 @@ function getRockPaperScissorHTML() {
             </div>
 
             <button class="rps-reset-btn" id="resetRPS">↺ Reset</button>
+        </div>
         </div>
 
         <style>
