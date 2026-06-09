@@ -158,7 +158,7 @@ function setupModalInfoButton(projectName) {
 /* ── DOMContentLoaded ──────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", function () {
   // Initially hide sidebar - will be shown by IntersectionObserver
-document.body.classList.remove("sidebar-active");
+  document.body.classList.remove("sidebar-active");
   function repairLegacyHomeLayoutNow() {
     var legacyHost = document.querySelector(".hero-code-snippets")
       ? document.querySelector(".hero-code-snippets").closest(".hero-section")
@@ -381,7 +381,7 @@ document.body.classList.remove("sidebar-active");
   }
 
   /* ── Gather Project Cards ─────────────────────────────────── */
-  var projectsGrid = document.querySelector(".projects-grid");
+  var projectsGrid = document.getElementById("projectsGrid");
   var projectsTemplate = document.getElementById("projectsTemplate");
   if (
     projectsGrid &&
@@ -667,23 +667,23 @@ document.body.classList.remove("sidebar-active");
   if (stickyTabs.length) syncStickyTabs("all");
 
   /* ── Sidebar Active Scroll Observer ───────────────────────── */
-if (!pageCategory && projectsSection) {
-  console.log('Setting up sidebar observer');
-  
-  const checkAndToggleSidebar = () => {
-    const rect = projectsSection.getBoundingClientRect();
-    // Show sidebar when projects section is in view AND we're scrolled past hero
-    const heroSection = document.querySelector('.hero-section');
-    const heroBottom = heroSection ? heroSection.getBoundingClientRect().bottom : 0;
-    const showSidebar = rect.top < window.innerHeight && window.scrollY > heroBottom - 100;
-    
-    document.body.classList.toggle("sidebar-active", showSidebar);
-    console.log('Sidebar active:', showSidebar, 'scrollY:', window.scrollY);
-  };
-  
-  window.addEventListener('scroll', checkAndToggleSidebar);
-  checkAndToggleSidebar();
-}
+  if (!pageCategory && projectsSection) {
+    console.log('Setting up sidebar observer');
+
+    const checkAndToggleSidebar = () => {
+      const rect = projectsSection.getBoundingClientRect();
+      // Show sidebar when projects section is in view AND we're scrolled past hero
+      const heroSection = document.querySelector('.hero-section');
+      const heroBottom = heroSection ? heroSection.getBoundingClientRect().bottom : 0;
+      const showSidebar = rect.top < window.innerHeight && window.scrollY > heroBottom - 100;
+
+      document.body.classList.toggle("sidebar-active", showSidebar);
+      console.log('Sidebar active:', showSidebar, 'scrollY:', window.scrollY);
+    };
+
+    window.addEventListener('scroll', checkAndToggleSidebar);
+    checkAndToggleSidebar();
+  }
   /* ═══════════════════════════════════════════════════════════════
      SEARCH
      ═══════════════════════════════════════════════════════════════ */
@@ -793,27 +793,27 @@ if (!pageCategory && projectsSection) {
           renderRecentSearches();
         });
 
-          recentSearchesList.appendChild(item);
-        });
+        recentSearchesList.appendChild(item);
+      });
 
-        // Wire up header Clear All button (if present)
-        var headerClearBtn = document.getElementById('clearRecentBtn');
-        if (headerClearBtn) {
-          headerClearBtn.style.display = recentSearches.length ? 'inline-flex' : 'none';
-          headerClearBtn.onclick = function (e) {
-            e.stopPropagation();
-            if (!recentSearches || recentSearches.length === 0) return;
-            showConfirm('Clear all recent searches? This cannot be undone.', function () {
-              recentSearches = [];
-              localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
-              renderRecentSearches();
-              closeDropdown();
-            }, function () {
-              // cancelled
-            });
-          };
-        }
+      // Wire up header Clear All button (if present)
+      var headerClearBtn = document.getElementById('clearRecentBtn');
+      if (headerClearBtn) {
+        headerClearBtn.style.display = recentSearches.length ? 'inline-flex' : 'none';
+        headerClearBtn.onclick = function (e) {
+          e.stopPropagation();
+          if (!recentSearches || recentSearches.length === 0) return;
+          showConfirm('Clear all recent searches? This cannot be undone.', function () {
+            recentSearches = [];
+            localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+            renderRecentSearches();
+            closeDropdown();
+          }, function () {
+            // cancelled
+          });
+        };
       }
+    }
 
     recentSearchesSection.style.display = "block";
     if (resultsSection) resultsSection.style.display = "none";
@@ -1038,656 +1038,699 @@ if (!pageCategory && projectsSection) {
   /* ═══════════════════════════════════════════════════════════════
       MODAL
     ═══════════════════════════════════════════════════════════════ */
-function getFocusableElements(root) {
-  var sel =
-    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-  return Array.from(root.querySelectorAll(sel)).filter(function (el) {
-    return (
-      !el.closest('[aria-hidden="true"]') &&
-      !el.classList.contains("visually-hidden")
-    );
-  });
-}
+  function getFocusableElements(root) {
+    var sel =
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    return Array.from(root.querySelectorAll(sel)).filter(function (el) {
+      return (
+        !el.closest('[aria-hidden="true"]') &&
+        !el.classList.contains("visually-hidden")
+      );
+    });
+  }
 
-function trapFocus(modalEl) {
-  var handler = function (e) {
-    if (e.key !== "Tab" || !modalEl.classList.contains("active")) return;
-    var focusables = getFocusableElements(modalEl);
-    if (!focusables.length) return;
-    var first = focusables[0];
-    var last = focusables[focusables.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus({ preventScroll: true });
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus({ preventScroll: true });
+  function trapFocus(modalEl) {
+    var handler = function (e) {
+      if (e.key !== "Tab" || !modalEl.classList.contains("active")) return;
+      var focusables = getFocusableElements(modalEl);
+      if (!focusables.length) return;
+      var first = focusables[0];
+      var last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus({ preventScroll: true });
+      }
+    };
+    document.addEventListener("keydown", handler, true);
+    return function () {
+      document.removeEventListener("keydown", handler, true);
+    };
+  }
+
+  function openProjectSafe(name, trigger) {
+    if (!modal || !modalBody) return;
+
+    // Force close and cleanup any existing modal first
+    if (modal.classList.contains("active")) {
+      // Manual cleanup without calling closeProjectSafe to avoid recursion
+      modal.classList.remove("active");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.paddingRight = "";
+      document.body.style.overflow = "";
+      setMainInert(false);
+
+      if (removeTrap) {
+        removeTrap();
+        removeTrap = null;
+      }
+
+      // Clear content
+      modalBody.innerHTML = "";
+      if (modalTitle) modalTitle.textContent = "";
     }
-  };
-  document.addEventListener("keydown", handler, true);
-  return function () {
-    document.removeEventListener("keydown", handler, true);
-  };
-}
 
-function openProjectSafe(name, trigger) {
-  if (!modal || !modalBody) return;
-  
-  // Force close and cleanup any existing modal first
-  if (modal.classList.contains("active")) {
-    // Manual cleanup without calling closeProjectSafe to avoid recursion
+    lastFocusedElement = trigger || document.activeElement;
+
+    // Set modal active and lock body scroll
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.paddingRight = scrollbarWidth + "px";
+    document.body.style.overflow = "hidden";
+    setMainInert(true);
+
+    // Load new content
+    safeRun(function () {
+      var html = '';
+      if (typeof getProjectHTML === "function") {
+        html = getProjectHTML(name);
+      }
+
+      if (!html || html === 'undefined') {
+        html = '<div style="padding:1rem;color:var(--text-secondary)">Project content unavailable.</div>';
+      }
+
+      modalBody.innerHTML = html;
+
+      if (typeof initializeProject === "function") {
+        initializeProject(name);
+      }
+      setupModalInfoButton(name);
+
+      // Inject info button
+      var projectContent = modalBody.querySelector(".project-content");
+      if (projectContent) {
+        var firstHeading = projectContent.querySelector("h2, h3, .resume-analyzer-copy h2, .pet-title");
+        if (!firstHeading) {
+          firstHeading = projectContent.querySelector('[class*="title"], [class*="header"] h2');
+        }
+        if (firstHeading && !projectContent.querySelector(".inline-info-btn")) {
+          var infoBtn = document.createElement("button");
+          infoBtn.className = "inline-info-btn";
+          infoBtn.innerHTML = "ⓘ";
+          infoBtn.setAttribute("aria-label", "How to use this project");
+          infoBtn.style.marginLeft = "12px";
+          infoBtn.style.background = "none";
+          infoBtn.style.border = "none";
+          infoBtn.style.fontSize = "1.3rem";
+          infoBtn.style.cursor = "pointer";
+          infoBtn.style.color = "var(--accent)";
+          infoBtn.style.verticalAlign = "middle";
+
+          infoBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            if (typeof getProjectInstructions === "function") {
+              var info = getProjectInstructions(name);
+              showInfoModal(info.title, info.steps);
+            }
+          });
+
+          if (firstHeading.style.display !== "inline-block") {
+            firstHeading.style.display = "inline-block";
+          }
+          firstHeading.appendChild(infoBtn);
+        }
+      }
+    });
+
+    // Setup focus trap
+    if (removeTrap) removeTrap();
+    removeTrap = trapFocus(modal);
+
+    // Focus the close button for accessibility
+    setTimeout(function () {
+      if (modalClose && modalClose.focus) {
+        modalClose.focus({ preventScroll: true });
+      }
+    }, 100);
+
+    // Update recently viewed
+    if (name) {
+      var recent = JSON.parse(localStorage.getItem("recentProjects") || "[]");
+      recent = recent.filter(function (r) { return r !== name; });
+      recent.unshift(name);
+      recent = recent.slice(0, 4);
+      localStorage.setItem("recentProjects", JSON.stringify(recent));
+      if (typeof window.updateRecentlyViewed === "function") window.updateRecentlyViewed();
+    }
+  }
+
+
+  function closeProjectSafe() {
+    if (!modal) return;
+
     modal.classList.remove("active");
     modal.setAttribute("aria-hidden", "true");
     document.body.style.paddingRight = "";
     document.body.style.overflow = "";
     setMainInert(false);
-    
+
     if (removeTrap) {
       removeTrap();
       removeTrap = null;
     }
-    
+
     // Clear content
-    modalBody.innerHTML = "";
-    if (modalTitle) modalTitle.textContent = "";
+    if (modalBody) {
+      modalBody.innerHTML = "";
+    }
+    if (modalTitle) {
+      modalTitle.textContent = "";
+    }
+
+    if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+      setTimeout(function () {
+        lastFocusedElement.focus({ preventScroll: true });
+      }, 50);
+    }
+    lastFocusedElement = null;
   }
-  
-  lastFocusedElement = trigger || document.activeElement;
-  
-  // Set modal active and lock body scroll
-  modal.classList.add("active");
-  modal.setAttribute("aria-hidden", "false");
-  var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-  document.body.style.paddingRight = scrollbarWidth + "px";
-  document.body.style.overflow = "hidden";
-  setMainInert(true);
-  
-  // Load new content
-  safeRun(function () {
-    var html = '';
-    if (typeof getProjectHTML === "function") {
-      html = getProjectHTML(name);
+
+  if (modalClose) modalClose.addEventListener("click", closeProjectSafe);
+  if (modal) {
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) closeProjectSafe();
+    });
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeProjectSafe();
+  });
+
+  /* ── Expose for inline use ────────────────────────────────── */
+  window.openProjectSafe = openProjectSafe;
+  window.closeProjectSafe = closeProjectSafe;
+  window.setMainInert = setMainInert;
+
+  /* ═══════════════════════════════════════════════════════════════
+       WIRE PROJECT CARDS
+       ═══════════════════════════════════════════════════════════════ */
+  function wireProjectCard(card) {
+    var name = card.getAttribute("data-project");
+
+    /* ── Favorite Button ──────────────────────────────────── */
+    // Remove any existing favorite button first to avoid duplicates
+    var existingFavBtn = card.querySelector(".btn-favorite");
+    if (existingFavBtn) {
+      existingFavBtn.remove();
     }
-    
-    if (!html || html === 'undefined') {
-      html = '<div style="padding:1rem;color:var(--text-secondary)">Project content unavailable.</div>';
+
+    var favBtn = document.createElement("button");
+    favBtn.className = "btn-favorite";
+    favBtn.setAttribute("aria-label", "Toggle favorite");
+    favBtn.innerHTML = '<i class="far fa-star"></i>';
+
+    var favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    if (favorites.includes(name)) {
+      favBtn.classList.add("active");
+      favBtn.innerHTML = '<i class="fas fa-star"></i>';
     }
-    
-    modalBody.innerHTML = html;
-    
-    if (typeof initializeProject === "function") {
-      initializeProject(name);
-    }
-    setupModalInfoButton(name);
-    
-    // Inject info button
-    var projectContent = modalBody.querySelector(".project-content");
-    if (projectContent) {
-      var firstHeading = projectContent.querySelector("h2, h3, .resume-analyzer-copy h2, .pet-title");
-      if (!firstHeading) {
-        firstHeading = projectContent.querySelector('[class*="title"], [class*="header"] h2');
+
+    favBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+      var idx = favs.indexOf(name);
+      if (idx === -1) {
+        favs.push(name);
+        favBtn.classList.add("active");
+        favBtn.innerHTML = '<i class="fas fa-star"></i>';
+      } else {
+        favs.splice(idx, 1);
+        favBtn.classList.remove("active");
+        favBtn.innerHTML = '<i class="far fa-star"></i>';
+        if (currentCategory === "favorites") {
+          card.style.display = "none";
+        }
       }
-      if (firstHeading && !projectContent.querySelector(".inline-info-btn")) {
-        var infoBtn = document.createElement("button");
-        infoBtn.className = "inline-info-btn";
-        infoBtn.innerHTML = "ⓘ";
-        infoBtn.setAttribute("aria-label", "How to use this project");
-        infoBtn.style.marginLeft = "12px";
-        infoBtn.style.background = "none";
-        infoBtn.style.border = "none";
-        infoBtn.style.fontSize = "1.3rem";
-        infoBtn.style.cursor = "pointer";
-        infoBtn.style.color = "var(--accent)";
-        infoBtn.style.verticalAlign = "middle";
-        
-        infoBtn.addEventListener("click", function (e) {
-          e.stopPropagation();
-          if (typeof getProjectInstructions === "function") {
-            var info = getProjectInstructions(name);
-            showInfoModal(info.title, info.steps);
+      localStorage.setItem("favorites", JSON.stringify(favs));
+    });
+
+    var cardActions = card.querySelector(".card-actions");
+    if (cardActions) cardActions.appendChild(favBtn);
+
+    /* ── Share Button ─────────────────────────────────────── */
+    var shareBtn = document.createElement("button");
+    shareBtn.className = "btn-share";
+    shareBtn.setAttribute("aria-label", "Share " + name);
+    shareBtn.innerHTML =
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+    shareBtn.title = "Copy shareable link";
+
+    shareBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var url =
+        window.location.origin +
+        window.location.pathname +
+        "?project=" +
+        encodeURIComponent(name);
+      navigator.clipboard
+        .writeText(url)
+        .then(function () {
+          showToast("Link copied!");
+        })
+        .catch(function () {
+          showToast("Copy this: " + url);
+        });
+    });
+
+    if (cardActions) cardActions.appendChild(shareBtn);
+
+    /* ── Play Button ──────────────────────────────────────── */
+    var playBtns = card.querySelectorAll(".btn-play");
+    playBtns.forEach(function (play) {
+      play.setAttribute("aria-label", "Open " + name);
+      play.addEventListener("click", function (e) {
+        e.stopPropagation();
+        openProjectSafe(name, play);
+      });
+    });
+
+    /* ── Card Click ───────────────────────────────────────── */
+    card.addEventListener("click", function (e) {
+      if (
+        e.target.closest(".btn-play") ||
+        e.target.closest(".btn-favorite") ||
+        e.target.closest(".btn-share")
+      )
+        return;
+      openProjectSafe(name, card);
+    });
+
+    /* ── Card Mouse Tracking for Border Glow ──────────────── */
+    if (!prefersReducedMotion()) {
+      card.addEventListener("mousemove", function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = ((e.clientX - rect.left) / rect.width) * 100;
+        var y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty("--mouse-x", x + "%");
+        card.style.setProperty("--mouse-y", y + "%");
+      });
+    }
+  }
+  window.wireProjectCard = wireProjectCard;
+
+  projectCards.forEach(wireProjectCard);
+
+  window.updateRecentlyViewed = function () {
+    var grid = document.getElementById("recentlyViewedGrid");
+    var section = document.getElementById("recentlyViewedSection");
+    if (!grid || !section) return;
+    var recent = JSON.parse(localStorage.getItem("recentProjects") || "[]");
+    console.log("[DEBUG] recentProjects array:", recent); if (recent.length === 0) {
+      section.style.display = "none";
+      return;
+    }
+    section.style.display = "block"; // ensure visible
+    grid.innerHTML = "";
+    recent.forEach(function (name) {
+      var originalCard = projectCards.find(function (c) { return c.getAttribute("data-project") === name; });
+      if (originalCard) {
+        var clonedCard = originalCard.cloneNode(true);
+        var existingFav = clonedCard.querySelector(".btn-favorite");
+        if (existingFav) existingFav.remove();
+        var existingShare = clonedCard.querySelector(".btn-share");
+        if (existingShare) existingShare.remove();
+        clonedCard.style.display = "";
+        wireProjectCard(clonedCard);
+        grid.appendChild(clonedCard); console.log("[DEBUG] added recently viewed card", name);
+      }
+    });
+  };
+
+  // window.updateRecentlyViewed(); // moved to after DOMContentLoaded
+
+  /* ── Toast ─────────────────────────────────────────────────── */
+  function showToast(message) {
+    var existing = document.getElementById("shareToast");
+    if (existing) existing.remove();
+    var toast = document.createElement("div");
+    toast.id = "shareToast";
+    toast.className = "share-toast";
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    requestAnimationFrame(function () {
+      toast.classList.add("share-toast--visible");
+    });
+    setTimeout(function () {
+      toast.classList.remove("share-toast--visible");
+      setTimeout(function () {
+        toast.remove();
+      }, 300);
+    }, 2500);
+  }
+
+  /* ── URL params auto-open ──────────────────────────────────── */
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var projectParam = params.get("project");
+    if (projectParam) {
+      var match = projectCards.find(function (c) {
+        return c.getAttribute("data-project") === projectParam;
+      });
+      if (match) {
+        setTimeout(function () {
+          openProjectSafe(projectParam, match);
+          match.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 300);
+      }
+    }
+    var catParam = params.get("category");
+    var valid = ["all", "games", "math", "utilities", "playground", "favorites"];
+    if (catParam && valid.includes(catParam)) {
+      var tab = document.querySelector('[data-category="' + catParam + '"]');
+      if (tab)
+        setTimeout(function () {
+          tab.click();
+        }, 100);
+    }
+  })();
+
+  /* ═══════════════════════════════════════════════════════════════
+       TIMELINE SCROLL REVEAL
+       ═══════════════════════════════════════════════════════════════ */
+  var timelineItems = document.querySelectorAll(".timeline-item[data-reveal]");
+  var timelineFill = document.getElementById("timelineFill");
+  var timelineSection = document.getElementById("timelineSection");
+
+  if (timelineItems.length && !prefersReducedMotion()) {
+    var timelineObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
           }
         });
-        
-        if (firstHeading.style.display !== "inline-block") {
-          firstHeading.style.display = "inline-block";
-        }
-        firstHeading.appendChild(infoBtn);
+      },
+      { threshold: 0.25, rootMargin: "0px 0px -50px 0px" }
+    );
+
+    timelineItems.forEach(function (item) {
+      timelineObserver.observe(item);
+    });
+
+    /* ── Serpentine SVG Winding Timeline Path ─────────────────── */
+    var svgNamespace = "http://www.w3.org/2000/svg";
+
+    function getElementOffset(el, parent) {
+      var top = 0;
+      var left = 0;
+      var curr = el;
+      while (curr && curr !== parent) {
+        top += curr.offsetTop || 0;
+        left += curr.offsetLeft || 0;
+        curr = curr.offsetParent;
+      }
+      return { top: top, left: left };
+    }
+
+    function rebuildTimelineSvg() {
+      var container = document.querySelector(".timeline-container");
+      if (!container) return;
+      var dots = document.querySelectorAll(".timeline-dot");
+      if (dots.length < 2) return;
+
+      var containerWidth = container.offsetWidth;
+      var containerHeight = container.offsetHeight;
+
+      var svg = document.getElementById("timelineSvg");
+      if (!svg) {
+        svg = document.createElementNS(svgNamespace, "svg");
+        svg.id = "timelineSvg";
+        svg.setAttribute("class", "timeline-svg");
+
+        var defs = document.createElementNS(svgNamespace, "defs");
+        var grad = document.createElementNS(svgNamespace, "linearGradient");
+        grad.id = "timelineGrad";
+        grad.setAttribute("x1", "0%");
+        grad.setAttribute("y1", "0%");
+        grad.setAttribute("x2", "0%");
+        grad.setAttribute("y2", "100%");
+
+        var stop1 = document.createElementNS(svgNamespace, "stop");
+        stop1.setAttribute("offset", "0%");
+        stop1.setAttribute("stop-color", "var(--accent)");
+
+        var stop2 = document.createElementNS(svgNamespace, "stop");
+        stop2.setAttribute("offset", "100%");
+        stop2.setAttribute("stop-color", "#06b6d4");
+
+        grad.appendChild(stop1);
+        grad.appendChild(stop2);
+        defs.appendChild(grad);
+
+        // Define a dynamic layout mask path for progress crawling
+        var mask = document.createElementNS(svgNamespace, "mask");
+        mask.id = "timelineMask";
+
+        var maskPath = document.createElementNS(svgNamespace, "path");
+        maskPath.id = "timelineMaskPath";
+        maskPath.setAttribute("fill", "none");
+        maskPath.setAttribute("stroke", "#ffffff");
+        maskPath.setAttribute("stroke-width", "24"); // Wide enough to fully cover glowing dots
+        maskPath.setAttribute("stroke-linecap", "round");
+
+        mask.appendChild(maskPath);
+        defs.appendChild(mask);
+        svg.appendChild(defs);
+
+        var track = document.createElementNS(svgNamespace, "path");
+        track.id = "timelineSvgTrack";
+        track.setAttribute("class", "timeline-svg-track");
+        track.setAttribute("fill", "none");
+
+        var fill = document.createElementNS(svgNamespace, "path");
+        fill.id = "timelineSvgFill";
+        fill.setAttribute("class", "timeline-svg-fill");
+        fill.setAttribute("fill", "none");
+        fill.setAttribute("stroke", "var(--accent)");
+        fill.setAttribute("mask", "url(#timelineMask)");
+
+        svg.appendChild(track);
+        svg.appendChild(fill);
+
+        var grid = document.querySelector(".timeline-grid");
+        container.insertBefore(svg, grid);
+      }
+
+      // Determine layout stable coordinate points for all timeline dots
+      var coords = [];
+      dots.forEach(function (dot) {
+        var offset = getElementOffset(dot, container);
+        var x = offset.left + dot.offsetWidth / 2;
+        var y = offset.top + dot.offsetHeight / 2;
+        coords.push({ x: x, y: y });
+      });
+
+      // Create the winding path
+      var d = "";
+      var startX = containerWidth / 2;
+      d += "M " + startX + " 0";
+      d += " L " + coords[0].x + " " + coords[0].y;
+
+      // Calculate a sweep width that is perfectly responsive
+      // e.g. 16% of container width, capped at 180px for desktop beauty
+      var W = Math.min(180, containerWidth * 0.16);
+
+      for (var i = 0; i < coords.length - 1; i++) {
+        var pStart = coords[i];
+        var pEnd = coords[i + 1];
+        var H = pEnd.y - pStart.y;
+        var dy = H * 0.35; // Symmetrical control point height
+
+        // Even segments (0, 2, 4...) snake to the right, odd segments to the left
+        var dx = i % 2 === 0 ? W : -W;
+
+        var cp1x = pStart.x + dx;
+        var cp1y = pStart.y + dy;
+        var cp2x = pEnd.x + dx;
+        var cp2y = pEnd.y - dy;
+
+        d +=
+          " C " +
+          cp1x +
+          " " +
+          cp1y +
+          ", " +
+          cp2x +
+          " " +
+          cp2y +
+          ", " +
+          pEnd.x +
+          " " +
+          pEnd.y;
+      }
+
+      // Straight exit to the bottom
+      d += " L " + coords[coords.length - 1].x + " " + containerHeight;
+
+      var trackPath = document.getElementById("timelineSvgTrack");
+      var fillPath = document.getElementById("timelineSvgFill");
+      var maskPath = document.getElementById("timelineMaskPath");
+      if (trackPath && fillPath && maskPath) {
+        trackPath.setAttribute("d", d);
+        fillPath.setAttribute("d", d);
+        maskPath.setAttribute("d", d);
+
+        var totalLength = maskPath.getTotalLength();
+        maskPath.style.strokeDasharray = totalLength;
+        maskPath.dataset.totalLength = totalLength;
+
+        // Trigger scroll progress sync immediately
+        updateTimelineFill();
       }
     }
-  });
-  
-  // Setup focus trap
-  if (removeTrap) removeTrap();
-  removeTrap = trapFocus(modal);
-  
-  // Focus the close button for accessibility
-  setTimeout(function() {
-    if (modalClose && modalClose.focus) {
-      modalClose.focus({ preventScroll: true });
+
+    /* ── Timeline Fill Progress ───────────────────────────── */
+    function updateTimelineFill() {
+      if (!timelineSection) return;
+      var container = document.querySelector(".timeline-container");
+      if (!container) return;
+
+      var containerRect = container.getBoundingClientRect();
+      var viewportCenterY = window.innerHeight / 2;
+
+      // Calculate relative vertical scroll position of the viewport center relative to the container
+      var relativeY = viewportCenterY - containerRect.top;
+      var offset = Math.max(0, Math.min(1, relativeY / containerRect.height));
+
+      /* ── Dynamic SVG path mask scroll synchronization ──────── */
+      var maskPath = document.getElementById("timelineMaskPath");
+      if (maskPath && maskPath.dataset.totalLength) {
+        var totalLength = parseFloat(maskPath.dataset.totalLength);
+        var dashoffset = totalLength - offset * totalLength;
+        maskPath.style.strokeDashoffset = Math.max(
+          0,
+          Math.min(totalLength, dashoffset)
+        );
+      }
+
+      /* ── Activate item based on viewport center crossing timeline dots ── */
+      var activeIdx = -1;
+      var dots = document.querySelectorAll(".timeline-dot");
+
+      dots.forEach(function (dot, i) {
+        var dotRect = dot.getBoundingClientRect();
+        var dotCenterY = dotRect.top + dotRect.height / 2;
+
+        // A dot is crossed/passed if its vertical center in the viewport is <= the viewport center
+        if (dotCenterY <= viewportCenterY) {
+          activeIdx = i;
+        }
+      });
+
+      timelineItems.forEach(function (item, i) {
+        item.classList.toggle("active", i === activeIdx);
+      });
     }
-  }, 100);
-}
 
-function closeProjectSafe() {
-  if (!modal) return;
-  
-  modal.classList.remove("active");
-  modal.setAttribute("aria-hidden", "true");
-  document.body.style.paddingRight = "";
-  document.body.style.overflow = "";
-  setMainInert(false);
-  
-  if (removeTrap) {
-    removeTrap();
-    removeTrap = null;
+    // Initialize SVG path layout recalculations on page render & resize
+    rebuildTimelineSvg();
+    window.addEventListener("resize", debounce(rebuildTimelineSvg, 150));
+    window.addEventListener("scroll", updateTimelineFill, { passive: true });
+  } else if (timelineItems.length) {
+    timelineItems.forEach(function (item) {
+      item.classList.add("visible");
+    });
   }
-  
-  // Clear content
-  if (modalBody) {
-    modalBody.innerHTML = "";
-  }
-  if (modalTitle) {
-    modalTitle.textContent = "";
-  }
-  
-  if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
-    setTimeout(function() {
-      lastFocusedElement.focus({ preventScroll: true });
-    }, 50);
-  }
-  lastFocusedElement = null;
-}
 
-if (modalClose) modalClose.addEventListener("click", closeProjectSafe);
-if (modal) {
-  modal.addEventListener("click", function (e) {
-    if (e.target === modal) closeProjectSafe();
-  });
-}
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") closeProjectSafe();
-});
-
-/* ── Expose for inline use ────────────────────────────────── */
-window.openProjectSafe = openProjectSafe;
-window.closeProjectSafe = closeProjectSafe;
-window.setMainInert = setMainInert;
-
-/* ═══════════════════════════════════════════════════════════════
-     WIRE PROJECT CARDS
-     ═══════════════════════════════════════════════════════════════ */
-projectCards.forEach(function (card) {
-  var name = card.getAttribute("data-project");
-
-  /* ── Favorite Button ──────────────────────────────────── */
-// Remove any existing favorite button first to avoid duplicates
-var existingFavBtn = card.querySelector(".btn-favorite");
-if (existingFavBtn) {
-  existingFavBtn.remove();
-}
-
-var favBtn = document.createElement("button");
-favBtn.className = "btn-favorite";
-favBtn.setAttribute("aria-label", "Toggle favorite");
-favBtn.innerHTML = '<i class="far fa-star"></i>';
-
-var favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-if (favorites.includes(name)) {
-  favBtn.classList.add("active");
-  favBtn.innerHTML = '<i class="fas fa-star"></i>';
-}
-
-favBtn.addEventListener("click", function (e) {
-  e.stopPropagation();
-  var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-  var idx = favs.indexOf(name);
-  if (idx === -1) {
-    favs.push(name);
-    favBtn.classList.add("active");
-    favBtn.innerHTML = '<i class="fas fa-star"></i>';
+  /* ── Reveal on Scroll (general) ────────────────────────────── */
+  var revealItems = document.querySelectorAll(".reveal-on-scroll");
+  if (revealItems.length && !prefersReducedMotion()) {
+    var revealObserver = new IntersectionObserver(
+      function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
+    revealItems.forEach(function (item) {
+      revealObserver.observe(item);
+    });
   } else {
-    favs.splice(idx, 1);
-    favBtn.classList.remove("active");
-    favBtn.innerHTML = '<i class="far fa-star"></i>';
-    if (currentCategory === "favorites") {
-      card.style.display = "none";
-    }
-  }
-  localStorage.setItem("favorites", JSON.stringify(favs));
-});
-
-var cardActions = card.querySelector(".card-actions");
-if (cardActions) cardActions.appendChild(favBtn);
-
-  /* ── Share Button ─────────────────────────────────────── */
-  var shareBtn = document.createElement("button");
-  shareBtn.className = "btn-share";
-  shareBtn.setAttribute("aria-label", "Share " + name);
-  shareBtn.innerHTML =
-    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
-  shareBtn.title = "Copy shareable link";
-
-  shareBtn.addEventListener("click", function (e) {
-    e.stopPropagation();
-    var url =
-      window.location.origin +
-      window.location.pathname +
-      "?project=" +
-      encodeURIComponent(name);
-    navigator.clipboard
-      .writeText(url)
-      .then(function () {
-        showToast("Link copied!");
-      })
-      .catch(function () {
-        showToast("Copy this: " + url);
-      });
-  });
-
-  if (cardActions) cardActions.appendChild(shareBtn);
-
-  /* ── Play Button ──────────────────────────────────────── */
-  var playBtns = card.querySelectorAll(".btn-play");
-  playBtns.forEach(function (play) {
-    play.setAttribute("aria-label", "Open " + name);
-    play.addEventListener("click", function (e) {
-      e.stopPropagation();
-      openProjectSafe(name, play);
-    });
-  });
-
-  /* ── Card Click ───────────────────────────────────────── */
-  card.addEventListener("click", function (e) {
-    if (
-      e.target.closest(".btn-play") ||
-      e.target.closest(".btn-favorite") ||
-      e.target.closest(".btn-share")
-    )
-      return;
-    openProjectSafe(name, card);
-  });
-
-  /* ── Card Mouse Tracking for Border Glow ──────────────── */
-  if (!prefersReducedMotion()) {
-    card.addEventListener("mousemove", function (e) {
-      var rect = card.getBoundingClientRect();
-      var x = ((e.clientX - rect.left) / rect.width) * 100;
-      var y = ((e.clientY - rect.top) / rect.height) * 100;
-      card.style.setProperty("--mouse-x", x + "%");
-      card.style.setProperty("--mouse-y", y + "%");
+    revealItems.forEach(function (item) {
+      item.classList.add("is-visible");
     });
   }
-});
 
-/* ── Toast ─────────────────────────────────────────────────── */
-function showToast(message) {
-  var existing = document.getElementById("shareToast");
-  if (existing) existing.remove();
-  var toast = document.createElement("div");
-  toast.id = "shareToast";
-  toast.className = "share-toast";
-  toast.textContent = message;
-  document.body.appendChild(toast);
-  requestAnimationFrame(function () {
-    toast.classList.add("share-toast--visible");
-  });
-  setTimeout(function () {
-    toast.classList.remove("share-toast--visible");
-    setTimeout(function () {
-      toast.remove();
-    }, 300);
-  }, 2500);
-}
+  document.querySelectorAll(".footer-cat-link").forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
 
-/* ── URL params auto-open ──────────────────────────────────── */
-(function () {
-  var params = new URLSearchParams(window.location.search);
-  var projectParam = params.get("project");
-  if (projectParam) {
-    var match = projectCards.find(function (c) {
-      return c.getAttribute("data-project") === projectParam;
-    });
-    if (match) {
-      setTimeout(function () {
-        openProjectSafe(projectParam, match);
-        match.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 300);
-    }
-  }
-  var catParam = params.get("category");
-  var valid = ["all", "games", "math", "utilities", "playground", "favorites"];
-  if (catParam && valid.includes(catParam)) {
-    var tab = document.querySelector('[data-category="' + catParam + '"]');
-    if (tab)
-      setTimeout(function () {
-        tab.click();
-      }, 100);
-  }
-})();
-
-/* ═══════════════════════════════════════════════════════════════
-     TIMELINE SCROLL REVEAL
-     ═══════════════════════════════════════════════════════════════ */
-var timelineItems = document.querySelectorAll(".timeline-item[data-reveal]");
-var timelineFill = document.getElementById("timelineFill");
-var timelineSection = document.getElementById("timelineSection");
-
-if (timelineItems.length && !prefersReducedMotion()) {
-  var timelineObserver = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
-      });
-    },
-    { threshold: 0.25, rootMargin: "0px 0px -50px 0px" }
-  );
-
-  timelineItems.forEach(function (item) {
-    timelineObserver.observe(item);
-  });
-
-  /* ── Serpentine SVG Winding Timeline Path ─────────────────── */
-  var svgNamespace = "http://www.w3.org/2000/svg";
-
-  function getElementOffset(el, parent) {
-    var top = 0;
-    var left = 0;
-    var curr = el;
-    while (curr && curr !== parent) {
-      top += curr.offsetTop || 0;
-      left += curr.offsetLeft || 0;
-      curr = curr.offsetParent;
-    }
-    return { top: top, left: left };
-  }
-
-  function rebuildTimelineSvg() {
-    var container = document.querySelector(".timeline-container");
-    if (!container) return;
-    var dots = document.querySelectorAll(".timeline-dot");
-    if (dots.length < 2) return;
-
-    var containerWidth = container.offsetWidth;
-    var containerHeight = container.offsetHeight;
-
-    var svg = document.getElementById("timelineSvg");
-    if (!svg) {
-      svg = document.createElementNS(svgNamespace, "svg");
-      svg.id = "timelineSvg";
-      svg.setAttribute("class", "timeline-svg");
-
-      var defs = document.createElementNS(svgNamespace, "defs");
-      var grad = document.createElementNS(svgNamespace, "linearGradient");
-      grad.id = "timelineGrad";
-      grad.setAttribute("x1", "0%");
-      grad.setAttribute("y1", "0%");
-      grad.setAttribute("x2", "0%");
-      grad.setAttribute("y2", "100%");
-
-      var stop1 = document.createElementNS(svgNamespace, "stop");
-      stop1.setAttribute("offset", "0%");
-      stop1.setAttribute("stop-color", "var(--accent)");
-
-      var stop2 = document.createElementNS(svgNamespace, "stop");
-      stop2.setAttribute("offset", "100%");
-      stop2.setAttribute("stop-color", "#06b6d4");
-
-      grad.appendChild(stop1);
-      grad.appendChild(stop2);
-      defs.appendChild(grad);
-
-      // Define a dynamic layout mask path for progress crawling
-      var mask = document.createElementNS(svgNamespace, "mask");
-      mask.id = "timelineMask";
-
-      var maskPath = document.createElementNS(svgNamespace, "path");
-      maskPath.id = "timelineMaskPath";
-      maskPath.setAttribute("fill", "none");
-      maskPath.setAttribute("stroke", "#ffffff");
-      maskPath.setAttribute("stroke-width", "24"); // Wide enough to fully cover glowing dots
-      maskPath.setAttribute("stroke-linecap", "round");
-
-      mask.appendChild(maskPath);
-      defs.appendChild(mask);
-      svg.appendChild(defs);
-
-      var track = document.createElementNS(svgNamespace, "path");
-      track.id = "timelineSvgTrack";
-      track.setAttribute("class", "timeline-svg-track");
-      track.setAttribute("fill", "none");
-
-      var fill = document.createElementNS(svgNamespace, "path");
-      fill.id = "timelineSvgFill";
-      fill.setAttribute("class", "timeline-svg-fill");
-      fill.setAttribute("fill", "none");
-      fill.setAttribute("stroke", "var(--accent)");
-      fill.setAttribute("mask", "url(#timelineMask)");
-
-      svg.appendChild(track);
-      svg.appendChild(fill);
-
-      var grid = document.querySelector(".timeline-grid");
-      container.insertBefore(svg, grid);
-    }
-
-    // Determine layout stable coordinate points for all timeline dots
-    var coords = [];
-    dots.forEach(function (dot) {
-      var offset = getElementOffset(dot, container);
-      var x = offset.left + dot.offsetWidth / 2;
-      var y = offset.top + dot.offsetHeight / 2;
-      coords.push({ x: x, y: y });
-    });
-
-    // Create the winding path
-    var d = "";
-    var startX = containerWidth / 2;
-    d += "M " + startX + " 0";
-    d += " L " + coords[0].x + " " + coords[0].y;
-
-    // Calculate a sweep width that is perfectly responsive
-    // e.g. 16% of container width, capped at 180px for desktop beauty
-    var W = Math.min(180, containerWidth * 0.16);
-
-    for (var i = 0; i < coords.length - 1; i++) {
-      var pStart = coords[i];
-      var pEnd = coords[i + 1];
-      var H = pEnd.y - pStart.y;
-      var dy = H * 0.35; // Symmetrical control point height
-
-      // Even segments (0, 2, 4...) snake to the right, odd segments to the left
-      var dx = i % 2 === 0 ? W : -W;
-
-      var cp1x = pStart.x + dx;
-      var cp1y = pStart.y + dy;
-      var cp2x = pEnd.x + dx;
-      var cp2y = pEnd.y - dy;
-
-      d +=
-        " C " +
-        cp1x +
-        " " +
-        cp1y +
-        ", " +
-        cp2x +
-        " " +
-        cp2y +
-        ", " +
-        pEnd.x +
-        " " +
-        pEnd.y;
-    }
-
-    // Straight exit to the bottom
-    d += " L " + coords[coords.length - 1].x + " " + containerHeight;
-
-    var trackPath = document.getElementById("timelineSvgTrack");
-    var fillPath = document.getElementById("timelineSvgFill");
-    var maskPath = document.getElementById("timelineMaskPath");
-    if (trackPath && fillPath && maskPath) {
-      trackPath.setAttribute("d", d);
-      fillPath.setAttribute("d", d);
-      maskPath.setAttribute("d", d);
-
-      var totalLength = maskPath.getTotalLength();
-      maskPath.style.strokeDasharray = totalLength;
-      maskPath.dataset.totalLength = totalLength;
-
-      // Trigger scroll progress sync immediately
-      updateTimelineFill();
-    }
-  }
-
-  /* ── Timeline Fill Progress ───────────────────────────── */
-  function updateTimelineFill() {
-    if (!timelineSection) return;
-    var container = document.querySelector(".timeline-container");
-    if (!container) return;
-
-    var containerRect = container.getBoundingClientRect();
-    var viewportCenterY = window.innerHeight / 2;
-
-    // Calculate relative vertical scroll position of the viewport center relative to the container
-    var relativeY = viewportCenterY - containerRect.top;
-    var offset = Math.max(0, Math.min(1, relativeY / containerRect.height));
-
-    /* ── Dynamic SVG path mask scroll synchronization ──────── */
-    var maskPath = document.getElementById("timelineMaskPath");
-    if (maskPath && maskPath.dataset.totalLength) {
-      var totalLength = parseFloat(maskPath.dataset.totalLength);
-      var dashoffset = totalLength - offset * totalLength;
-      maskPath.style.strokeDashoffset = Math.max(
-        0,
-        Math.min(totalLength, dashoffset)
+      var cat = link.getAttribute("data-cat");
+      var tab = document.querySelector(
+        '.sidebar-tab[data-category="' + cat + '"]'
       );
+      if (tab) tab.click();
+    });
+  });
+
+  /* ── Scroll Progress Bar ───────────────────────────── */
+
+  var progressBar = document.getElementById("scrollProgressBar");
+
+  if (progressBar) {
+    let ticking = false;
+
+    function updateScrollProgress() {
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+      var docHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+
+      var progress = docHeight ? (scrollTop / docHeight) * 100 : 0;
+
+      progressBar.style.width = progress + "%";
+
+      ticking = false;
     }
 
-    /* ── Activate item based on viewport center crossing timeline dots ── */
-    var activeIdx = -1;
-    var dots = document.querySelectorAll(".timeline-dot");
-
-    dots.forEach(function (dot, i) {
-      var dotRect = dot.getBoundingClientRect();
-      var dotCenterY = dotRect.top + dotRect.height / 2;
-
-      // A dot is crossed/passed if its vertical center in the viewport is <= the viewport center
-      if (dotCenterY <= viewportCenterY) {
-        activeIdx = i;
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        requestAnimationFrame(updateScrollProgress);
+        ticking = true;
       }
     });
-
-    timelineItems.forEach(function (item, i) {
-      item.classList.toggle("active", i === activeIdx);
-    });
   }
 
-  // Initialize SVG path layout recalculations on page render & resize
-  rebuildTimelineSvg();
-  window.addEventListener("resize", debounce(rebuildTimelineSvg, 150));
-  window.addEventListener("scroll", updateTimelineFill, { passive: true });
-} else if (timelineItems.length) {
-  timelineItems.forEach(function (item) {
-    item.classList.add("visible");
-  });
-}
-
-/* ── Reveal on Scroll (general) ────────────────────────────── */
-var revealItems = document.querySelectorAll(".reveal-on-scroll");
-if (revealItems.length && !prefersReducedMotion()) {
-  var revealObserver = new IntersectionObserver(
-    function (entries, obs) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
-        obs.unobserve(entry.target);
-      });
-    },
-    { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
-  );
-  revealItems.forEach(function (item) {
-    revealObserver.observe(item);
-  });
-} else {
-  revealItems.forEach(function (item) {
-    item.classList.add("is-visible");
-  });
-}
-
-document.querySelectorAll(".footer-cat-link").forEach(function (link) {
-  link.addEventListener("click", function (e) {
-    e.preventDefault();
-
-    var cat = link.getAttribute("data-cat");
-    var tab = document.querySelector(
-      '.sidebar-tab[data-category="' + cat + '"]'
-    );
-    if (tab) tab.click();
-  });
-});
-
-/* ── Scroll Progress Bar ───────────────────────────── */
-
-var progressBar = document.getElementById("scrollProgressBar");
-
-if (progressBar) {
-  let ticking = false;
-
-  function updateScrollProgress() {
-    var scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-    var docHeight =
-      document.documentElement.scrollHeight -
-      document.documentElement.clientHeight;
-
-    var progress = docHeight ? (scrollTop / docHeight) * 100 : 0;
-
-    progressBar.style.width = progress + "%";
-
-    ticking = false;
-  }
-
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      requestAnimationFrame(updateScrollProgress);
-      ticking = true;
+  // URL parameters auto-open logic
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const projectParam = params.get("project");
+    if (projectParam) {
+      const match = projectCards.find(
+        (c) => c.getAttribute("data-project") === projectParam
+      );
+      if (match) {
+        setTimeout(() => {
+          openProjectSafe(projectParam, match);
+          match.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 300);
+      }
     }
-  });
-}
-
-// URL parameters auto-open logic
-(function () {
-  const params = new URLSearchParams(window.location.search);
-  const projectParam = params.get("project");
-  if (projectParam) {
-    const match = projectCards.find(
-      (c) => c.getAttribute("data-project") === projectParam
-    );
-    if (match) {
-      setTimeout(() => {
-        openProjectSafe(projectParam, match);
-        match.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 300);
+    const catParam = params.get("category");
+    const valid = [
+      "all",
+      "games",
+      "math",
+      "utilities",
+      "playground",
+      "favorites",
+    ];
+    if (catParam && valid.includes(catParam)) {
+      const tab = document.querySelector(`[data-category="${catParam}"]`);
+      if (tab) {
+        setTimeout(() => tab.click(), 100);
+      }
     }
-  }
-  const catParam = params.get("category");
-  const valid = [
-    "all",
-    "games",
-    "math",
-    "utilities",
-    "playground",
-    "favorites",
-  ];
-  if (catParam && valid.includes(catParam)) {
-    const tab = document.querySelector(`[data-category="${catParam}"]`);
-    if (tab) {
-      setTimeout(() => tab.click(), 100);
-    }
-  }
-})();
+  })();
 
-// Initial card filtering state update
-updateProjectVisibility(currentCategory, currentSearchQuery);
+  // Initial card filtering state update
+  updateProjectVisibility(currentCategory, currentSearchQuery);
+  window.updateRecentlyViewed();
 });
