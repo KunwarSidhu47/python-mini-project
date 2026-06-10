@@ -27,13 +27,17 @@ pygame.display.set_caption("Tic Tac Toe")
 clock = pygame.time.Clock()
 
 # ── Fonts ─────────────────────────────────────────────────
-def sf(size, bold=False):
+from typing import Optional, Tuple, List, Any
+
+def sf(size: int, bold: bool = False) -> pygame.font.Font:
+    """Create a sans-serif font."""
     for n in ["Segoe UI", "Helvetica Neue", "Arial", "DejaVu Sans"]:
         try: return pygame.font.SysFont(n, size, bold=bold)
         except: pass
     return pygame.font.Font(None, size)
 
-def mf(size, bold=False):
+def mf(size: int, bold: bool = False) -> pygame.font.Font:
+    """Create a monospace font."""
     for n in ["Consolas", "Courier New", "DejaVu Sans Mono"]:
         try: return pygame.font.SysFont(n, size, bold=bold)
         except: pass
@@ -61,7 +65,8 @@ GAP   = 10
 BX    = (W - (3*CELL + 2*GAP)) // 2   # board left edge  = 43
 BY    = 270                             # board top edge
 
-def cell_rect(i):
+def cell_rect(i: int) -> pygame.Rect:
+    """Get the rectangle for a given cell index."""
     r, c = divmod(i, 3)
     return pygame.Rect(BX + c*(CELL+GAP), BY + r*(CELL+GAP), CELL, CELL)
 
@@ -79,16 +84,19 @@ BTN1   = pygame.Rect((W//2) - BW - 12, BTN_Y, BW, BH)
 BTN2   = pygame.Rect((W//2) + 12,      BTN_Y, BW, BH)
 
 # ── Helpers ───────────────────────────────────────────────
-def rrect(surf, color, rect, r=14, bw=0, bc=None):
+def rrect(surf: pygame.Surface, color: Tuple[int, int, int], rect: pygame.Rect, r: int = 14, bw: int = 0, bc: Optional[Tuple[int, int, int]] = None) -> None:
+    """Draw a rounded rectangle."""
     pygame.draw.rect(surf, color, rect, border_radius=r)
     if bw and bc:
         pygame.draw.rect(surf, bc, rect, bw, border_radius=r)
 
-def tc(surf, txt, font, color, cx, cy):
+def tc(surf: pygame.Surface, txt: str, font: pygame.font.Font, color: Tuple[int, int, int], cx: int, cy: int) -> None:
+    """Draw centered text."""
     s = font.render(txt, True, color)
     surf.blit(s, (cx - s.get_width()//2, cy - s.get_height()//2))
 
-def check_winner():
+def check_winner() -> Tuple[Optional[str], Optional[List[int]]]:
+    """Check if there is a winner and return the winner and winning combination."""
     for a,b,c in WINS:
         if board[a] and board[a]==board[b]==board[c]:
             return board[a], [a,b,c]
@@ -96,7 +104,8 @@ def check_winner():
         return "D", []
     return None, None
 
-def play(i):
+def play(i: int) -> None:
+    """Make a move at the given index."""
     global current, game_over
     if game_over or board[i]: return
     board[i] = current
@@ -108,11 +117,13 @@ def play(i):
     else:
         current = "O" if current == "X" else "X"
 
-def new_game():
+def new_game() -> None:
+    """Start a new game."""
     global board, current, game_over
     board = [""] * 9; current = "X"; game_over = False
 
-def reset_all():
+def reset_all() -> None:
+    """Reset the game scores and start a new game."""
     scores["X"] = scores["O"] = scores["D"] = 0
     new_game()
 
