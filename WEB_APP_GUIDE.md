@@ -66,6 +66,74 @@ Then open `http://localhost:8000` in your browser.
 - Works on mobile, tablet, and desktop
 - No console errors
 
+## 🎯 Modal Requirements
+
+For modals to work correctly in the web app, the following IDs are required:
+
+| ID | Purpose |
+|----|---------|
+| `projectModal` | Main modal container |
+| `modalBody` | Container for project content |
+| `modalClose` | Button to close modal |
+
+**Example HTML structure:**
+
+```html
+<div class="modal" id="projectModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button class="modal-close" id="modalClose">&times;</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+```
+
+## 📦 Adding a Project Card
+
+To add a new project card to the homepage, add this HTML inside `projectsTemplate`:
+
+```html
+<div class="project-card" data-category="games" data-project="your-project-name" data-tags="tag1,tag2,tag3">
+    <img class="card-banner" src="assets/banners/your-project.webp" alt="Project Name" loading="lazy">
+    <div class="card-actions">
+        <button class="btn-play">Try It</button>
+    </div>
+    <h3>Project Name</h3>
+    <p>Brief description of your project</p>
+</div>
+```
+
+**Required attributes:**
+
+- `data-category`: `games`, `math`, or `utilities`
+- `data-project`: Unique project identifier
+- `data-tags`: Search keywords (comma separated)
+
+## ✅ Web PR Testing Checklist
+
+Before submitting a web-related PR, test the following:
+
+- Project modal opens when clicking "Try It"
+- Theme toggle switches between dark/light mode
+- Search bar filters projects correctly
+- No console errors (`F12` → Console)
+- Mobile view works (320px width)
+- Keyboard navigation (Tab, Enter, Escape)
+- Project closes properly with ✕ button and Escape key
+
+## 🚫 What NOT to Do
+
+Avoid these common mistakes:
+
+| Mistake | Why It's Bad |
+|---------|--------------|
+| Duplicate element IDs | Breaks JavaScript functionality |
+| Opening `index.html` directly | Use `python -m http.server 8000` |
+| Forgetting to register in `projects.js` | Project won't load |
+| Hardcoding colors | Use CSS variables instead |
+| Breaking template structure | Causes project cards to disappear |
+
 ## Notes
 
 - Use the worker for any long-running Python execution.

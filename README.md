@@ -38,6 +38,22 @@
 
 </div>
 
+## 📚 Table of Contents
+
+- [🎯 Repo Introduction](#-repo-introduction)
+- [🌐 Live Demo](#-live-demo)
+- [📂 Repo Structure](#-repo-structure)
+- [🧩 What's Inside](#-whats-inside)
+- [🌐 Web App Catalog](#-web-app-catalog)
+  - [Games](#games)
+  - [Math](#math)
+  - [Utilities](#utilities)
+- [🧭 Python Projects Without a Web App Yet](#-python-projects-without-a-web-app-yet)
+- [Contributors](#contributors)
+- [📝 License](#-license)
+- [💬 Connect & Share](#-connect--share)
+
+
 ## 🎯 Repo Introduction
 
 This repository is a collection of small Python games and utility projects built to make learning Python more practical and engaging. It includes both command-line projects and a browser-based web app for trying the projects online.
@@ -175,19 +191,25 @@ These standalone Python project files do not have a browser counterpart yet and 
       </a>
     </td>
     <td align="center" width="120">
+      <a href="https://github.com/Akhileswar6">
+        <img src="https://github.com/Akhileswar6.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Akhileswar6" /><br />
+        <sub><b>@Akhileswar6</b></sub>
+      </a>
+    </td>
+    <td align="center" width="120">
       <a href="https://github.com/Alvi24-hub">
         <img src="https://github.com/Alvi24-hub.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Alvi24-hub" /><br />
         <sub><b>@Alvi24-hub</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/AnushkaJagtap22">
         <img src="https://github.com/AnushkaJagtap22.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="AnushkaJagtap22" /><br />
         <sub><b>@AnushkaJagtap22</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Aqifcodes">
         <img src="https://github.com/Aqifcodes.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Aqifcodes" /><br />
@@ -218,14 +240,14 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@Ashvin-KS</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Avneesh95">
         <img src="https://github.com/Avneesh95.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Avneesh95" /><br />
         <sub><b>@Avneesh95</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Bhairavi-28">
         <img src="https://github.com/Bhairavi-28.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Bhairavi-28" /><br />
@@ -256,14 +278,14 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@Diksha57-git</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Facelessism">
         <img src="https://github.com/Facelessism.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Facelessism" /><br />
         <sub><b>@Facelessism</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Grihika">
         <img src="https://github.com/Grihika.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Grihika" /><br />
@@ -294,14 +316,14 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@Ishita-varshney</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Juhi4433">
         <img src="https://github.com/Juhi4433.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Juhi4433" /><br />
         <sub><b>@Juhi4433</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Kartikeyji17">
         <img src="https://github.com/Kartikeyji17.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Kartikeyji17" /><br />
@@ -332,14 +354,14 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@Lalitya31</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Lavanya-Talele">
         <img src="https://github.com/Lavanya-Talele.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Lavanya-Talele" /><br />
         <sub><b>@Lavanya-Talele</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Mayank251125">
         <img src="https://github.com/Mayank251125.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Mayank251125" /><br />
@@ -370,14 +392,14 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@Naveen-Boddepalli</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/NehaP1706">
         <img src="https://github.com/NehaP1706.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="NehaP1706" /><br />
         <sub><b>@NehaP1706</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Nencypatel21">
         <img src="https://github.com/Nencypatel21.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Nencypatel21" /><br />
@@ -408,14 +430,14 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@Papia-tech</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Pavithra-git162">
         <img src="https://github.com/Pavithra-git162.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Pavithra-git162" /><br />
         <sub><b>@Pavithra-git162</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/PragatiNigam29">
         <img src="https://github.com/PragatiNigam29.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="PragatiNigam29" /><br />
@@ -446,14 +468,14 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@Ranjanmaiti6</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Reaper-ai">
         <img src="https://github.com/Reaper-ai.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Reaper-ai" /><br />
         <sub><b>@Reaper-ai</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Ridima28">
         <img src="https://github.com/Ridima28.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Ridima28" /><br />
@@ -484,14 +506,14 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@Shital861</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Shivi-Srivastava-4444">
         <img src="https://github.com/Shivi-Srivastava-4444.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Shivi-Srivastava-4444" /><br />
         <sub><b>@Shivi-Srivastava-4444</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Siddh2024">
         <img src="https://github.com/Siddh2024.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Siddh2024" /><br />
@@ -522,14 +544,14 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@Tech4Aditya</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/TheBinaryAVA">
         <img src="https://github.com/TheBinaryAVA.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="TheBinaryAVA" /><br />
         <sub><b>@TheBinaryAVA</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Tiago-Vier-Preto">
         <img src="https://github.com/Tiago-Vier-Preto.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Tiago-Vier-Preto" /><br />
@@ -555,6 +577,14 @@ These standalone Python project files do not have a browser counterpart yet and 
       </a>
     </td>
     <td align="center" width="120">
+      <a href="https://github.com/Yogender-verma">
+        <img src="https://github.com/Yogender-verma.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Yogender-verma" /><br />
+        <sub><b>@Yogender-verma</b></sub>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="120">
       <a href="https://github.com/abdullahxyz85">
         <img src="https://github.com/abdullahxyz85.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="abdullahxyz85" /><br />
         <sub><b>@abdullahxyz85</b></sub>
@@ -566,8 +596,6 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@abhi-nav-25</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/advikdivekar">
         <img src="https://github.com/advikdivekar.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="advikdivekar" /><br />
@@ -592,6 +620,8 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@ash-heinz</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/aspartic-gthb">
         <img src="https://github.com/aspartic-gthb.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="aspartic-gthb" /><br />
@@ -604,8 +634,6 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@avzuha</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/ayushyadav0707">
         <img src="https://github.com/ayushyadav0707.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="ayushyadav0707" /><br />
@@ -630,6 +658,8 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@codewithakshyaaa</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/developer-yash03">
         <img src="https://github.com/developer-yash03.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="developer-yash03" /><br />
@@ -642,8 +672,6 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@dhanushrajvr</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/dhruvpatel16120">
         <img src="https://github.com/dhruvpatel16120.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="dhruvpatel16120" /><br />
@@ -668,6 +696,8 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@iamprasoon2006-cell</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/itsdakshjain">
         <img src="https://github.com/itsdakshjain.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="itsdakshjain" /><br />
@@ -680,8 +710,6 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@jbkun069</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/jeetrouth">
         <img src="https://github.com/jeetrouth.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="jeetrouth" /><br />
@@ -706,6 +734,8 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@madhavcodes25</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/mahi-8758">
         <img src="https://github.com/mahi-8758.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="mahi-8758" /><br />
@@ -718,8 +748,6 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@mrdeyroy</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/mrinmoyChakraborty-mrinox">
         <img src="https://github.com/mrinmoyChakraborty-mrinox.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="mrinmoyChakraborty-mrinox" /><br />
@@ -744,6 +772,8 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@nimkarprachi17</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/nishtha-agarwal-211">
         <img src="https://github.com/nishtha-agarwal-211.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="nishtha-agarwal-211" /><br />
@@ -756,8 +786,6 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@palak-paliwal11</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/parasmani-dev">
         <img src="https://github.com/parasmani-dev.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="parasmani-dev" /><br />
@@ -782,6 +810,8 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@prasad-0007</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/priya05-git">
         <img src="https://github.com/priya05-git.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="priya05-git" /><br />
@@ -794,8 +824,6 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@r-sushanth08</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/rashiaggarwal06">
         <img src="https://github.com/rashiaggarwal06.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="rashiaggarwal06" /><br />
@@ -820,6 +848,8 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@samarthchawla2005</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/sangitabera">
         <img src="https://github.com/sangitabera.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="sangitabera" /><br />
@@ -832,8 +862,6 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@sanzzzz-g</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/shaktipy">
         <img src="https://github.com/shaktipy.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="shaktipy" /><br />
@@ -858,6 +886,8 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@shreyasgawande19</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/siri-004">
         <img src="https://github.com/siri-004.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="siri-004" /><br />
@@ -870,8 +900,6 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@snehacodes-2906</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/snehanair-486">
         <img src="https://github.com/snehanair-486.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="snehanair-486" /><br />
@@ -896,10 +924,18 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@tanishkakora</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/twinkle0tech">
         <img src="https://github.com/twinkle0tech.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="twinkle0tech" /><br />
         <sub><b>@twinkle0tech</b></sub>
+      </a>
+    </td>
+    <td align="center" width="120">
+      <a href="https://github.com/unknown-tech-ui">
+        <img src="https://github.com/unknown-tech-ui.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="unknown-tech-ui" /><br />
+        <sub><b>@unknown-tech-ui</b></sub>
       </a>
     </td>
     <td align="center" width="120">
@@ -908,8 +944,6 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@vedansht2211</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/vedika76">
         <img src="https://github.com/vedika76.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="vedika76" /><br />
@@ -928,12 +962,17 @@ These standalone Python project files do not have a browser counterpart yet and 
         <sub><b>@vivekCS007</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/yuvraj-k-singh">
         <img src="https://github.com/yuvraj-k-singh.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="yuvraj-k-singh" /><br />
         <sub><b>@yuvraj-k-singh</b></sub>
       </a>
     </td>
+    <td width="120"></td>
+    <td width="120"></td>
+    <td width="120"></td>
     <td width="120"></td>
     <td width="120"></td>
   </tr>

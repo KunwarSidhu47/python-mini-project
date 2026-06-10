@@ -500,6 +500,18 @@
         </div>
       </section>
 
+      <!-- Recently Viewed Section -->
+      <section class="projects-section" id="recentlyViewedSection">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-heading">
+              Recently Viewed
+            </h2>
+          </div>
+          <div class="projects-grid" id="recentlyViewedGrid"></div>
+        </div>
+      </section>
+
       <!-- Projects Section -->
       <section class="projects-section" id="projectsSection">
         <div class="container">
@@ -849,6 +861,7 @@
     <script defer src="js/projects/spot-the-difference.js"></script>
     <script defer src="js/projects/color-palette.js"></script>
     <script defer src="js/projects/resume-analyzer.js"></script>
+    <script src="js/projects/caesar-cipher.js"></script>
     <script defer src="js/projects.js"></script>
     <script defer src="js/cm-editor.js"></script>
     <script defer src="js/playground.js"></script>
@@ -1137,6 +1150,13 @@
             desc: "Track your learning progress",
             tags: "utility,tracker",
           },
+          {
+            project: "caesar-cipher",
+            title: "Caesar Cipher",
+            category: "utilities",
+            desc: "Encrypt and decrypt messages with a shift cipher",
+            tags: "utility,cipher,encryption,decryption",
+          },
         ];
 
         projectsGrid.innerHTML = "";
@@ -1162,7 +1182,7 @@
           card.innerHTML = `
             <img class="card-banner" src="assets/banners/${proj.project}.webp" alt="${proj.title}" loading="lazy">
             <div class="card-actions">
-                <button class="btn-play" data-project="${proj.project}">Try It</button>
+                <button class="btn-play" data-project="${proj.project}" aria-label="Play PyMini Logo">Try It</button>
                 <button class="btn-favorite" data-project="${proj.project}" aria-label="Add to favorites">
                     <i class="${starClass}"></i>
                 </button>

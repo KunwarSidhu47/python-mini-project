@@ -135,6 +135,28 @@ function getCollatzHTML() {
                 display: block;
                 margin: 0 auto;
             }
+            /* Fix for Generate Sequence button */
+            .btn-generate {
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                padding: 10px 24px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 1rem;
+                transition: all 0.2s ease;
+            }
+
+            .btn-generate:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+                filter: brightness(1.05);
+            }
+
+            .btn-generate:active {
+                transform: translateY(0);
+            }
         </style>
     `;
 }

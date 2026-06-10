@@ -1,215 +1,237 @@
+// ============================================
+// CAESAR CIPHER - Web Implementation
+// Based on the Python version
+// ============================================
+
+
 function getCaesarCipherHTML() {
     return `
         <div class="project-content">
-            <h2> Caesar Cipher</h2>
+            <h2>🔐 Caesar Cipher Encryptor & Decryptor</h2>
+            <p class="project-desc">Hide your secret messages or reveal them!</p>
+
+
             <div class="caesar-container">
-                <div class="input-section">
-                    <label for="caesarInput">Enter Text:</label>
-                    <textarea id="caesarInput" rows="4" placeholder="Type your message here..."></textarea>
-
-                    <label for="shiftInput">Shift Key:</label>
-                    <div class="shift-controls">
-                        <input type="number" id="shiftInput" value="3" min="1" max="25">
-                        <span class="shift-hint">(1-25)</span>
-                    </div>
-
-                    <div class="mode-toggle">
-                        <input type="radio" id="modeEncrypt" name="cipherMode" value="encrypt" checked>
-                        <label for="modeEncrypt"> Encrypt</label>
-                        <input type="radio" id="modeDecrypt" name="cipherMode" value="decrypt">
-                        <label for="modeDecrypt"> Decrypt</label>
-                    </div>
-
-                    <button class="btn-translate" id="cipherBtn"> Encrypt</button>
+                <div class="caesar-input-group">
+                    <label for="caesarMessage">📝 Enter your message</label>
+                    <textarea id="caesarMessage" rows="4" placeholder="Type your secret message here..."></textarea>
                 </div>
 
-                <div class="output-section">
-                    <h3>Output:</h3>
-                    <div class="cipher-output" id="cipherOutput">
-                        <p class="placeholder">Your result will appear here...</p>
-                    </div>
+
+                <div class="caesar-input-group">
+                    <label for="caesarShift">🔑 Shift Key: <span id="shiftValue">3</span></label>
+                    <input type="range" id="caesarShift" min="1" max="25" value="3" step="1">
+                </div>
+
+
+                <div class="caesar-buttons">
+                    <button id="caesarEncryptBtn" class="caesar-btn encrypt">🔒 Encrypt</button>
+                    <button id="caesarDecryptBtn" class="caesar-btn decrypt">🔓 Decrypt</button>
+                </div>
+
+
+                <div class="caesar-output-group">
+                    <label>✨ Resulting Message</label>
+                    <div id="caesarResult" class="caesar-result"></div>
+                    <button id="caesarCopyBtn" class="caesar-copy-btn">📋 Copy</button>
                 </div>
             </div>
         </div>
 
+
         <style>
             .caesar-container {
-                padding: 2rem;
-                max-width: 800px;
+                max-width: 600px;
                 margin: 0 auto;
+                padding: 1.5rem;
+                background: var(--surface-color);
+                border-radius: 16px;
+                border: 1px solid var(--border-color);
             }
 
-            .input-section {
-                margin-bottom: 2rem;
+
+            .caesar-input-group {
+                margin-bottom: 1.5rem;
             }
 
-            .input-section label {
+
+            .caesar-input-group label {
                 display: block;
                 margin-bottom: 0.5rem;
-                font-size: 1.1rem;
                 font-weight: 600;
+                color: var(--text-color);
             }
 
-            .input-section textarea {
+
+            .caesar-input-group textarea {
                 width: 100%;
-                padding: 1rem;
-                font-size: 1.1rem;
-                border: 2px solid var(--border-color);
-                border-radius: 10px;
-                background: var(--bg-color);
-                color: var(--text-color);
-                resize: vertical;
-                font-family: inherit;
-            }
-
-            .shift-controls {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                margin-bottom: 1rem;
-            }
-
-            .shift-controls input[type="number"] {
-                width: 80px;
-                padding: 0.5rem;
-                font-size: 1.1rem;
-                border: 2px solid var(--border-color);
+                padding: 0.75rem;
                 border-radius: 8px;
+                border: 1px solid var(--border-color);
                 background: var(--bg-color);
                 color: var(--text-color);
-                text-align: center;
+                font-family: monospace;
+                resize: vertical;
+                font-size: 1rem;
             }
 
-            .shift-hint {
-                color: var(--text-secondary);
-                font-size: 0.9rem;
+
+            .caesar-input-group input[type="range"] {
+                width: 100%;
+                cursor: pointer;
             }
 
-            .mode-toggle {
+
+            .caesar-buttons {
                 display: flex;
                 gap: 1rem;
                 margin-bottom: 1.5rem;
             }
 
-            .mode-toggle input[type="radio"] {
-                display: none;
-            }
 
-            .mode-toggle label {
-                padding: 0.5rem 1rem;
-                border: 2px solid var(--primary-color);
+            .caesar-btn {
+                flex: 1;
+                padding: 0.75rem;
+                border: none;
                 border-radius: 8px;
-                cursor: pointer;
                 font-weight: bold;
-                color: var(--text-color);
-                transition: var(--transition);
-                margin-bottom: 0 !important;
-                display: inline-block !important;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                font-size: 1rem;
             }
 
-            .mode-toggle input[type="radio"]:checked + label {
+
+            .caesar-btn.encrypt {
                 background: var(--primary-color);
                 color: white;
             }
 
-            .btn-translate {
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+
+            .caesar-btn.decrypt {
+                background: var(--secondary-color);
                 color: white;
-                border: none;
-                padding: 1rem 2rem;
-                border-radius: 50px;
-                font-size: 1.1rem;
-                cursor: pointer;
-                transition: var(--transition);
             }
 
-            .btn-translate:hover {
-                transform: scale(1.05);
-                box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+
+            .caesar-btn:hover {
+                transform: translateY(-2px);
+                filter: brightness(1.05);
             }
 
-            .output-section h3 {
-                margin-bottom: 1rem;
+
+            .caesar-output-group {
+                position: relative;
             }
 
-            .cipher-output {
-                background: var(--surface-color);
-                border: 2px solid var(--border-color);
-                border-radius: 10px;
-                padding: 1.5rem;
-                min-height: 100px;
-                font-family: 'Courier New', monospace;
-                font-size: 1.2rem;
-                line-height: 1.8;
+
+            .caesar-result {
+                padding: 0.75rem;
+                border-radius: 8px;
+                border: 1px solid var(--border-color);
+                background: var(--bg-color);
+                color: var(--text-color);
+                font-family: monospace;
+                min-height: 60px;
                 word-break: break-all;
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
             }
 
-            .placeholder {
-                color: var(--text-secondary);
-                text-align: center;
-                font-style: italic;
-                font-family: inherit;
+
+            .caesar-copy-btn {
+                padding: 0.4rem 1rem;
+                background: var(--surface-color);
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 0.8rem;
+                transition: all 0.2s ease;
+            }
+
+
+            .caesar-copy-btn:hover {
+                background: var(--primary-color);
+                color: white;
             }
         </style>
     `;
 }
 
+
+// Caesar cipher core logic (converted from Python)
+function caesarCipher(message, shift) {
+    let result = "";
+   
+    for (let i = 0; i < message.length; i++) {
+        let char = message[i];
+       
+        if (/[A-Za-z]/.test(char)) {
+            // Determine ASCII boundary (uppercase vs lowercase)
+            let start = (char === char.toUpperCase()) ? 'A'.charCodeAt(0) : 'a'.charCodeAt(0);
+           
+            // Shift character and wrap around using modulo 26
+            let shiftedPos = (char.charCodeAt(0) - start + shift) % 26;
+            // Handle negative shift for decryption
+            if (shiftedPos < 0) shiftedPos += 26;
+            let newChar = String.fromCharCode(start + shiftedPos);
+            result += newChar;
+        } else {
+            // Leave spaces, numbers, and punctuation untouched
+            result += char;
+        }
+    }
+    return result;
+}
+
+
 function initCaesarCipher() {
-    const input = document.getElementById('caesarInput');
-    const shiftInput = document.getElementById('shiftInput');
-    const cipherBtn = document.getElementById('cipherBtn');
-    const output = document.getElementById('cipherOutput');
-    const modeEncrypt = document.getElementById('modeEncrypt');
-    const modeDecrypt = document.getElementById('modeDecrypt');
+    const messageInput = document.getElementById('caesarMessage');
+    const shiftSlider = document.getElementById('caesarShift');
+    const shiftValue = document.getElementById('shiftValue');
+    const encryptBtn = document.getElementById('caesarEncryptBtn');
+    const decryptBtn = document.getElementById('caesarDecryptBtn');
+    const resultDiv = document.getElementById('caesarResult');
+    const copyBtn = document.getElementById('caesarCopyBtn');
 
-    function caesarShift(text, shift, decrypt = false) {
-        const effectiveShift = decrypt ? (26 - shift) % 26 : shift;
-        return text.split('').map(char => {
-            if (char >= 'A' && char <= 'Z') {
-                return String.fromCharCode(((char.charCodeAt(0) - 65 + effectiveShift) % 26) + 65);
-            }
-            if (char >= 'a' && char <= 'z') {
-                return String.fromCharCode(((char.charCodeAt(0) - 97 + effectiveShift) % 26) + 97);
-            }
-            return char;
-        }).join('');
-    }
 
-    function process() {
-        const text = input.value;
-        if (!text.trim()) {
-            output.textContent = 'Please enter some text to process.';
-            return;
-        }
+    if (!messageInput || !shiftSlider || !encryptBtn || !decryptBtn || !resultDiv) return;
 
-        const shift = parseInt(shiftInput.value, 10);
-        if (isNaN(shift) || shift < 1 || shift > 25) {
-            output.textContent = 'Shift must be between 1 and 25.';
-            return;
-        }
 
-        const decrypt = modeDecrypt.checked;
-        const result = caesarShift(text, shift, decrypt);
-        output.textContent = result;
-        cipherBtn.textContent = decrypt ? ' Decrypt' : ' Encrypt';
-    }
-
-    modeEncrypt.addEventListener('change', () => {
-        if (modeEncrypt.checked) {
-            cipherBtn.textContent = ' Encrypt';
-        }
+    // Update shift value display
+    shiftSlider.addEventListener('input', function() {
+        shiftValue.textContent = this.value;
     });
 
-    modeDecrypt.addEventListener('change', () => {
-        if (modeDecrypt.checked) {
-            cipherBtn.textContent = ' Decrypt';
-        }
+
+    // Encrypt
+    encryptBtn.addEventListener('click', function() {
+        const message = messageInput.value;
+        const shift = parseInt(shiftSlider.value);
+        const encrypted = caesarCipher(message, shift);
+        resultDiv.textContent = encrypted;
     });
 
-    cipherBtn.addEventListener('click', process);
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && e.ctrlKey) {
-            process();
+
+    // Decrypt (reverse the shift direction)
+    decryptBtn.addEventListener('click', function() {
+        const message = messageInput.value;
+        const shift = parseInt(shiftSlider.value);
+        const decrypted = caesarCipher(message, -shift);
+        resultDiv.textContent = decrypted;
+    });
+
+
+    // Copy to clipboard
+    copyBtn.addEventListener('click', function() {
+        const text = resultDiv.textContent;
+        if (text && text !== '') {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                }, 2000);
+            });
         }
     });
 }

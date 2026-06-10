@@ -104,7 +104,7 @@ class Game2048:
     def save_high_score(self):
         try:
             HIGH_SCORE_PATH.write_text(str(self.high_score))
-        except Exception as e:
+        except OSError as e:
             print(f"Warning: Could not save high score: {e}")
 
     def create_grid(self):
@@ -330,7 +330,10 @@ class Game2048:
         self.root.bind("<Key>", self.handle_keypress)
 
 
-if __name__ == "__main__":
+def main():
     root = tk.Tk()
     game = Game2048(root)
     root.mainloop()
+
+if __name__ == "__main__":
+    main()

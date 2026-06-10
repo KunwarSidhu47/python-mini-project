@@ -70,17 +70,36 @@ function getDerivativeCalculatorHTML() {
                 min-height: 110px;
                 line-height: 1.7;
             }
-            input{
-                padding:15px;
-                border-radius:30px;
-                background-color:var(--bg-color);
-                outline:none;
-                border:1px solid white;
+            input {
+                padding: 15px;
+                border-radius: 30px;
+                background-color: var(--bg-color);
+                outline: none;
+                border: 1px solid var(--border-color);
                 color: var(--text-color);
+                width: 100%;
             }
-            button{
-                padding:15px;
-                border-radius:30px;
+
+            button {
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 30px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 0.95rem;
+                transition: all 0.2s ease;
+            }
+
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+                filter: brightness(1.05);
+            }
+
+            button:active {
+                transform: translateY(0);
             }
         </style>
     `;

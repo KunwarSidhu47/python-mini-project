@@ -69,7 +69,6 @@ test.describe('Modal Lifecycle & Focus Trapping', () => {
     await expect(modal).not.toHaveClass(/active/);
 
     // Verify focus is restored to the original play button
-    const isPlayBtnFocused = await firstCardPlayBtn.evaluate(el => el === document.activeElement);
-    expect(isPlayBtnFocused).toBe(true);
+    await expect(firstCardPlayBtn).toBeFocused();
   });
 });

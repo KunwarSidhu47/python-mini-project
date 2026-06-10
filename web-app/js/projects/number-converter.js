@@ -35,9 +35,27 @@ function getNumberConverterHTML() {
             .converter-row label { font-weight: 600; }
             .converter-row input, .converter-row select { padding: 0.9rem; border-radius: 10px; border: 2px solid var(--border-color); background: var(--surface-color); color: var(--text-color); }
             .converter-result { min-height: 2rem; padding: 0.9rem 1rem; border-radius: 10px; background: var(--surface-color); border: 1px solid var(--border-color); font-weight: 700; }
-            .btn-primary{
-                padding:15px;
-                border-radius:30px;
+            .btn-primary {
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                padding: 12px 28px;
+                border-radius: 30px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 1rem;
+                transition: all 0.2s ease;
+                width: 100%;
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+                filter: brightness(1.05);
+            }
+
+            .btn-primary:active {
+                transform: translateY(0);
             }
         </style>
     `;

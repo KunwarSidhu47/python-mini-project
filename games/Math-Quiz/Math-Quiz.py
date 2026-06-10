@@ -26,8 +26,8 @@ def play_sound(sound_type):
                 tk._default_root.bell()
             else:
                 print('\a', end='', flush=True)
-        except Exception:
-            pass
+        except (tk.TclError, OSError) as e:
+            print(f"⚠️ Warning: Sound notification failed: {e}")
         return
     try:
         if sound_type == 'correct':
@@ -717,7 +717,10 @@ class MathQuizGUI:
         quit_btn.pack(side="left", padx=10)
 
 
-if __name__ == "__main__":
+def main():
     root = tk.Tk()
     app = MathQuizGUI(root)
     root.mainloop()
+
+if __name__ == "__main__":
+    main()

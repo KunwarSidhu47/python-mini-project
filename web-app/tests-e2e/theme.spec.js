@@ -22,7 +22,7 @@ test.describe('Theme Toggle', () => {
     await expect(page.locator('body')).toHaveClass(/sidebar-active/);
 
     // Target the visible theme toggle in the sidebar
-    const themeToggle = page.locator('.sidebar-dock #themeToggle');
+    const themeToggle = page.locator('.sidebar-dock #sidebarThemeToggle');
     await expect(themeToggle).toBeVisible();
     await themeToggle.click();
 

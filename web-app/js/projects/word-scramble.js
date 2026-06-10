@@ -376,7 +376,7 @@ function initWordScramble() {
     }
 
     function setMessage(text, state) {
-        messageEl.textContent = text;
+        messageEl.innerHTML = text;
         messageEl.className = state ? `game-message ${state}` : 'game-message';
     }
 
@@ -477,7 +477,7 @@ function checkGuess() {
         updateStats();
         revealAnswer('win');
 
-        setMessage(`✅ Correct!<br><br>Time taken:${timeTaken} seconds <br></br> Speed: ${speedCategory} <br><br>Points Received:+${points} points!`, 'win');
+        setMessage(`✅ Correct!<br><br>Time taken: ${timeTaken} seconds<br>Speed: ${speedCategory} <br><br>Points Received: +${points} points!`, 'win');
         return;
     }
 

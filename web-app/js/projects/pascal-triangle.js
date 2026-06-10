@@ -336,6 +336,28 @@ function getPascalTriangleHTML() {
                     padding: 0.75rem 0.5rem;
                 }
             }
+            .btn-generate {
+                background: var(--accent, #22c55e);
+                color: white;
+                border: none;
+                padding: 0.55rem 1rem;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 0.85rem;
+                font-weight: 700;
+                transition: all 0.2s ease;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn-generate:hover {
+                background: var(--accent-hover, #16a34a);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(34, 197, 94, 0.3);
+            }
+
+            .btn-generate:active {
+                transform: translateY(0);
+            }
         </style>
     `;
 }

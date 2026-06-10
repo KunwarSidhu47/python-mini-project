@@ -70,9 +70,14 @@ while True:
     # Calculate time
     time_taken = end_time - start_time
     
-    # Calculate words per minute
-    words = len(sentence.split())
-    wpm = (words / time_taken) * 60 if time_taken > 0 else 0
+    # Calculate words per minute based on typed text
+    sentence_words = sentence.split()
+    typed_words = typed_text.split()
+    correct_words = sum(
+        1 for i, word in enumerate(typed_words)
+        if i < len(sentence_words) and word == sentence_words[i]
+    )
+    wpm = (correct_words / time_taken) * 60 if time_taken > 0 else 0
     
     # Calculate accuracy
     correct_chars = 0
@@ -85,7 +90,7 @@ while True:
     # Results
     print("\n🎉 ===== TEST COMPLETED ===== 🎉")
     print(f"⏱️ Time Taken : {time_taken:.2f} seconds")
-    print(f"🚀 Typing Speed : {wpm:.2f} WPM")
+    print(f"🚀 Net WPM      : {wpm:.2f} WPM")
     print(f"🎯 Accuracy : {accuracy:.2f}%")
     
     # Performance feedback

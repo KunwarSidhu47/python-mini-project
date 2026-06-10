@@ -46,7 +46,7 @@ class SnakeGame:
                 pygame.mixer.init()
                 self.eat_sound = pygame.mixer.Sound("sounds/Apple_Eating.mp3")
                 self.gameover_sound = pygame.mixer.Sound("sounds/Game_over.mp3")
-            except Exception as e:
+            except (pygame.error, FileNotFoundError, OSError) as e:
                 print(f"⚠️ Warning: Could not initialize pygame mixer: {e}")
                 self.pygame_installed = False
 
@@ -162,9 +162,12 @@ class SnakeGame:
         self.screen.mainloop()
 
 
-if __name__ == "__main__":
+def main():
     game = SnakeGame()
     try:
         game.run()
     except turtle.Terminator:
         pass
+
+if __name__ == "__main__":
+    main()
