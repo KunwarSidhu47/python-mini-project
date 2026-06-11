@@ -295,12 +295,10 @@ function initTowerOfHanoi() {
         const scaleX = canvas.width / rect.width;
         const x = (e.clientX - rect.left) * scaleX;
         
-        let clickedTower = -1;
-        if (x < 300) clickedTower = 0;
-        else if (x >= 300 && x < 500) clickedTower = 1;
-        else if (x >= 500) clickedTower = 2;
-        
-        if (clickedTower === -1) return;
+        // Select the nearest tower center, so selection works even when the
+        // canvas is scaled responsively or rendered at a different CSS width.
+        const distances = towerX.map(center => Math.abs(x - center));
+        const clickedTower = distances.indexOf(Math.min(...distances));
         
         if (selectedTower === null) {
             if (towers[clickedTower].length > 0) {
