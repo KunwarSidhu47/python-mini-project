@@ -24,6 +24,7 @@ function getProjectHTML(projectName) {
         'nqueens' : getNQueensHTML(),
         'matrix-calculator': () => getMatrixCalculatorHTML(),
         'unit-converter': getUnitConverterHTML(),
+        'reverse-hangman': () => getReverseHangmanHTML
     };
     
     return projects[projectName] || '<h2>Project Coming Soon!</h2>';
@@ -52,6 +53,7 @@ function initializeProject(projectName) {
         'nqueens' : initNQueens(),
         'matrix-calculator': initMatrixCalculator,
         'unit-converter':initUnitConverter,
+        'reverse-hangman': initReverseHangman
     };
     
     if (initializers[projectName]) {

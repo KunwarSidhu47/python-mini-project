@@ -397,7 +397,18 @@ def generate_banner(name, category, filename):
                 v_draw.text((x, y), sample_nums[i][j], fill=color_accent, anchor="mm", font=font_title)
         # Draw operation symbol
         v_draw.text((400, 280), "×", fill=color_accent, anchor="mm", font=font_title)
-
+    elif "reverse" in n_lower or "hangman" in n_lower:
+        # AI brain + hangman gallows
+        cx, cy = 400, 225
+        # Gallows
+        v_draw.line([(250, 350), (400, 350)], fill=color_accent, width=4)
+        v_draw.line([(320, 350), (320, 120)], fill=color_accent, width=4)
+        v_draw.line([(320, 120), (450, 120)], fill=color_accent, width=4)
+        v_draw.line([(450, 120), (450, 150)], fill=color_accent, width=2)
+        # AI brain/robot icon
+        v_draw.ellipse([cx-30, cy-30, cx+30, cy+30], outline=color_accent, width=3)
+        v_draw.ellipse([cx-15, cy-15, cx+15, cy+15], outline=color_accent, width=2)
+        v_draw.text((cx, cy), "AI", fill=color_accent, anchor="mm")
     elif "unit converter" in n_lower:
         cx, cy = 400, 225
 
@@ -522,6 +533,7 @@ projects = [
     ("Spot the Difference", "games", "spot-the-difference.webp"),
     ("Productive Pet", "utilities", "productive-pet.webp"),
     ("Progress Tracker", "utilities", "progress-tracker.webp"),
+    ("Reverse Hangman", "games", "reverse-hangman.webp"),
 
     # MATH
     ("AP/GP/AGP/HP Recognizer", "math", "progression-recognizer.webp"),
