@@ -1291,7 +1291,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 50);
     }
     lastFocusedElement = null;
-  }
+  })
 
   if (modalClose) modalClose.addEventListener("click", closeProjectSafe);
   if (modal) {
@@ -1849,4 +1849,5 @@ projectCards.forEach(card => {
   // Initial card filtering state update
   updateProjectVisibility(currentCategory, currentSearchQuery);
   window.updateRecentlyViewed();
+}
 });

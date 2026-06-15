@@ -2749,6 +2749,15 @@ body.sidebar-active .sidebar-dock {
   color: var(--accent);
 }
 
+body.sidebar-active:not(.sidebar-collapsed) .playground-section {
+  padding-left: 296px !important;
+}
+
+body.sidebar-collapsed .playground-section {
+  padding-left: 128px !important;
+}
+
+
 /* ── CodeMirror 6 Editor Container ─────────────────────────── */
 #pythonEditor {
   flex: 1;
@@ -6351,4 +6360,5 @@ body.sidebar-active .projects-section,
 body.sidebar-collapsed .projects-section {
   padding-left: 0 !important;
   padding-right: 0 !important;
+}
 }
