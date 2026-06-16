@@ -4,7 +4,7 @@
 
 # 🎮 Python Mini Projects Collection 🎯
 
-### *Learn Python by Building Fun, Interactive Games & Tools!*
+### _Learn Python by Building Fun, Interactive Games & Tools!_
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -52,7 +52,6 @@
 - [Contributors](#contributors)
 - [📝 License](#-license)
 - [💬 Connect & Share](#-connect--share)
-
 
 ## 🎯 Repo Introduction
 
@@ -110,18 +109,21 @@ cd python-mini-project
 #### 2. Create a Virtual Environment
 
 For Linux/macOS:
+
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
 For Windows (Command Prompt):
+
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
 For Windows (PowerShell):
+
 ```bash
 python -m venv venv
 venv\Scripts\Activate.ps1
@@ -166,6 +168,7 @@ The web application provides a browser-based interface for all projects.
 #### Prerequisites for Web App
 
 The web app requires Node.js and npm:
+
 - Download from https://nodejs.org/ (v16 or higher recommended)
 - Verify installation: `node --version && npm --version`
 
@@ -188,6 +191,7 @@ pytest tests/ -v
 ```
 
 For specific test file:
+
 ```bash
 pytest tests/test_armstrong.py -v
 ```
@@ -212,6 +216,7 @@ pytest tests/test_armstrong.py -v
 #### Virtual Environment Reminder
 
 Always activate your virtual environment before working:
+
 ```bash
 # Linux/macOS
 source venv/bin/activate
@@ -221,6 +226,7 @@ venv\Scripts\activate
 ```
 
 Deactivate when done:
+
 ```bash
 deactivate
 ```
@@ -237,6 +243,7 @@ deactivate
 The browser app currently exposes 39 projects:
 
 ### Games
+
 - 2048 Game
 - BlackJack21
 - Coin Flip
@@ -255,9 +262,11 @@ The browser app currently exposes 39 projects:
 - Whack-a-Mole
 - Word Scramble
 - Spot the Difference
+- War Card Game
 - Number Sliding Puzzle
 
 ### Math
+
 - AP/GP/AGP/HP Recognizer
 - Armstrong Numbers
 - Binary Search
@@ -273,6 +282,7 @@ The browser app currently exposes 39 projects:
 - Progress Tracker
 
 ### Utilities
+
 - AI Resume Analyzer
 - Color Palette Suggestor
 - Morse Code
@@ -286,7 +296,6 @@ The browser app currently exposes 39 projects:
 These standalone Python project files do not have a browser counterpart yet and are good future-port candidates:
 
 - [games/Reverse-Hangman-Game/Reverse-Hangman-Game.py](games/Reverse-Hangman-Game/Reverse-Hangman-Game.py)
-- [games/War-Card-Game/War-Card-Game.py](games/War-Card-Game/War-Card-Game.py)
 - [math/Happy-Number/Happy-Number.py](math/Happy-Number/Happy-Number.py)
 - [math/Matrix-Calculator/Matrix-Calculator.py](math/Matrix-Calculator/Matrix-Calculator.py)
 - [math/Quadratic-Solver/Quadratic-Solver.py](math/Quadratic-Solver/Quadratic-Solver.py)
@@ -1159,7 +1168,7 @@ Found this helpful? Show some love!
 
 **Made with ❤️ for Python learners everywhere**
 
-*If you learned something new, don't forget to star the repo! ⭐*
+_If you learned something new, don't forget to star the repo! ⭐_
 
 [⬆ Back to Top](#-python-mini-projects-collection-)
 
