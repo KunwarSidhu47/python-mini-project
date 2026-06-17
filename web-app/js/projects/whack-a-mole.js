@@ -13,6 +13,18 @@ function getWhackAMoleHTML() {
                     <button class="btn-primary" id="resetWhackBtn">Reset</button>
                 </div>
                 <div id="whackMessage" class="whack-message">Hit the mole when it appears.</div>
+                <div id="gameOverModal" class="whack-modal">
+                    <div class="whack-modal-content">
+                        <h2>🏆 Game Over!</h2>
+                        <p id="finalScoreText"></p>
+                        <p id="motivationalText"></p>
+
+                        <div class="whack-modal-actions">
+                            <button id="playAgainBtn" class="btn-primary">Play Again</button>
+                        <button id="closeModalBtn" class="btn-primary">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <style>
@@ -50,8 +62,39 @@ function getWhackAMoleHTML() {
                 cursor: not-allowed;
                 transform: none;
             }
-        </style>
-    `;
+        .whack-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .whack-modal.show {
+            display: flex;
+        }
+
+        .whack-modal-content {
+            background: #1f2937;
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            min-width: 320px;
+        }
+
+        .whack-modal-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+       </style>
+         `;
+    
 }
 
 function initWhackaMole() {
@@ -61,6 +104,11 @@ function initWhackaMole() {
     const scoreEl = document.getElementById('whackScore');
     const timeEl = document.getElementById('whackTime');
     const messageEl = document.getElementById('whackMessage');
+    const gameOverModal = document.getElementById('gameOverModal');
+    const finalScoreText = document.getElementById('finalScoreText');
+    const motivationalText = document.getElementById('motivationalText');
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
 
     if (!board || !startBtn || !resetBtn || !scoreEl || !timeEl || !messageEl) return;
 
@@ -128,6 +176,23 @@ function initWhackaMole() {
         
         moleId = setTimeout(showMole, 850);
     }
+    function showGameOverModal() {
+
+        finalScoreText.textContent = `Your score: ${score}`;
+
+        if (score < 5) {
+            motivationalText.textContent =
+                "Keep practicing! You'll get faster!";
+        } else if (score < 15) {
+            motivationalText.textContent =
+                "Nice job! Great reflexes!";
+        } else {
+            motivationalText.textContent =
+                "Amazing! You're a Whack-a-Mole champion!";
+        }
+
+        gameOverModal.classList.add('show');
+    }
 
     function stopGame(finalMessage) {
         gameActive = false;
@@ -142,7 +207,7 @@ function initWhackaMole() {
             hole.textContent = '🕳️';
         });
         if (window.AudioManager) AudioManager.play("game_over");
-        messageEl.textContent = finalMessage;
+        showGameOverModal();
         startBtn.disabled = false;
     }
 
@@ -167,6 +232,14 @@ function initWhackaMole() {
     }
 
     startBtn.addEventListener('click', startGame);
+    playAgainBtn.addEventListener('click', () => {
+        gameOverModal.classList.remove('show');
+        startGame();
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        gameOverModal.classList.remove('show');
+    });
     resetBtn.addEventListener('click', () => {
         clearInterval(timerId);
         timerId = null;
