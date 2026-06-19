@@ -40,8 +40,8 @@ def print_footer():
     print("═" * 60)
 
 def list_projects_by_category(category_name):
-    filtered = [p for p in PROJECTS if p["category"] == category_name]
-    filtered_sorted = sorted(filtered, key=lambda p: p["name"])
+    filtered = [p for p in PROJECTS if p.get("category", "") == category_name]
+    filtered_sorted = sorted(filtered, key=lambda p: p.get("name", ""))
     return filtered_sorted
 
 def launch_project(path):
@@ -100,9 +100,9 @@ def category_menu(category_key, category_title):
         
         items = list_projects_by_category(category_key)
         for idx, item in enumerate(items, start=1):
-            difficulty = DIFFICULTY_BADGES.get(item["difficulty"], item["difficulty"])
-            print(f"  [{idx:2d}] {item['emoji']} {item['name']:30s} [{difficulty}]")
-            print(f"       {item['description']}")
+            difficulty = DIFFICULTY_BADGES.get(item.get("difficulty", "Unknown"), item.get("difficulty", "Unknown"))
+            print(f"  [{idx:2d}] {item.get('emoji', '')} {item.get('name', ''):30s} [{difficulty}]")
+            print(f"       {item.get('description', '')}")
             print()
             
         print(f"  [B] 🔙 Back to Main Menu")
@@ -148,10 +148,10 @@ def search_menu():
         print("─" * 60)
         
         for idx, item in enumerate(results, start=1):
-            cat_emoji = CATEGORY_EMOJIS.get(item["category"], "")
-            difficulty = DIFFICULTY_BADGES.get(item["difficulty"], item["difficulty"])
-            print(f"  [{idx:2d}] {cat_emoji} {item['name']:30s} [{difficulty}]")
-            print(f"       {item['description']}")
+            cat_emoji = CATEGORY_EMOJIS.get(item.get("category", ""), "")
+            difficulty = DIFFICULTY_BADGES.get(item.get("difficulty", "Unknown"), item.get("difficulty", "Unknown"))
+            print(f"  [{idx:2d}] {cat_emoji} {item.get('name', ''):30s} [{difficulty}]")
+            print(f"       {item.get('description', '')}")
             print()
             
         print(f"  [B] 🔙 Back to Main Menu")
@@ -177,12 +177,12 @@ def list_all_menu():
         print("  📋 All Projects")
         print("─" * 60)
         
-        sorted_all = sorted(PROJECTS, key=lambda p: (p["category"], p["name"]))
+        sorted_all = sorted(PROJECTS, key=lambda p: (p.get("category", ""), p.get("name", "")))
         for idx, item in enumerate(sorted_all, start=1):
-            cat_emoji = CATEGORY_EMOJIS.get(item["category"], "")
-            difficulty = DIFFICULTY_BADGES.get(item["difficulty"], item["difficulty"])
-            print(f"  [{idx:2d}] {cat_emoji} {item['name']:30s} [{difficulty}]")
-            print(f"       {item['description']}")
+            cat_emoji = CATEGORY_EMOJIS.get(item.get("category", ""), "")
+            difficulty = DIFFICULTY_BADGES.get(item.get("difficulty", "Unknown"), item.get("difficulty", "Unknown"))
+            print(f"  [{idx:2d}] {cat_emoji} {item.get('name', ''):30s} [{difficulty}]")
+            print(f"       {item.get('description', '')}")
             print()
             
         print(f"  [B] 🔙 Back to Main Menu")

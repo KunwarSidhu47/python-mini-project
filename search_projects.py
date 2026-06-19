@@ -49,7 +49,9 @@ def divider():
 
 def display_project(idx, p, show_path=False):
     print(f"\n  [{idx}] {p['emoji']}  {p['name']}")
-    print(f"       {CATEGORY_BADGE[p['category']]}   {DIFFICULTY_BADGE[p['difficulty']]}")
+    category_badge = CATEGORY_BADGE.get(p.get('category', '').lower(), 'Unknown')
+    difficulty_badge = DIFFICULTY_BADGE.get(p.get('difficulty', '').lower(), 'Unknown')
+    print(f"       {category_badge}   {difficulty_badge}")
     print(f"       {p['description']}")
     if show_path:
         print(f"       📂 {p['path']}")
@@ -157,7 +159,7 @@ def main():
         elif choice == "4":
             all_sorted = sorted(
                 PROJECTS,
-                key=lambda p: (p["category"], DIFFICULTY_ORDER[p["difficulty"]])
+                key=lambda p: (p.get("category", ""), DIFFICULTY_ORDER.get(p.get("difficulty", ""), 99))
             )
             display_results(all_sorted, show_path=False)
             launch_project(all_sorted)
