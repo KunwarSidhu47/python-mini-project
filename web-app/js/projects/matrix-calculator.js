@@ -488,10 +488,15 @@ function initMatrixCalculator() {
         return inverse;
     }
 
+    // Helper: Check if operation requires Matrix B
+    function operationNeedsB(operation) {
+        return ['add', 'subtract', 'multiply'].includes(operation);
+    }
+
     // Update Matrix B visibility based on operation
     function updateMatrixBVisibility() {
         const operation = operationSelect.value;
-        const needsB = ['add', 'subtract', 'multiply'].includes(operation);
+        const needsB = operationNeedsB(operation);
         matrixBPanel.style.display = needsB ? 'block' : 'none';
         
         // For transpose, determinant, rank, inverse, we only need matrix A dimensions
@@ -529,7 +534,7 @@ function initMatrixCalculator() {
     // Validate all required dimension inputs; returns { valid, aRows, aCols, bRows, bCols, error }
     function validateDimensions() {
         const operation = operationSelect.value;
-        const needsB = ['add', 'subtract', 'multiply'].includes(operation);
+        const needsB = operationNeedsB(operation);
 
         const checks = [
             { value: matrixARows.value, label: 'Matrix A Rows' },
@@ -550,10 +555,10 @@ function initMatrixCalculator() {
             }
         }
 
-        const aRows = parseInt(matrixARows.value);
-        const aCols = parseInt(matrixACols.value);
-        const bRows = needsB ? parseInt(matrixBRows.value) : 2;
-        const bCols = needsB ? parseInt(matrixBCols.value) : 2;
+        const aRows = parseInt(matrixARows.value, 10);
+        const aCols = parseInt(matrixACols.value, 10);
+        const bRows = needsB ? parseInt(matrixBRows.value, 10) : 2;
+        const bCols = needsB ? parseInt(matrixBCols.value, 10) : 2;
 
         return { valid: true, aRows, aCols, bRows, bCols, error: null };
     }
@@ -562,7 +567,11 @@ function initMatrixCalculator() {
     function applyDimensions() {
         const dims = validateDimensions();
         if (!dims.valid) {
-            resultDiv.innerHTML = `<span style="color: #ef4444;">⚠️ ${dims.error}</span>`;
+            resultDiv.innerHTML = '';
+            const warning = document.createElement('span');
+            warning.style.color = '#ef4444';
+            warning.textContent = `⚠️ ${dims.error}`;
+            resultDiv.appendChild(warning);
             return;
         }
 
@@ -587,14 +596,18 @@ function initMatrixCalculator() {
             // Validate dimensions before reading matrix values
             const dims = validateDimensions();
             if (!dims.valid) {
-                resultDiv.innerHTML = `<span style="color: #ef4444;">⚠️ ${dims.error}</span>`;
+                resultDiv.innerHTML = '';
+                const warning = document.createElement('span');
+                warning.style.color = '#ef4444';
+                warning.textContent = `⚠️ ${dims.error}`;
+                resultDiv.appendChild(warning);
                 return;
             }
 
             const { aRows, aCols, bRows, bCols } = dims;
 
             const operation = operationSelect.value;
-            const needsB = ['add', 'subtract', 'multiply'].includes(operation);
+            const needsB = operationNeedsB(operation);
 
             matrixA = getMatrixValues(aRows, aCols, matrixAGrid);
             if (needsB) {
