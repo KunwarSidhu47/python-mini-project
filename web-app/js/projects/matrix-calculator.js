@@ -488,10 +488,15 @@ function initMatrixCalculator() {
         return inverse;
     }
 
+    // Helper: Check if operation requires Matrix B
+    function operationNeedsB(operation) {
+        return ['add', 'subtract', 'multiply'].includes(operation);
+    }
+
     // Update Matrix B visibility based on operation
     function updateMatrixBVisibility() {
         const operation = operationSelect.value;
-        const needsB = ['add', 'subtract', 'multiply'].includes(operation);
+        const needsB = operationNeedsB(operation);
         matrixBPanel.style.display = needsB ? 'block' : 'none';
         
         // For transpose, determinant, rank, inverse, we only need matrix A dimensions
@@ -501,15 +506,80 @@ function initMatrixCalculator() {
         } else {
             document.getElementById('matrixBDimensions').style.opacity = '1';
         }
+
+        // Reset result display to default when operation changes
+        if (resultDiv) {
+            resultDiv.innerHTML = 'Select an operation and click Calculate';
+        }
+    }
+
+    // Validate a single dimension value; returns an error string or null if valid
+    function validateDimension(value, label) {
+        if (value === null || value === undefined || (typeof value === 'string' && value.trim() === '')) {
+            return `${label} is empty. Please enter a value between 1 and 5.`;
+        }
+        const num = Number(value);
+        if (isNaN(num)) {
+            return `${label} is not a valid number.`;
+        }
+        if (!Number.isInteger(num)) {
+            return `${label} must be a whole number (got ${value}).`;
+        }
+        if (num < 1 || num > 5) {
+            return `${label} must be between 1 and 5 (got ${num}).`;
+        }
+        return null;
+    }
+
+    // Validate all required dimension inputs; returns { valid, aRows, aCols, bRows, bCols, error }
+    function validateDimensions() {
+        const operation = operationSelect.value;
+        const needsB = operationNeedsB(operation);
+
+        const checks = [
+            { value: matrixARows.value, label: 'Matrix A Rows' },
+            { value: matrixACols.value, label: 'Matrix A Cols' },
+        ];
+
+        if (needsB) {
+            checks.push(
+                { value: matrixBRows.value, label: 'Matrix B Rows' },
+                { value: matrixBCols.value, label: 'Matrix B Cols' },
+            );
+        }
+
+        for (const { value, label } of checks) {
+            const error = validateDimension(value, label);
+            if (error) {
+                return { valid: false, error };
+            }
+        }
+
+        const aRows = parseInt(matrixARows.value, 10);
+        const aCols = parseInt(matrixACols.value, 10);
+        const bRows = needsB ? parseInt(matrixBRows.value, 10) : 2;
+        const bCols = needsB ? parseInt(matrixBCols.value, 10) : 2;
+
+        return { valid: true, aRows, aCols, bRows, bCols, error: null };
     }
 
     // Apply dimensions and create grids
     function applyDimensions() {
-        const aRows = parseInt(matrixARows.value);
-        const aCols = parseInt(matrixACols.value);
-        const bRows = parseInt(matrixBRows.value);
-        const bCols = parseInt(matrixBCols.value);
-        
+        const dims = validateDimensions();
+        if (!dims.valid) {
+            resultDiv.innerHTML = '';
+            const warning = document.createElement('span');
+            warning.style.color = '#ef4444';
+            warning.textContent = `⚠️ ${dims.error}`;
+            resultDiv.appendChild(warning);
+            return;
+        }
+
+        const { aRows, aCols, bRows, bCols } = dims;
+
+        // Reset result display to default when dimensions are successfully applied
+        resultDiv.innerHTML = 'Select an operation and click Calculate';
+
         // Initialize matrices with zeros
         matrixA = Array(aRows).fill().map(() => Array(aCols).fill(0));
         matrixB = Array(bRows).fill().map(() => Array(bCols).fill(0));
@@ -523,16 +593,27 @@ function initMatrixCalculator() {
     // Perform calculation
     function calculate() {
         try {
-            // Get current values from grids
-            const aRows = parseInt(matrixARows.value);
-            const aCols = parseInt(matrixACols.value);
-            const bRows = parseInt(matrixBRows.value);
-            const bCols = parseInt(matrixBCols.value);
-            
-            matrixA = getMatrixValues(aRows, aCols, matrixAGrid);
-            matrixB = getMatrixValues(bRows, bCols, matrixBGrid);
-            
+            // Validate dimensions before reading matrix values
+            const dims = validateDimensions();
+            if (!dims.valid) {
+                resultDiv.innerHTML = '';
+                const warning = document.createElement('span');
+                warning.style.color = '#ef4444';
+                warning.textContent = `⚠️ ${dims.error}`;
+                resultDiv.appendChild(warning);
+                return;
+            }
+
+            const { aRows, aCols, bRows, bCols } = dims;
+
             const operation = operationSelect.value;
+            const needsB = operationNeedsB(operation);
+
+            matrixA = getMatrixValues(aRows, aCols, matrixAGrid);
+            if (needsB) {
+                matrixB = getMatrixValues(bRows, bCols, matrixBGrid);
+            }
+            
             let result;
             let operationName = '';
             

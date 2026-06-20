@@ -23,6 +23,7 @@ function getProjectHTML(projectName) {
         'tower-of-hanoi': getTowerOfHanoiHTML(),
         'nqueens' : getNQueensHTML(),
         'matrix-calculator': () => getMatrixCalculatorHTML(),
+        'sudoku-game': getSudokuGameHTML()
         'unit-converter': getUnitConverterHTML(),
         'resume-analyzer': getResumeAnalyzerHTML(),
         'reverse-hangman': () => getReverseHangmanHTML,
@@ -30,6 +31,8 @@ function getProjectHTML(projectName) {
         'bubble-sort': getBubbleSortHTML(),
         'quick-sort': getQuickSortHTML(),
         'fourier-series': getFourierSeriesHTML()
+        'fourier-series': getFourierSeriesHTML(),
+        'pathfinding-visualizer': getPathfindingVisualizerHTML()
     };
     
     return projects[projectName] || '<h2>Project Coming Soon!</h2>';
@@ -55,12 +58,16 @@ function initializeProject(projectName) {
         'derivative-calculator': initDerivativeCalculator,
         'morse-code': initMorseCode,
         'tower-of-hanoi': initTowerOfHanoi,
+        'nqueens' : initNQueens,
+        'matrix-calculator': initMatrixCalculator,
+        'sudoku-game': initSudokuGame
         'nqueens' : initNQueens(),
         'matrix-calculator': initMatrixCalculator,
         'unit-converter':initUnitConverter,
         'resume-analyzer':initResumeAnalyzer,
         'reverse-hangman': initReverseHangman,
-        'fourier-series': initFourierSeries
+        'fourier-series': initFourierSeries,
+        'pathfinding-visualizer': initPathfindingVisualizer
     };
     
     if (initializers[projectName]) {
@@ -1563,6 +1570,13 @@ function getFlamesHTML() {
             }
         </style>
     `;
+}
+
+function toPascalCase(str) {
+  return str
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join("");
 }
 
 function getProjectHTML(projectName) {
@@ -3201,13 +3215,17 @@ function initializeProject(projectName) {
     "2048-game": "init2048Game",
     "color-palette": "initColorPalette",
     "math-quiz": "initMathQuiz",
+    "resume-analyzer": "initAIResumeAnalyzer",
+    "caesar-cipher": "initCaesarCipher",
+    "sudoku-game": "initSudokuGame"
     "resume-analyzer": "initResumeAnalyzer",
     "caesar-cipher": "initCaesarCipher",
     "war-card-game": "initWarCardGame",
     "number-sliding-puzzle": "initNumberSlidingPuzzle",
     "budget-tracker": "initBudgetTracker",
     "caesar-cipher": "initCaesarCipher",
-    "fourier-series": "initFourierSeries"
+    "fourier-series": "initFourierSeries",
+    "pathfinding-visualizer": "initPathfindingVisualizer"
   };
 
   const initializerName = initializers[projectName];

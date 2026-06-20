@@ -601,6 +601,15 @@
                   </button>
                   <button
                     class="btn-panel-action"
+                    id="copyEditorCode"
+                    title="Copy editor code to clipboard"
+                    type="button"
+                    aria-label="Copy code to clipboard"
+                  >
+                    <i aria-hidden="true" class="fas fa-copy"></i> Copy
+                  </button>
+                  <button
+                    class="btn-panel-action"
                     id="clearEditor"
                     title="Clear the editor"
                     type="button"
@@ -869,6 +878,7 @@
     <script defer src="js/projects/word-scramble.js"></script>
     <script defer src="js/projects/snake.js"></script>
     <script defer src="js/projects/spot-the-difference.js"></script>
+    <script defer src="js/projects/sudoku-game.js"></script>
     <script defer src="js/projects/color-palette.js"></script>
     <script defer src="js/projects/resume-analyzer.js"></script>
     <script src="js/projects/caesar-cipher.js"></script>
@@ -876,7 +886,8 @@
     <script src="js/projects/reverse-hangman.js"></script>
     <script defer src="js/projects/unit-converter.js"></script>
     <script defer src="js/projects/fourier-series.js"></script>
-    <script defer src="js/projects.js"></script>
+    <script defer src="js/projects/pathfinding-visualizer.js?v=2"></script>
+    <script defer src="js/projects.js?v=2"></script>
     <script defer src="js/cm-editor.js"></script>
     <script defer src="js/playground.js"></script>
     <script defer type="module" src="js/main.js"></script>
@@ -885,7 +896,9 @@
     <script defer src="js/projects/number-sliding-puzzle.js"></script>
     <script defer src="js/projects/budget-tracker.js"></script>
     <script>
-      lucide.createIcons();
+      window.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      });
     </script>
 
     <!-- PROJECT LOADER - WITH FAVORITE BUTTONS -->
@@ -1017,6 +1030,11 @@
             tags: "game,relationship",
           },
           {
+            project: "sudoku-game",
+            title: "Sudoku Solver & Game",
+            category: "games",
+            desc: "Interactive Sudoku with difficulty levels and visual backtracking solver",
+            tags: "game,puzzle,backtracking,solver",
             project: "war-card-game",
             title: "War Card Game",
             category: "games",
@@ -1146,6 +1164,13 @@
           },
 
           // UTILITIES (10+)
+          {
+            project: "pathfinding-visualizer",
+            title: "Pathfinding Visualizer",
+            category: "utilities",
+            desc: "Interactive visualizer for Dijkstra and A* algorithms",
+            tags: "utility,algorithm,visualizer,pathfinding"
+          },
           {
             project: "budget-tracker",
             title: "Budget Tracker",
@@ -1429,135 +1454,7 @@
       })();
     </script>
 
-    <!-- MODAL FIX - Load projects properly -->
-    <script>
-      (function () {
-        const modal = document.getElementById("projectModal");
-        const modalBody = document.getElementById("modalBody");
-        const modalClose = document.getElementById("modalClose");
 
-        if (!modal || !modalBody) {
-          console.error("Modal elements not found!");
-          return;
-        }
-
-        // Function to close modal
-        function closeModal() {
-          modal.classList.remove("active");
-          modal.setAttribute("aria-hidden", "true");
-          document.body.style.overflow = "";
-          document.body.style.paddingRight = "";
-
-          // Clear modal body
-          modalBody.innerHTML = "";
-
-          console.log("Modal closed");
-        }
-
-        // Function to open modal with project
-        window.openProjectModal = function (projectName, triggerElement) {
-          console.log("Opening project:", projectName);
-
-          // Clear previous content
-          modalBody.innerHTML =
-            '<div style="text-align: center; padding: 2rem;">Loading project...</div>';
-
-          // Show modal
-          modal.classList.add("active");
-          modal.setAttribute("aria-hidden", "false");
-          document.body.style.overflow = "hidden";
-
-          // Get project HTML
-          let projectHTML = "";
-
-          // Try to get HTML from the project's function
-          const functionName =
-            "get" +
-            projectName
-              .split("-")
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join("") +
-            "HTML";
-
-          if (typeof window[functionName] === "function") {
-            try {
-              projectHTML = window[functionName]();
-              console.log("Loaded via", functionName);
-            } catch (e) {
-              console.error("Error loading project:", e);
-              projectHTML = `<div style="text-align: center; padding: 2rem; color: red;">
-                    <h3>Error loading project</h3>
-                    <p>${e.message}</p>
-                </div>`;
-            }
-          } else {
-            // Fallback: Try to find by looking at loaded scripts
-            console.warn("No loader found for:", projectName);
-            projectHTML = `<div style="text-align: center; padding: 2rem;">
-                <h3>${projectName.replace(/-/g, " ").toUpperCase()}</h3>
-                <p>Project content will be available soon.</p>
-                <p style="color: var(--accent);">Check back later!</p>
-            </div>`;
-          }
-
-          modalBody.innerHTML = `
-            <div class="modal-project-container">
-                <div class="modal-project-header">
-                    <h2>${projectName.replace(/-/g, " ").toUpperCase()}</h2>
-                </div>
-                <div class="modal-project-content">
-                    ${projectHTML}
-                </div>
-            </div>
-        `;
-
-          // Try to initialize project if function exists
-          const initName =
-            "init" +
-            projectName
-              .split("-")
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join("");
-
-          if (typeof window[initName] === "function") {
-            setTimeout(() => {
-              try {
-                window[initName]();
-                console.log("Initialized:", projectName);
-              } catch (e) {
-                console.error("Init error:", e);
-              }
-            }, 100);
-          }
-        };
-
-        // Close button handler
-        if (modalClose) {
-          modalClose.addEventListener("click", closeModal);
-        }
-
-        // Click outside to close
-        modal.addEventListener("click", (e) => {
-          if (e.target === modal) {
-            closeModal();
-          }
-        });
-
-        // Escape key to close
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape" && modal.classList.contains("active")) {
-            closeModal();
-          }
-        });
-
-        // Override the existing openProjectSafe if needed
-        if (typeof window.openProjectSafe !== "function") {
-          window.openProjectSafe = window.openProjectModal;
-        }
-
-        console.log('✅ Modal fix loaded');
-      })();
-    </script>
     
     <script>
       // FIX 1: Add missing toPascalCase function

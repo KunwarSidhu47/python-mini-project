@@ -6489,3 +6489,272 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer button {
     pointer-events: auto;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   COPY BUTTON COMPONENT — Issue #1215
+   Copy-to-Clipboard for Code Snippets
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Code Block Wrapper
+ * Creates relative positioning context for absolute button placement
+ */
+.code-block-wrapper {
+  position: relative !important;
+  display: block;
+}
+
+/**
+ * Copy Button
+ * Reusable, accessible button for copying code to clipboard
+ *
+ * Features:
+ * • Positioned absolutely over code block (top-right)
+ * • Keyboard accessible (Tab, Enter, Space)
+ * • Screen reader friendly (aria-label)
+ * • Mobile & desktop optimized
+ * • Theme aware (dark/light mode)
+ * • Visual feedback states (default, hover, active, success, error)
+ */
+.copy-button {
+  /* Layout & Positioning */
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+
+  /* Dimensions */
+  min-width: 60px;
+  padding: 6px 12px;
+  height: 32px;
+
+  /* Typography */
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+
+  /* Appearance */
+  border: 1px solid var(--border-accent);
+  border-radius: 8px;
+  background: rgba(34, 197, 94, 0.08);
+  color: var(--accent);
+
+  /* Interaction */
+  cursor: pointer;
+  transition:
+    all var(--duration-fast) ease,
+    box-shadow 150ms ease;
+
+  /* Reset default button styles */
+  margin: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  /* Accessibility */
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+
+  /* Prevent selection during copy action */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/**
+ * Copy Button — Hover State
+ * Elevated appearance with enhanced visibility
+ */
+.copy-button:hover {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+  transform: translateY(-1px);
+}
+
+/**
+ * Copy Button — Focus State
+ * High contrast focus ring for keyboard navigation
+ * Critical for accessibility (WCAG AA compliant)
+ */
+.copy-button:focus {
+  outline-color: var(--accent);
+  outline-width: 2px;
+}
+
+.copy-button:focus-visible {
+  outline-color: var(--accent);
+  outline-width: 2px;
+  outline-offset: 2px;
+}
+
+/**
+ * Copy Button — Active State
+ * Pressed down appearance when clicked
+ */
+.copy-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/**
+ * Copy Button — Success State (After Copy)
+ * "Copied!" text with success color and brief animation
+ */
+.copy-button.copy-success {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: var(--success);
+  color: var(--success);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+  animation: copy-pulse 400ms ease-out;
+}
+
+/**
+ * Copy Button — Error State (Copy Failed)
+ * Brief error feedback if clipboard access fails
+ */
+.copy-button.copy-error {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: var(--danger);
+  color: var(--danger);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+
+/**
+ * Pulse Animation
+ * Gentle scale-up feedback when copy succeeds
+ * Helps draw user attention without being jarring
+ */
+@keyframes copy-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/**
+ * Light Mode Adjustments
+ * Ensures button is visible and accessible in light theme
+ */
+[data-theme="light"] .copy-button {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: #059669;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .copy-button:hover {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: #059669;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+}
+
+[data-theme="light"] .copy-button.copy-success {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: #0d9488;
+  color: #0d9488;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+[data-theme="light"] .copy-button.copy-error {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #dc2626;
+  color: #dc2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+}
+
+/**
+ * Mobile Optimizations
+ * Larger touch target for mobile devices
+ * Prevents accidental clicks
+ */
+@media (max-width: 768px) {
+  .copy-button {
+    min-width: 50px;
+    padding: 8px 12px;
+    height: 36px;
+    font-size: 0.7rem;
+    top: 6px;
+    right: 6px;
+  }
+
+  /* Ensure adequate space around button for touch */
+  .copy-button::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    pointer-events: none;
+  }
+}
+
+/**
+ * High Contrast Mode Support
+ * For users with vision impairments
+ * Uses forced colors to ensure readability
+ */
+@media (prefers-contrast: more) {
+  .copy-button {
+    border-width: 2px;
+    font-weight: 700;
+  }
+
+  .copy-button:focus,
+  .copy-button:focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+}
+
+/**
+ * Reduced Motion Support
+ * Respects user's motion preferences
+ * Disables animations for users with vestibular disorders
+ */
+@media (prefers-reduced-motion: reduce) {
+  .copy-button,
+  .copy-button:hover,
+  .copy-button:active,
+  .copy-button.copy-success,
+  .copy-button.copy-error {
+    transition: none;
+    animation: none;
+    transform: none !important;
+  }
+
+  @keyframes copy-pulse {
+    0%, 100% {
+      transform: none;
+    }
+    50% {
+      transform: none;
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PLAYGROUND COPY BUTTON STATES — Issue #1215
+   Visual feedback for editor code copy button
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Copy Button in Playground
+ * Shows success/error feedback with color changes and icon updates
+ */
+.btn-panel-action.copy-success {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: var(--success);
+  color: var(--success);
+  animation: copy-pulse 400ms ease-out;
+}
+
+.btn-panel-action.copy-error {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: var(--danger);
+  color: var(--danger);
+}

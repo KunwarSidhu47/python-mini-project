@@ -379,6 +379,32 @@ def generate_banner(name, category, filename):
         v_draw.ellipse([cx - 40, cy - 20, cx, cy + 20], fill=color_accent)
         v_draw.ellipse([cx, cy - 20, cx + 40, cy + 20], fill=color_accent)
         v_draw.polygon([(cx - 38, cy + 5), (cx + 38, cy + 5), (cx, cy + 50)], fill=color_accent)
+    elif "sudoku" in n_lower:
+        # Draw a mini neon Sudoku grid block
+        cx, cy = 400, 225
+        gx_min, gx_max = 280, 520
+        gy_min, gy_max = 105, 345
+        # Main subgrid boundaries
+        for i in range(4):
+            val = gx_min + i * 80
+            v_draw.line([(val, gy_min), (val, gy_max)], fill=color_accent, width=3)
+            val_y = gy_min + i * 80
+            v_draw.line([(gx_min, val_y), (gx_max, val_y)], fill=color_accent, width=3)
+        # Inner fine grid lines
+        for i in range(1, 9):
+            if i % 3 != 0:
+                val = gx_min + int(i * 26.6)
+                v_draw.line([(val, gy_min), (val, gy_max)], fill=color_accent_dim, width=1)
+                val_y = gy_min + int(i * 26.6)
+                v_draw.line([(gx_min, val_y), (gx_max, val_y)], fill=color_accent_dim, width=1)
+        # Sample numbers
+        digits = [("5", 0, 0), ("3", 1, 0), ("7", 2, 0),
+                  ("6", 0, 1), ("1", 1, 1), ("9", 2, 1),
+                  ("8", 0, 2), ("4", 1, 2), ("2", 2, 2)]
+        for d, r, c in digits:
+            x = gx_min + r * 80 + 40
+            y = gy_min + c * 80 + 40
+            v_draw.text((x, y), d, fill=color_accent, anchor="mm")
     elif "blackjack" in n_lower:
         # Playing cards
         def draw_card(x, y, val):
@@ -537,6 +563,23 @@ def generate_banner(name, category, filename):
         for i, h in enumerate(bar_heights):
             x = 230 + i * 50
             v_draw.rectangle([x, 320 - h, x + 30, 320], fill=color_accent)
+    elif "pathfinding" in n_lower or "visualizer" in n_lower:
+        # A grid with a path being found
+        cx, cy = 400, 225
+        # draw grid base
+        for r in range(5):
+            for c in range(8):
+                x = cx - 160 + c * 40
+                y = cy - 100 + r * 40
+                v_draw.rectangle([x, y, x + 35, y + 35], fill=(255,255,255,10), outline=color_accent_dim, width=1)
+        # draw start and end
+        v_draw.ellipse([cx - 150, cy - 90, cx - 135, cy - 75], fill=(16, 185, 129)) # Start
+        v_draw.ellipse([cx + 130, cy + 70, cx + 145, cy + 85], fill=(239, 68, 68)) # End
+        # draw a path
+        pts = [(cx - 142, cy - 82), (cx - 102, cy - 82), (cx - 102, cy - 42), (cx - 62, cy - 42), (cx - 62, cy - 2), (cx + 18, cy - 2), (cx + 18, cy + 38), (cx + 58, cy + 38), (cx + 58, cy + 78), (cx + 138, cy + 78)]
+        v_draw.line(pts, fill=color_accent, width=4, joint="round")
+        # draw a wall
+        v_draw.rectangle([cx - 20, cy - 100, cx + 15, cy + 15], fill=color_accent)
     else:
         # Default nice abstract waves
         points = []
@@ -596,6 +639,7 @@ projects = [
     ("Simon Says", "games", "simon-says.webp"),
     ("Tic Tac Toe", "games", "tic-tac-toe.webp"),
     ("Spot the Difference", "games", "spot-the-difference.webp"),
+    ("Sudoku Solver & Game", "games", "sudoku-game.webp"),
     ("Productive Pet", "utilities", "productive-pet.webp"),
     ("Progress Tracker", "utilities", "progress-tracker.webp"),
     ("Reverse Hangman", "games", "reverse-hangman.webp"),
@@ -634,6 +678,7 @@ projects = [
     ("Caesar Cipher", "utilities", "caesar-cipher.webp"),
     ("Unit Converter", "utilities", "unit-converter.webp"),
     ("Budget Tracker", "utilities", "budget-tracker.webp"),
+    ("Pathfinding Visualizer", "utilities", "pathfinding-visualizer.webp"),
 ]
 
 # Run generation

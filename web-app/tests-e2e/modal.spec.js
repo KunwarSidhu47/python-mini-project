@@ -12,7 +12,8 @@ test.describe('Modal Lifecycle & Focus Trapping', () => {
     await expect(page.locator('body')).toHaveClass(/sidebar-active/);
 
     // Get the first project card's "Try It" button
-    const firstCardPlayBtn = page.locator('.project-card .btn-play').first();
+    // Target #projectsSection specifically so that dynamic 'Recently Viewed' additions don't shift the locator
+    const firstCardPlayBtn = page.locator('#projectsSection .project-card .btn-play').first();
     await expect(firstCardPlayBtn).toBeVisible();
 
     // Focus and click the play button

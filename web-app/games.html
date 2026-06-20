@@ -600,6 +600,26 @@
             <div
               class="project-card"
               data-category="games"
+              data-project="sudoku-game"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/sudoku-game.webp"
+                alt="Sudoku Solver &amp; Game"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play" aria-label="Play Sudoku Solver &amp; Game">Try It</button>
+              </div>
+
+              <h3>Sudoku Solver &amp; Game</h3>
+              <p>Interactive Sudoku puzzle with levels and visual backtracking solver.</p>
+            </div>
+
+
+            <div
+              class="project-card"
+              data-category="games"
               data-project="whack-a-mole"
             >
               <img
@@ -723,21 +743,20 @@
     <script defer src="js/projects/simon-says.js"></script>
     <script defer src="js/projects/flappy-game.js"></script>
     <script defer src="js/projects/tic-tac-toe.js"></script>
-    <script defer src="js/projects/2048-game.js"></script>
-    <script defer src="js/projects/dots-boxes.js"></script>
-    <script defer src="js/projects/emoji-memory-game.js"></script>
     <script defer src="js/projects/number-converter.js"></script>
-    <script defer src="js/projects/password-forge.js"></script>
     <script defer src="js/projects/typing-speed-tester.js"></script>
-    <script defer src="js/projects/whack-a-mole.js"></script>
     <script defer src="js/projects/word-scramble.js"></script>
-    <script defer src="js/projects/snake.js"></script>
     <script defer src="js/projects/spot-the-difference.js"></script>
+    <script defer src="js/projects/sudoku-game.js"></script>
     <script defer src="js/projects/number-sliding-puzzle.js"></script>
     <script defer src="js/projects.js"></script>
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script defer type="module" src="js/main.js"></script>
-    <script>lucide.createIcons();</script>
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      });
+    </script>
 
 </body>
 </html>

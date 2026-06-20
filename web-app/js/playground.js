@@ -808,7 +808,119 @@
       if (cmView) cmView.focus();
     });
   }
+  /* ──────────────────────────────────────────────────────────────
+     Copy Code Button — Issue #1215
+     Copy editor code to clipboard with visual feedback
+     ────────────────────────────────────────────────────────────── */
+  var copyEditorCodeBtn = $id("copyEditorCode");
 
+  if (copyEditorCodeBtn) {
+    copyEditorCodeBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+
+      var code = getCode();
+
+      if (!code.trim()) {
+        copyEditorCodeBtn.textContent = "Nothing to copy";
+        copyEditorCodeBtn.classList.add("copy-error");
+        setTimeout(function () {
+          copyEditorCodeBtn.innerHTML =
+            '<i aria-hidden="true" class="fas fa-copy"></i> Copy';
+          copyEditorCodeBtn.classList.remove("copy-error");
+        }, 1500);
+        return;
+      }
+
+      // Use same copy logic as copyButton.js module
+      function fallbackCopy(text) {
+        return new Promise(function (resolve, reject) {
+          var textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          textarea.style.opacity = "0";
+          textarea.setAttribute("aria-hidden", "true");
+          textarea.setAttribute("tabindex", "-1");
+
+          document.body.appendChild(textarea);
+
+          try {
+            textarea.select();
+            var success = document.execCommand("copy");
+            if (success) {
+              resolve();
+            } else {
+              reject(new Error("execCommand copy failed"));
+            }
+          } catch (error) {
+            reject(error);
+          } finally {
+            document.body.removeChild(textarea);
+          }
+        });
+      }
+
+      var copyPromise =
+        navigator.clipboard && navigator.clipboard.writeText
+          ? navigator.clipboard.writeText(code)
+          : fallbackCopy(code);
+
+      copyPromise
+        .then(function () {
+          // Success feedback
+          copyEditorCodeBtn.innerHTML =
+            '<i aria-hidden="true" class="fas fa-check"></i> Copied!';
+          copyEditorCodeBtn.classList.add("copy-success");
+          copyEditorCodeBtn.setAttribute("aria-label", "Code copied to clipboard");
+
+          setTimeout(function () {
+            copyEditorCodeBtn.innerHTML =
+              '<i aria-hidden="true" class="fas fa-copy"></i> Copy';
+            copyEditorCodeBtn.classList.remove("copy-success");
+            copyEditorCodeBtn.setAttribute(
+              "aria-label",
+              "Copy code to clipboard"
+            );
+          }, 2000);
+        })
+        .catch(function (error) {
+          // Error feedback
+          console.error("Copy failed:", error);
+          copyEditorCodeBtn.textContent = "Copy failed";
+          copyEditorCodeBtn.classList.add("copy-error");
+          copyEditorCodeBtn.setAttribute("aria-label", "Copy failed, try again");
+
+          setTimeout(function () {
+            copyEditorCodeBtn.innerHTML =
+              '<i aria-hidden="true" class="fas fa-copy"></i> Copy';
+            copyEditorCodeBtn.classList.remove("copy-error");
+            copyEditorCodeBtn.setAttribute(
+              "aria-label",
+              "Copy code to clipboard"
+            );
+          }, 2000);
+        });
+    });
+  }
+
+  // Keyboard shortcut for copy: Ctrl+Shift+C in editor
+  if (cmView) {
+    document.addEventListener("keydown", function (event) {
+      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.code === "KeyC") {
+        // Check if focus is in the editor
+        if (
+          editorMount &&
+          (editorMount.contains(document.activeElement) ||
+            document.activeElement === editorMount)
+        ) {
+          event.preventDefault();
+          if (copyEditorCodeBtn) {
+            copyEditorCodeBtn.click();
+          }
+        }
+      }
+    });
+  }
   if (saveDraftBtn) {
     saveDraftBtn.addEventListener("click", function () {
       var draftName = prompt("Enter a name for this draft:");
