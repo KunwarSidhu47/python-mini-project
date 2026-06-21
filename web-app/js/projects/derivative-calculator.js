@@ -45,11 +45,33 @@ function getDerivativeCalculatorHTML() {
                 line-height: 1.6;
             }
 
+            .control-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.45rem;
+                text-align: left;
+            }
+
+            .control-group label {
+                font-weight: 600;
+                color: var(--text-secondary);
+            }
+
+            .control-group input {
+                padding: 0.7rem;
+                border: 2px solid var(--border-color);
+                border-radius: 10px;
+                background: var(--surface-color);
+                color: var(--text-primary);
+                font-size: 1rem;
+                width: 100%;
+            }
+
             .derivative-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
                 gap: 1rem;
-                margin-top: 1rem;
+                margin: 1rem 0;
             }
 
             .derivative-actions {
@@ -69,37 +91,6 @@ function getDerivativeCalculatorHTML() {
                 white-space: pre-line;
                 min-height: 110px;
                 line-height: 1.7;
-            }
-            input {
-                padding: 15px;
-                border-radius: 30px;
-                background-color: var(--bg-color);
-                outline: none;
-                border: 1px solid var(--border-color);
-                color: var(--text-color);
-                width: 100%;
-            }
-
-            button {
-                background: var(--primary-color);
-                color: white;
-                border: none;
-                padding: 12px 24px;
-                border-radius: 30px;
-                cursor: pointer;
-                font-weight: 600;
-                font-size: 0.95rem;
-                transition: all 0.2s ease;
-            }
-
-            button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-                filter: brightness(1.05);
-            }
-
-            button:active {
-                transform: translateY(0);
             }
         </style>
     `;

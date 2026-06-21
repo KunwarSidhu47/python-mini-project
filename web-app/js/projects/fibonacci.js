@@ -17,10 +17,44 @@ function getFibonacciHTML() {
             </div>
         </div>
         
-        <style>
+           <style>
             .fibonacci-container {
                 padding: 2rem;
                 text-align: center;
+            }
+
+            .controls {
+                display: flex;
+                gap: 15px;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .controls label {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 1rem;
+                font-weight: 500;
+                color: var(--text-secondary);
+            }
+
+            #fibTerms {
+                padding: 12px 16px;
+                background-color: var(--bg-color);
+                color: var(--text-color);
+                border: 2px solid var(--border-color);
+                outline: none;
+                border-radius: 30px;
+                width: 80px;
+                text-align: center;
+                font-size: 1rem;
+                transition: border-color 0.3s ease;
+            }
+
+            #fibTerms:focus {
+                border-color: var(--accent);
             }
             
             .fib-display {
@@ -48,45 +82,11 @@ function getFibonacciHTML() {
                 max-width: 100%;
                 height: auto;
             }
-            #fibTerms{
-                padding:13px;
-                background-color:var(--bg-color);
-                color: var(--text-color);
-                border:1px solid var(--text-color);
-                outline:none;
-                border-radius:30px;
-            }
-            .controls{
-                display:flex;
-                gap:15px;
-                align-items:center;
-                justify-content:center;
-            }
-            .fib-error{
-                color:red;
-                font-weight:bold;
-                margin-top:1rem;
-            }
-            .btn-generate {
-                background: var(--primary-color);
-                color: white;
-                border: none;
-                padding: 12px 28px;
-                border-radius: 30px;
-                cursor: pointer;
-                font-weight: 600;
-                font-size: 1rem;
-                transition: all 0.2s ease;
-            }
 
-            .btn-generate:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-                filter: brightness(1.05);
-            }
-
-            .btn-generate:active {
-                transform: translateY(0);
+            .fib-error {
+                color: var(--danger-color);
+                font-weight: bold;
+                margin-top: 1rem;
             }
         </style>
     `;

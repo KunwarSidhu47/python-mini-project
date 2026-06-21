@@ -21,7 +21,7 @@ function getProgressionRecognizerHTML() {
             </div>
         </div>
 
-        <style>
+         <style>
             .progression-container {
                 text-align: center;
                 padding: 1.5rem;
@@ -55,10 +55,13 @@ function getProgressionRecognizerHTML() {
                 background: var(--surface-color);
                 color: var(--text-primary);
                 font-size: 1rem;
+                width: 100%;
             }
 
             .progression-actions {
-                margin: 1rem 0;
+                margin: 1.5rem 0;
+                display: flex;
+                justify-content: center;
             }
 
             .progression-output {
@@ -70,10 +73,6 @@ function getProgressionRecognizerHTML() {
                 line-height: 1.7;
                 white-space: pre-line;
                 min-height: 90px;
-            }
-            .btn-primary{
-                padding:15px;
-                border-radius:30px;
             }
         </style>
     `;

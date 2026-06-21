@@ -53,312 +53,272 @@ function getPascalTriangleHTML() {
             </div>
         </div>
         
-        <style>
-            /* Layout & Grid Grid system */
-            .pascal-grid {
-                display: grid;
-                grid-template-columns: 280px 1fr;
-                gap: 1rem;
-                align-items: start;
-                max-width: 950px;
-                margin: 0 auto;
-                padding: 0.25rem;
-            }
-            
-            /* Sidebar Styling */
-            .pascal-sidebar {
-                background: rgba(255, 255, 255, 0.03);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.06);
-                border-radius: 12px;
-                padding: 1rem;
-                display: flex;
-                flex-direction: column;
-                gap: 0.8rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            }
-            
-            .pascal-header h2 {
-                margin: 0 0 0.25rem 0;
-                font-size: 1.15rem;
-                font-weight: 700;
-                color: var(--text);
-            }
-            
-            .pascal-desc {
-                margin: 0;
-                font-size: 0.78rem;
-                color: var(--text-secondary);
-                line-height: 1.3;
-            }
-            
-            .sidebar-section {
-                display: flex;
-                flex-direction: column;
-                gap: 0.4rem;
-                border-top: 1px solid rgba(255, 255, 255, 0.08);
-                padding-top: 0.75rem;
-            }
-            
-            .section-label {
-                font-size: 0.68rem;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                color: var(--text-secondary);
-                opacity: 0.8;
-                font-weight: 700;
-            }
-            
-            .controls-group {
-                display: flex;
-                flex-direction: column;
-                gap: 0.3rem;
-            }
-            
-            .controls-group label {
-                font-size: 0.72rem;
-                color: var(--text-secondary);
-                font-weight: 500;
-            }
-            
-            .input-with-btn {
-                display: flex;
-                gap: 0.4rem;
-            }
-            
-            .input-with-btn input {
-                flex: 1;
-                padding: 0.45rem;
-                font-size: 0.9rem;
-                border: 1.5px solid var(--border);
-                border-radius: 6px;
-                background: var(--surface-light);
-                color: var(--text);
-                text-align: center;
-                outline: none;
-                font-weight: bold;
-                transition: border-color 0.2s;
-            }
-            
-            .input-with-btn input:focus {
-                border-color: var(--accent);
-            }
-            
-            .btn-generate {
-                background: var(--accent);
-                color: white;
-                border: none;
-                padding: 0.45rem 0.85rem;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 0.85rem;
-                font-weight: 700;
-                transition: all 0.2s ease;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-            }
-            
-            .btn-generate:hover {
-                background: var(--accent-hover, #15805d);
-                transform: translateY(-1px);
-            }
-            
-            /* Mode Buttons Vertical */
-            .mode-buttons-vertical {
-                display: flex;
-                flex-direction: column;
-                gap: 0.35rem;
-            }
-            
-            .btn-mode {
-                padding: 8px 10px;
-                border-radius: 6px;
-                border: 1px solid rgba(255, 255, 255, 0.05);
-                background: rgba(255, 255, 255, 0.02);
-                color: var(--text);
-                cursor: pointer;
-                font-size: 0.78rem;
-                font-weight: 600;
-                text-align: left;
-                transition: all 0.2s ease;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-            
-            .btn-mode:hover {
-                background: rgba(255, 255, 255, 0.07);
-            }
-            
-            .btn-mode.active {
-                background: var(--accent-soft);
-                color: var(--accent);
-                border-color: var(--border-accent);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            }
-            
-            /* Legend styling */
-            .pascal-legend {
-                display: flex;
-                gap: 0.6rem;
-                flex-wrap: wrap;
-                color: var(--text-secondary);
-            }
-            
-            /* Info Box styling */
-            .pascal-info {
-                font-size: 0.78rem;
-                color: var(--text);
-                line-height: 1.35;
-                font-style: italic;
-                font-weight: 500;
-                min-height: auto;
-            }
-            
-            /* Interactive Display Styling - Extremely Compact */
-            .pascal-display-container {
-                background: rgba(0, 0, 0, 0.2);
-                border: 1px solid rgba(255, 255, 255, 0.04);
-                border-radius: 12px;
-                padding: 2.25rem 0.75rem 0.75rem; /* extra top padding for zoom button */
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-height: 320px;
-                overflow: auto;
-                box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
-                position: relative;
-            }
-            
-            .btn-zoom {
-                position: absolute;
-                top: 8px;
-                right: 8px;
-                background: rgba(255, 255, 255, 0.06);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                color: var(--text-secondary);
-                padding: 5px 10px;
-                border-radius: 6px;
-                font-size: 0.72rem;
-                font-weight: 600;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 4px;
-                z-index: 20;
-                transition: all 0.2s ease;
-            }
-            
-            .btn-zoom:hover {
-                background: var(--accent-soft);
-                color: var(--accent);
-                border-color: var(--border-accent);
-            }
-            
-            /* Zoom active state */
-            .pascal-grid.zoom-active {
-                grid-template-columns: 1fr;
-            }
-            
-            .pascal-grid.zoom-active .pascal-sidebar {
-                display: none;
-            }
-            
-            .pascal-grid.zoom-active .pascal-display-container {
-                min-height: 480px;
-                height: 65vh;
-            }
-            
-            .pascal-display {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin: auto;
-            }
-            
-            .pascal-row {
-                display: flex;
-                gap: 2px;
-                align-items: center;
-            }
-            
-            /* Honeycomb vertical interlocking */
-            .pascal-row + .pascal-row {
-                margin-top: calc(var(--hex-size, 40px) * -0.28);
-            }
-            
-            /* Hexagon Shapes */
-            .hexagon {
-                width: var(--hex-size, 40px);
-                height: calc(var(--hex-size, 40px) * 1.15);
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: z-index 0.2s ease;
-            }
-            
-            .hexagon-inner {
-                width: 100%;
-                height: 100%;
-                position: relative;
-                clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-                background: var(--hex-color, #1D9E75);
-                transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 700;
-                font-family: monospace;
-                color: white;
-                animation: fadeIn 0.4s ease forwards;
-                box-sizing: border-box;
-                padding: 2px;
-            }
-            
-            .hexagon:hover {
-                z-index: 15;
-            }
-            
-            .hexagon:hover .hexagon-inner {
-                transform: scale(1.22);
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-                cursor: pointer;
-            }
-            
-            /* Responsive layout break */
-            @media (max-width: 768px) {
-                .pascal-grid {
-                    grid-template-columns: 1fr;
-                    gap: 1rem;
-                }
-                .pascal-display-container {
-                    min-height: 300px;
-                    padding: 0.75rem 0.5rem;
-                }
-            }
-            .btn-generate {
-                background: var(--accent, #22c55e);
-                color: white;
-                border: none;
-                padding: 0.55rem 1rem;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 0.85rem;
-                font-weight: 700;
-                transition: all 0.2s ease;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            }
-
-            .btn-generate:hover {
-                background: var(--accent-hover, #16a34a);
-                transform: translateY(-2px);
-                box-shadow: 0 4px 8px rgba(34, 197, 94, 0.3);
-            }
-
-            .btn-generate:active {
-                transform: translateY(0);
-            }
-        </style>
+       <style>
+    /* Layout & Grid Grid system */
+    .pascal-grid {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 1rem;
+        align-items: start;
+        max-width: 950px;
+        margin: 0 auto;
+        padding: 0.25rem;
+    }
+    
+    /* Sidebar Styling */
+    .pascal-sidebar {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .pascal-header h2 {
+        margin: 0 0 0.25rem 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--text);
+    }
+    
+    .pascal-desc {
+        margin: 0;
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        line-height: 1.3;
+    }
+    
+    .sidebar-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 0.75rem;
+    }
+    
+    .section-label {
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-secondary);
+        opacity: 0.8;
+        font-weight: 700;
+    }
+    
+    .controls-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    
+    .controls-group label {
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+    
+    .input-with-btn {
+        display: flex;
+        gap: 0.4rem;
+    }
+    
+    .input-with-btn input {
+        flex: 1;
+        padding: 0.45rem;
+        font-size: 0.9rem;
+        border: 1.5px solid var(--border);
+        border-radius: 6px;
+        background: var(--surface-light);
+        color: var(--text);
+        text-align: center;
+        outline: none;
+        font-weight: bold;
+        transition: border-color 0.2s;
+    }
+    
+    .input-with-btn input:focus {
+        border-color: var(--accent);
+    }
+    
+    /* Mode Buttons Vertical */
+    .mode-buttons-vertical {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+    
+    .btn-mode {
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text);
+        cursor: pointer;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-align: left;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .btn-mode:hover {
+        background: rgba(255, 255, 255, 0.07);
+    }
+    
+    .btn-mode.active {
+        background: var(--accent-soft);
+        color: var(--accent);
+        border-color: var(--border-accent);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Legend styling */
+    .pascal-legend {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        color: var(--text-secondary);
+    }
+    
+    /* Info Box styling */
+    .pascal-info {
+        font-size: 0.78rem;
+        color: var(--text);
+        line-height: 1.35;
+        font-style: italic;
+        font-weight: 500;
+        min-height: auto;
+    }
+    
+    /* Interactive Display Styling - Extremely Compact */
+    .pascal-display-container {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-radius: 12px;
+        padding: 2.25rem 0.75rem 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 320px;
+        overflow: auto;
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        position: relative;
+    }
+    
+    .btn-zoom {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        z-index: 20;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-zoom:hover {
+        background: var(--accent-soft);
+        color: var(--accent);
+        border-color: var(--border-accent);
+    }
+    
+    /* Zoom active state */
+    .pascal-grid.zoom-active {
+        grid-template-columns: 1fr;
+    }
+    
+    .pascal-grid.zoom-active .pascal-sidebar {
+        display: none;
+    }
+    
+    .pascal-grid.zoom-active .pascal-display-container {
+        min-height: 480px;
+        height: 65vh;
+    }
+    
+    .pascal-display {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: auto;
+    }
+    
+    .pascal-row {
+        display: flex;
+        gap: 2px;
+        align-items: center;
+    }
+    
+    /* Honeycomb vertical interlocking */
+    .pascal-row + .pascal-row {
+        margin-top: calc(var(--hex-size, 40px) * -0.28);
+    }
+    
+    /* Hexagon Shapes */
+    .hexagon {
+        width: var(--hex-size, 40px);
+        height: calc(var(--hex-size, 40px) * 1.15);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: z-index 0.2s ease;
+    }
+    
+    .hexagon-inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        background: var(--hex-color, #1D9E75);
+        transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-family: monospace;
+        color: white;
+        animation: fadeIn 0.4s ease forwards;
+        box-sizing: border-box;
+        padding: 2px;
+    }
+    
+    .hexagon:hover {
+        z-index: 15;
+    }
+    
+    .hexagon:hover .hexagon-inner {
+        transform: scale(1.22);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        cursor: pointer;
+    }
+    
+    /* Responsive layout break */
+    @media (max-width: 768px) {
+        .pascal-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        .pascal-display-container {
+            min-height: 300px;
+            padding: 0.75rem 0.5rem;
+        }
+    }
+</style>
     `;
 }
 
