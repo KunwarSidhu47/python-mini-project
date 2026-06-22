@@ -40,39 +40,39 @@ function syncThemeColor(theme) {
 }
 
 function updateThemeToggleAria(isLightTheme) {
-    if (!themeToggle) return;
-    themeToggle.setAttribute(
-        'aria-label',
-        isLightTheme ? 'Switch to dark mode' : 'Switch to light mode'
-    );
+  if (!themeToggle) return;
+  themeToggle.setAttribute(
+    'aria-label',
+    isLightTheme ? 'Switch to dark mode' : 'Switch to light mode'
+  );
 }
 
 if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        syncThemeColor(newTheme);
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    syncThemeColor(newTheme);
 
-        themeToggle.innerHTML =
-            newTheme === 'light'
-                ? '<i class="fas fa-sun" aria-hidden="true"></i>'
-                : '<i class="fas fa-moon" aria-hidden="true"></i>';
-        updateThemeToggleAria(newTheme === 'light');
-    });
+    themeToggle.innerHTML =
+      newTheme === 'light'
+        ? '<i class="fas fa-sun" aria-hidden="true"></i>'
+        : '<i class="fas fa-moon" aria-hidden="true"></i>';
+    updateThemeToggleAria(newTheme === 'light');
+  });
 }
 
 const savedTheme = localStorage.getItem('theme') || 'dark';
 html.setAttribute('data-theme', savedTheme);
 syncThemeColor(savedTheme);
 if (themeToggle) {
-    themeToggle.innerHTML =
-        savedTheme === 'light'
-            ? '<i class="fas fa-sun" aria-hidden="true"></i>'
-            : '<i class="fas fa-moon" aria-hidden="true"></i>';
-    updateThemeToggleAria(savedTheme === 'light');
+  themeToggle.innerHTML =
+    savedTheme === 'light'
+      ? '<i class="fas fa-sun" aria-hidden="true"></i>'
+      : '<i class="fas fa-moon" aria-hidden="true"></i>';
+  updateThemeToggleAria(savedTheme === 'light');
 }
 function escapeHtml(str) {
   var d = document.createElement("div");
@@ -119,10 +119,10 @@ function showInfoModal(title, steps) {
     listEl.appendChild(li);
   });
 
-const toggleBackToTopButton = () => {
+  const toggleBackToTopButton = () => {
     if (!backToTopButton) return;
     backToTopButton.classList.toggle('visible', window.scrollY > 300);
-};
+  };
   overlay.classList.add("active");
 
   function closeModal() {
@@ -132,12 +132,12 @@ const toggleBackToTopButton = () => {
     overlay.removeEventListener("click", overlayClick);
   }
 
-if (backToTopButton) {
+  if (backToTopButton) {
     backToTopButton.addEventListener('click', () => {
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     });
-}
+  }
   function overlayClick(e) {
     if (e.target === overlay) closeModal();
   }
@@ -798,10 +798,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // Hide fixed-theme-toggle if sidebar is active
 
       const fixedThemeToggle = document.getElementById("fixed-theme-toggle");
-      if(showSidebar){
+      if (showSidebar) {
         fixedThemeToggle.style.display = "none";
       }
-      else{
+      else {
         fixedThemeToggle.style.display = "block";
       }
 
@@ -824,7 +824,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var q = query.toLowerCase();
 
       var catMatch = currentCategory === "all" || category === currentCategory;
-      
+
       // FIX FOR ISSUE #1032: Strict Title Matching
       // Removed description and hidden tag fuzzy-matching to prevent irrelevant 
       // projects (like FLAMES Game) from appearing for unrelated queries.
@@ -963,7 +963,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (noResultsMessage) noResultsMessage.style.display = "block";
       return;
     }
-    
+
     if (noResultsMessage) noResultsMessage.style.display = "none";
 
     if (resultsList) {
@@ -977,13 +977,13 @@ document.addEventListener("DOMContentLoaded", function () {
         var iconBox = document.createElement("div");
         iconBox.className = "dropdown-item-icon";
         var banner = project.card.querySelector(".card-banner");
-        projectCards.forEach(function(card) {
-        var banner = card.querySelector(".card-banner");
-        var title = card.querySelector("h3");
+        projectCards.forEach(function (card) {
+          var banner = card.querySelector(".card-banner");
+          var title = card.querySelector("h3");
 
-        if (banner && title) {
+          if (banner && title) {
             banner.alt = title.textContent.trim() + " project preview";
-        }
+          }
         });
         if (banner) {
           var img = document.createElement("img");
@@ -1364,8 +1364,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     });
-
-    
     // Clear content
     if (modalBody) {
       modalBody.innerHTML = "";

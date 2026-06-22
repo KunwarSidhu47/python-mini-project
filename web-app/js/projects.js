@@ -32,7 +32,8 @@ function getProjectHTML(projectName) {
         'bubble-sort': getBubbleSortHTML(),
         'quick-sort': getQuickSortHTML(),
         'fourier-series': getFourierSeriesHTML(),
-        'pathfinding-visualizer': getPathfindingVisualizerHTML()
+        'pathfinding-visualizer': getPathfindingVisualizerHTML(),
+        'tsp-visualizer': getTspVisualizerHTML()
     };
     
     return projects[projectName] || '<h2>Project Coming Soon!</h2>';
@@ -66,7 +67,8 @@ function initializeProject(projectName) {
         'reverse-hangman': initReverseHangman,
         'budget-tracker': initBudgetTracker,
         'fourier-series': initFourierSeries,
-        'pathfinding-visualizer': initPathfindingVisualizer
+        'pathfinding-visualizer': initPathfindingVisualizer,
+        'tsp-visualizer': initTspVisualizer
     };
     
     if (initializers[projectName]) {
@@ -3232,7 +3234,8 @@ function initializeProject(projectName) {
     "number-sliding-puzzle": "initNumberSlidingPuzzle",
     "budget-tracker": "initBudgetTracker",
     "fourier-series": "initFourierSeries",
-    "pathfinding-visualizer": "initPathfindingVisualizer"
+    "pathfinding-visualizer": "initPathfindingVisualizer",
+    "tsp-visualizer": "initTspVisualizer"
   };
 
   const initializerName = initializers[projectName];
