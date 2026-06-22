@@ -651,5 +651,22 @@
       "search"
     ],
     "path": "utilities/Pathfinding-Visualizer/Pathfinding-Visualizer.py"
+  },
+  {
+    "name": "TSP Visualizer",
+    "emoji": "🗺️",
+    "category": "utilities",
+    "difficulty": "advanced",
+    "description": "Visualize the Traveling Salesperson Problem (TSP) using Nearest Neighbor and Brute Force algorithms.",
+    "keywords": [
+      "tsp",
+      "visualizer",
+      "algorithm",
+      "salesperson",
+      "path",
+      "shortest",
+      "search"
+    ],
+    "path": "utilities/TSP-Visualizer/TSP-Visualizer.py"
   }
 ]

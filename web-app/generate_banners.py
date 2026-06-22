@@ -563,6 +563,13 @@ def generate_banner(name, category, filename):
         for i, h in enumerate(bar_heights):
             x = 230 + i * 50
             v_draw.rectangle([x, 320 - h, x + 30, 320], fill=color_accent)
+    elif "tsp" in n_lower or "salesperson" in n_lower:
+        # Nodes connected by a path
+        nodes = [(250, 150), (450, 100), (550, 250), (400, 350), (200, 300)]
+        for i in range(len(nodes)):
+            v_draw.line([nodes[i], nodes[(i+1)%len(nodes)]], fill=color_accent, width=4)
+        for x, y in nodes:
+            v_draw.ellipse([x-10, y-10, x+10, y+10], fill=(255,255,255), outline=color_accent, width=2)
     elif "pathfinding" in n_lower or "visualizer" in n_lower:
         # A grid with a path being found
         cx, cy = 400, 225
@@ -679,6 +686,7 @@ projects = [
     ("Unit Converter", "utilities", "unit-converter.webp"),
     ("Budget Tracker", "utilities", "budget-tracker.webp"),
     ("Pathfinding Visualizer", "utilities", "pathfinding-visualizer.webp"),
+    ("TSP Visualizer", "utilities", "tsp-visualizer.webp"),
 ]
 
 # Run generation
