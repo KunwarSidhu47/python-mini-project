@@ -618,6 +618,8 @@
       "grid"
     ],
     "path": "games/Sudoku-Game/Sudoku-Game.py"
+  },
+  {
     "name": "Fourier Series Visualizer",
     "emoji": "📈",
     "category": "math",
