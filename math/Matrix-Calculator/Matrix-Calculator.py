@@ -162,8 +162,8 @@ def main() -> None:
 
         elif choice in ["A", "S"]:
             try:
-                rows = get_int(prompt="➡️ Enter number of rows: ")
-                cols = get_int(prompt="➡️ Enter number of columns: ")
+                rows = get_int(prompt="➡️ Enter number of rows: ", min_value=1)
+                cols = get_int(prompt="➡️ Enter number of columns: ", min_value=1)
                 
                 print(f"\n📝 Enter elements for Matrix 1 ({rows}x{cols}) row by row (space separated):")
                 matrix1 = get_matrix_input(rows, cols)
@@ -185,14 +185,14 @@ def main() -> None:
 
         elif choice == "M":
             try:
-                r1 = get_int(prompt="➡️ Enter number of rows for Matrix 1: ")
-                c1 = get_int(prompt="➡️ Enter number of columns for Matrix 1: ")
+                r1 = get_int(prompt="➡️ Enter number of rows for Matrix 1: ", min_value=1)
+                c1 = get_int(prompt="➡️ Enter number of columns for Matrix 1: ", min_value=1)
                 
                 print(f"\n📝 Enter elements for Matrix 1 ({r1}x{c1}) row by row (space separated):")
                 matrix1 = get_matrix_input(r1, c1)
                     
-                r2 = get_int(prompt=f"\n➡️ Enter number of rows for Matrix 2 (MUST be {c1}): ")
-                c2 = get_int(prompt="➡️ Enter number of columns for Matrix 2: ")
+                r2 = get_int(prompt=f"\n➡️ Enter number of rows for Matrix 2 (MUST be {c1}): ", min_value=1)
+                c2 = get_int(prompt="➡️ Enter number of columns for Matrix 2: ", min_value=1)
                 
                 if c1 != r2:
                     print("❌ Error: Matrix 1 columns must equal Matrix 2 rows for multiplication.\n")
@@ -212,8 +212,8 @@ def main() -> None:
 
         elif choice == "T":
             try:
-                r = get_int(prompt="➡️ Enter number of rows: ")
-                c = get_int(prompt="➡️ Enter number of columns: ")
+                r = get_int(prompt="➡️ Enter number of rows: ", min_value=1)
+                c = get_int(prompt="➡️ Enter number of columns: ", min_value=1)
                 
                 print(f"\n📝 Enter elements for Matrix ({r}x{c}) row by row (space separated):")
                 matrix = get_matrix_input(r, c)
@@ -228,7 +228,7 @@ def main() -> None:
 
         elif choice == "D":
             try:
-                n = get_int(prompt="➡️ Enter size of square matrix (n x n): ")
+                n = get_int(prompt="➡️ Enter size of square matrix (n x n): ", min_value=1)
                 
                 print(f"\n📝 Enter elements for Matrix ({n}x{n}) row by row (space separated):")
                 matrix = get_matrix_input(n, n)
@@ -241,8 +241,8 @@ def main() -> None:
 
         elif choice == "R":
             try:
-                r = get_int(prompt="➡️ Enter number of rows: ")
-                c = get_int(prompt="➡️ Enter number of columns: ")
+                r = get_int(prompt="➡️ Enter number of rows: ", min_value=1)
+                c = get_int(prompt="➡️ Enter number of columns: ", min_value=1)
                 
                 print(f"\n📝 Enter elements for Matrix ({r}x{c}) row by row (space separated):")
                 matrix = get_matrix_input(r, c)
@@ -255,7 +255,7 @@ def main() -> None:
 
         elif choice == "I":
             try:
-                n = get_int(prompt="➡️ Enter size of square matrix (n x n): ")
+                n = get_int(prompt="➡️ Enter size of square matrix (n x n): ", min_value=1)
                 
                 print(f"\n📝 Enter elements for Matrix ({n}x{n}) row by row (space separated):")
                 matrix = get_matrix_input(n, n)
