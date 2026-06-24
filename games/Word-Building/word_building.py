@@ -12,11 +12,9 @@ def botTurn(letter, used_words):
     import data
     word = None
     try:
-        while True:
-            computer = (data.words[letter])[random.randint(0, len(data.words[letter]) - 1)]
-            if computer not in used_words:
-                word = computer
-                break
+        available = [w for w in data.words.get(letter, []) if w not in used_words]
+        if available:
+            word = random.choice(available)
     except:
         pass
     return word
