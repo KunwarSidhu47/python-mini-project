@@ -438,16 +438,19 @@
     "path": "math/Binary-Search/Binary-Search.py"
   },
   {
-    "name": "Bubble Sort Visualizer",
+    "name": "Multi-Algorithm Sorting Visualizer",
     "emoji": "🫧",
     "category": "math",
     "difficulty": "intermediate",
-    "description": "Watch the bubble sort algorithm sort a list of numbers step-by-step.",
+    "description": "Visualize Bubble Sort, Selection Sort, Insertion Sort, and Quick Sort step-by-step.",
     "keywords": [
-      "bubble",
+      "sorting",
       "sort",
       "visualizer",
       "algorithm",
+      "selection",
+      "insertion",
+      "quick",
       "math"
     ],
     "path": "math/Bubble-Sort/Bubble-Sort.py"
@@ -684,6 +687,8 @@
       "ai"
     ],
     "path": "games/Pygame-Chess/main.py"
+  },
+  {
     "name": "2048 Game",
     "emoji": "🔢",
     "category": "games",

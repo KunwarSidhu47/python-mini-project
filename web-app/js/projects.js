@@ -29,7 +29,7 @@ function getProjectHTML(projectName) {
         'reverse-hangman': () => getReverseHangmanHTML(),
         'budget-tracker': getBudgetTrackerHTML(),
         'snake-game': getSnakeGameHTML(),
-        'bubble-sort': getBubbleSortHTML(),
+        'sorting-visualizer': getSortingVisualizerHTML(),
         'quick-sort': getQuickSortHTML(),
         'fourier-series': getFourierSeriesHTML(),
         'merge-sort': getMergeSortHTML(),
@@ -1674,11 +1674,12 @@ const projectInstructions = {
       "Cuts search space in half each step"
     ]
   },
-  "bubble-sort": {
-    title: "🔄 How Bubble Sort Works",
+  "sorting-visualizer": {
+    title: "📊 How Sorting Visualizer Works",
     steps: [
-      "Enter an array of numbers",
-      "Watch the sorting visualization"
+     "Select your preferred sorting algorithm",
+     "Adjust array size and visualization speed",
+     "Watch comparing, swapping, and sorted states in real-time"
     ]
   },
   "quick-sort": {
@@ -3030,7 +3031,7 @@ function initializeProject(projectName) {
     "emoji-memory": "initEmojiMemoryGame",
     fibonacci: "initFibonacci",
     "binary-search": "initBinarySearch",
-    "bubble-sort": "initBubbleSort",
+    "sorting-visualizer": "initSortingVisualizer",
     "quick-sort": "initQuickSort",
     "merge-sort": "initMergeSort",
     "progression-recognizer": "initProgressionRecognizer",
