@@ -26,7 +26,7 @@ function getProjectHTML(projectName) {
         'sudoku-game': getSudokuGameHTML(),
         'unit-converter': getUnitConverterHTML(),
         'resume-analyzer': getResumeAnalyzerHTML(),
-        'reverse-hangman': () => getReverseHangmanHTML,
+        'reverse-hangman': () => getReverseHangmanHTML(),
         'budget-tracker': getBudgetTrackerHTML(),
         'snake-game': getSnakeGameHTML(),
         'bubble-sort': getBubbleSortHTML(),
