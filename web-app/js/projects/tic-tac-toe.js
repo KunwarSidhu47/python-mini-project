@@ -8,8 +8,25 @@
 // ── 1.  HTML Template ──────────────────────────────────────
 function getTicTacToeHTML() {
   return `
+  <div class="project-content">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0 1rem 0; width: 100%; border-bottom: 1px solid var(--border-color, #333); margin-bottom: 1rem;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <h2 style="margin: 0; display: inline-block; font-size: 1.5rem;">❌⭕ Tic Tac Toe</h2>
+      <button 
+        class="info-tip-btn" 
+        id="ticTacToeInfoBtn" 
+        style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--accent, #22c55e); padding: 0; line-height: 1; display: inline-flex; align-items: center; transition: transform 0.2s ease;"
+        aria-label="How to play Tic Tac Toe"
+        onmouseover="this.style.transform='scale(1.2)'"
+        onmouseout="this.style.transform='scale(1)'"
+      >
+        ⓘ
+      </button>
+    </div>
+  </div>
+  
 <div class="wrap">
- 
+
   <!-- SETUP SCREEN -->
   <div id="screen-setup" class="screen screen--active">
     <div class="logo">
@@ -135,6 +152,7 @@ function getTicTacToeHTML() {
     <div class="result-text" id="res-text">Player 1 wins!</div>
     <button class="btn-primary" id="next-btn" style="font-size:0.9rem;padding:11px">Next Round →</button>
   </div>
+</div>
 </div>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

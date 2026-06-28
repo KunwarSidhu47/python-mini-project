@@ -1292,13 +1292,27 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       setupModalInfoButton(name);
 
-      // Inject info button
+      // Inject info button - FIXED for Tic Tac Toe and all projects
       var projectContent = modalBody.querySelector(".project-content");
       if (projectContent) {
+        // First, check if there's already an info button (to avoid duplicates)
+        if (projectContent.querySelector(".inline-info-btn")) {
+        // Info button already exists, skip injection
+        console.log('ℹ️ Info button already exists for', name);
+      } else {
+        // Look for any heading element
         var firstHeading = projectContent.querySelector("h2, h3, .resume-analyzer-copy h2, .pet-title");
+    
+        // Special case for Tic Tac Toe - look for the heading inside project-content
         if (!firstHeading) {
+          firstHeading = projectContent.querySelector('[style*="display: flex"] h2');
+        }
+    
+        if (!firstHeading) {
+          // Look for any element that might be a title
           firstHeading = projectContent.querySelector('[class*="title"], [class*="header"] h2');
         }
+    
         if (firstHeading && !projectContent.querySelector(".inline-info-btn")) {
           var infoBtn = document.createElement("button");
           infoBtn.className = "inline-info-btn";
@@ -1316,7 +1330,9 @@ document.addEventListener("DOMContentLoaded", function () {
             e.stopPropagation();
             if (typeof getProjectInstructions === "function") {
               var info = getProjectInstructions(name);
-              showInfoModal(info.title, info.steps);
+              if (info && typeof showInfoModal === "function") {
+                showInfoModal(info.title, info.steps);
+              }
             }
           });
 
@@ -1326,7 +1342,8 @@ document.addEventListener("DOMContentLoaded", function () {
           firstHeading.appendChild(infoBtn);
         }
       }
-    });
+    }
+  });
 
     // Setup focus trap
     if (removeTrap) removeTrap();
