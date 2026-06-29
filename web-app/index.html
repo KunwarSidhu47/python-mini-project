@@ -388,6 +388,27 @@
       </div>
     </section>
 
+    <!-- Bookmarked Projects Section -->
+<section class="projects-section" id="bookmarkedProjectsSection">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">
+        ⭐ Bookmarked Projects
+        <span id="bookmarkCountBadge"></span>
+      </h2>
+    </div>
+
+    <div class="projects-grid" id="bookmarkedProjectsGrid"></div>
+
+    <div id="noBookmarksMessage" class="empty-state">
+      <p>No bookmarked projects yet.</p>
+      <p class="empty-state-hint">
+        Click the ⭐ icon on any project to bookmark it.
+      </p>
+    </div>
+  </div>
+</section>
+
     <!-- Recently Viewed Section -->
     <section class="projects-section" id="recentlyViewedSection">
       <div class="container">
@@ -666,6 +687,15 @@
     (function () {
       const projectsGrid = document.getElementById("projectsGrid");
       if (!projectsGrid) return;
+
+      const bookmarkedGrid =
+document.getElementById("bookmarkedProjectsGrid");
+
+const bookmarkBadge =
+document.getElementById("bookmarkCountBadge");
+
+const noBookmarks =
+document.getElementById("noBookmarksMessage");
 
       // ALL projects from your js/projects/ folder
       const projectsData = [
@@ -1043,6 +1073,46 @@
         localStorage.setItem("favorites", JSON.stringify(favorites));
       }
 
+      function renderBookmarkedProjects() {
+
+    if (!bookmarkedGrid) return;
+
+    bookmarkedGrid.innerHTML = "";
+
+    const favs =
+        JSON.parse(localStorage.getItem("favorites") || "[]");
+
+    bookmarkBadge.textContent =
+        "(" + favs.length + ")";
+
+    if (favs.length === 0) {
+
+        noBookmarks.style.display = "block";
+
+        return;
+    }
+
+    noBookmarks.style.display = "none";
+
+    favs.forEach(projectId => {
+
+        const card =
+        document.querySelector(
+            `.project-card[data-project="${projectId}"]`
+        );
+
+        if(card){
+
+            bookmarkedGrid.appendChild(
+                card.cloneNode(true)
+            );
+
+        }
+
+    });
+
+}
+
       projectsData.forEach((proj) => {
         const card = document.createElement("div");
         card.className = "project-card";
@@ -1091,6 +1161,7 @@
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
       );
+      renderBookmarkedProjects();
 
       // Wire up buttons
       setTimeout(() => {
@@ -1130,6 +1201,7 @@
             }
 
             localStorage.setItem("favorites", JSON.stringify(favs));
+            renderBookmarkedProjects();
 
             // If we're on favorites tab, refresh the view
             const activeCategory = document

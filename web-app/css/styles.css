@@ -7199,3 +7199,56 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
     }
 
 }
+
+/* ============================
+   Bookmarked Projects Section
+============================ */
+
+#bookmarkedProjectsSection {
+  margin-bottom: 50px;
+}
+
+#bookmarkedProjectsSection .section-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#bookmarkCountBadge {
+  font-size: 0.9rem;
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+#bookmarkedProjectsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+#noBookmarksMessage {
+  text-align: center;
+  padding: 40px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  color: var(--text-secondary);
+  margin-top: 20px;
+}
+
+#noBookmarksMessage p:first-child {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+@media (max-width: 992px) {
+  #bookmarkedProjectsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  #bookmarkedProjectsGrid {
+    grid-template-columns: 1fr;
+  }
+}
