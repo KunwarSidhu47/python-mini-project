@@ -77,7 +77,7 @@ class Game2048:
 
         self.instruction_label = tk.Label(
             root,
-            text="🎮 Controls: ← ↑ → ↓ | Merge same numbers | Goal: 2048 🎯",
+            text="🎮 Controls: WASD / ← ↑ → ↓ | Merge same numbers | Goal: 2048 🎯",
             font=("Arial", 10),
             fg="#6a635b",
         )
@@ -262,29 +262,21 @@ class Game2048:
         return True
 
     def handle_keypress(self, event):
-        key = event.keysym
-        moved = False
-
-        if key == "Left":
-            moved = self.move_left()
-
-        elif key == "Right":
-            moved = self.move_right()
-
-        elif key == "Up":
-            moved = self.move_up()
-
-        elif key == "Down":
-            moved = self.move_down()
-
-        else:
+        key = event.keysym.lower() if len(event.keysym) == 1 else event.keysym
+        move_map = {
+            "Left": self.move_left,  "a": self.move_left,
+            "Right": self.move_right, "d": self.move_right,
+            "Up": self.move_up,      "w": self.move_up,
+            "Down": self.move_down,  "s": self.move_down,
+        }
+        if key not in move_map:
             return
-        
-        
+
+        moved = move_map[key]()
 
         if moved:
             self.add_new_tile()
-            self.moves_left -=1
+            self.moves_left -= 1
 
             if self.score > self.high_score:
                 self.high_score = self.score
@@ -294,9 +286,7 @@ class Game2048:
 
         # FIXED BUG:
         # Game over is now checked even when no movement happens
-        if self.check_game_over():
-            self.game_over()
-        if self.moves_left<=0:
+        if self.check_game_over() or self.moves_left <= 0:
             self.game_over()
 
     def game_over(self):
