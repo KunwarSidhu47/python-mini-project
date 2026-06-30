@@ -87,6 +87,8 @@ class Game2048:
         self.board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
 
         self.game_over_label = None
+        self.win_label = None
+        self.game_won = False
 
         self.create_grid()
         self.start_new_game()
@@ -146,6 +148,7 @@ class Game2048:
         self.board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
         self.score = 0
         self.moves_left = TOTAL_MOVES
+        self.game_won = False
 
         self.add_new_tile()
         self.add_new_tile()
@@ -261,6 +264,9 @@ class Game2048:
 
         return True
 
+    def check_win(self):
+        return any(2048 in row for row in self.board)
+
     def handle_keypress(self, event):
         key = event.keysym.lower() if len(event.keysym) == 1 else event.keysym
         move_map = {
@@ -284,10 +290,31 @@ class Game2048:
 
             self.update_grid()
 
-        # FIXED BUG:
-        # Game over is now checked even when no movement happens
+            if not self.game_won and self.check_win():
+                self.you_win()
+                return
+
+        # Check for game over even if no movement happens
         if self.check_game_over() or self.moves_left <= 0:
             self.game_over()
+
+    def you_win(self):
+
+        if self.game_won:
+            return
+
+        self.game_won = True
+
+        self.root.unbind("<Key>")
+
+        self.win_label = tk.Label(
+            self.root,
+            text="🎉 YOU WIN! 🎉",
+            font=("Arial", 24, "bold"),
+            fg="green"
+        )
+
+        self.win_label.grid(pady=10)
 
     def game_over(self):
 
@@ -314,6 +341,11 @@ class Game2048:
             self.game_over_label.destroy()
             self.game_over_label = None
 
+        # Remove old win label
+        if self.win_label is not None:
+            self.win_label.destroy()
+            self.win_label = None
+
         self.start_new_game()
 
         # Re-enable keyboard controls
@@ -324,6 +356,7 @@ def main():
     root = tk.Tk()
     game = Game2048(root)
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()
