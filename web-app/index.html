@@ -1198,9 +1198,11 @@ document.getElementById("noBookmarksMessage");
         const starClass = isFavorite ? "fas fa-star" : "far fa-star";
 
         card.innerHTML = `
+    ${proj.difficulty ? `
     <div class="difficulty-badge ${proj.difficulty.toLowerCase()}">
         ${proj.difficulty}
     </div>
+    ` : ''}
 
     <img class="card-banner"
          src="assets/banners/${proj.project}.webp?v=2"
