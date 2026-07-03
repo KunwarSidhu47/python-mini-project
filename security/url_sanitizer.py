@@ -1,0 +1,141 @@
+"""
+URL sanitization and validation wrapper.
+
+Addresses CVE-2025-0938 (urllib.parse)
+"""
+
+import re
+from urllib.parse import urlparse, urlunparse
+from typing import Optional, List, Set
+from ipaddress import ip_address, ip_network
+import warnings
+
+from .exceptions import InvalidURLError, SecurityWarning
+
+
+class URLSanitizer:
+    """
+    Secure URL validation and sanitization.
+    """
+    
+    BLOCKED_NETWORKS: Set[str] = {
+        "0.0.0.0/8", "10.0.0.0/8", "127.0.0.0/8",
+        "169.254.0.0/16", "172.16.0.0/12", "192.168.0.0/16",
+        "224.0.0.0/4", "240.0.0.0/4",
+        "::1/128", "fc00::/7", "fe80::/10", "ff00::/8",
+    }
+    
+    BLOCKED_SCHEMES: Set[str] = {
+        "file", "gopher", "data", "javascript", "vbscript",
+        "about", "view-source", "ws", "wss"
+    }
+    
+    def __init__(
+        self,
+        allowed_schemes: Optional[List[str]] = None,
+        allow_localhost: bool = False,
+        allow_private: bool = False,
+        max_length: int = 2048
+    ):
+        self.allowed_schemes = allowed_schemes or ['http', 'https']
+        self.allow_localhost = allow_localhost
+        self.allow_private = allow_private
+        self.max_length = max_length
+        self._blocked_networks = [ip_network(net) for net in self.BLOCKED_NETWORKS]
+    
+    def validate_url(self, url: str) -> str:
+        """Validate and sanitize a URL."""
+        if not url or not isinstance(url, str):
+            raise InvalidURLError("URL must be a non-empty string")
+        
+        if len(url) > self.max_length:
+            raise InvalidURLError(f"URL exceeds maximum length of {self.max_length}")
+        
+        url = url.strip()
+        
+        # Check if URL has a valid scheme
+        if not re.match(r'^[a-zA-Z][a-zA-Z0-9+.-]*://', url):
+            # For security, only add http:// if the URL looks like a domain/path
+            # Don't add http:// to javascript:, data:, etc.
+            blocked_prefixes = ['javascript:', 'data:', 'vbscript:', 'about:', 'gopher:', 'file:']
+            if not any(url.lower().startswith(bad) for bad in blocked_prefixes):
+                url = f"http://{url}"
+        
+        try:
+            parsed = urlparse(url)
+        except Exception as e:
+            raise InvalidURLError(f"Failed to parse URL: {str(e)}")
+        
+        # Check for blocked schemes
+        if parsed.scheme.lower() in self.BLOCKED_SCHEMES:
+            raise InvalidURLError(f"Blocked scheme: {parsed.scheme}")
+        
+        if parsed.scheme.lower() not in self.allowed_schemes:
+            raise InvalidURLError(
+                f"Invalid scheme '{parsed.scheme}'. "
+                f"Allowed: {', '.join(self.allowed_schemes)}"
+            )
+        
+        host = parsed.hostname
+        if not host:
+            raise InvalidURLError("URL must have a valid hostname")
+        
+        self._validate_ip_address(host)
+        self._validate_characters(url)
+        
+        sanitized = urlunparse((
+            parsed.scheme,
+            parsed.netloc,
+            parsed.path or '/',
+            parsed.params,
+            parsed.query,
+            parsed.fragment
+        ))
+        
+        return sanitized
+    
+    def _validate_ip_address(self, host: str) -> None:
+        """Validate IP address against blocked networks."""
+        try:
+            ip = ip_address(host)
+        except ValueError:
+            return
+        
+        for network in self._blocked_networks:
+            if ip in network:
+                if not (self.allow_localhost and ip.is_loopback):
+                    if not (self.allow_private and ip.is_private):
+                        raise InvalidURLError(f"Blocked IP address: {host}")
+    
+    def _validate_characters(self, url: str) -> None:
+        """Check for unsafe or malicious characters."""
+        if '\0' in url:
+            raise InvalidURLError("URL contains null byte")
+        
+        if any(ord(c) < 32 for c in url):
+            raise InvalidURLError("URL contains control characters")
+        
+        if '..' in url:
+            warnings.warn(
+                "URL contains '..' - potential path traversal",
+                SecurityWarning,
+                stacklevel=2
+            )
+    
+    def is_safe_url(self, url: str) -> bool:
+        """Check if URL is safe without raising exceptions."""
+        try:
+            self.validate_url(url)
+            return True
+        except InvalidURLError:
+            return False
+
+
+def validate_url(
+    url: str,
+    allowed_schemes: Optional[List[str]] = None,
+    **kwargs
+) -> str:
+    """Convenience function to validate a URL."""
+    sanitizer = URLSanitizer(allowed_schemes=allowed_schemes, **kwargs)
+    return sanitizer.validate_url(url)

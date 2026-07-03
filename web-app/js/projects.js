@@ -18,7 +18,7 @@ function getProjectHTML(projectName) {
         'prime-analyzer': getPrimeAnalyzerHTML(),
         'projectile-motion': getProjectileMotionHTML(),
         'coordinate-polar-transform': getCoordinatePolarTransformHTML(),
-        'derivative-calculator': getDerivativeCalculatorHTML(),
+        'complete-calculus-engine': getCompleteCalculusEngineHTML(),
         'morse-code': getMorseCodeHTML(),
         'tower-of-hanoi': getTowerOfHanoiHTML(),
         'nqueens' : getNQueensHTML(),
@@ -40,41 +40,22 @@ function getProjectHTML(projectName) {
     return projects[projectName] || '<h2>Project Coming Soon!</h2>';
 }
 
+function toPascalCase(str) {
+    if (str === "2048-game") return "2048Game";
+    if (str === "nqueens") return "NQueens";
+
+    return str
+        .split("-")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join("");
+}
+
 function initializeProject(projectName) {
-    const initializers = {
-        'rock-paper-scissor': initRockPaperScissor,
-        'dice-rolling': initDiceRolling,
-        'coin-flip': initCoinFlip,
-        'number-guessing': initNumberGuessing,
-        'hangman': initHangman,
-        'flames': initFlames,
-        'fibonacci': initFibonacci,
-        'progression-recognizer': initProgressionRecognizer,
-        'pascal-triangle': initPascalTriangle,
-        'armstrong': initArmstrong,
-        'calculator': initCalculator,
-        'collatz': initCollatz,
-        'prime-analyzer': initPrimeAnalyzer,
-        'projectile-motion': initProjectileMotion,
-        'coordinate-polar-transform': initCoordinatePolarTransform,
-        'derivative-calculator': initDerivativeCalculator,
-        'morse-code': initMorseCode,
-        'tower-of-hanoi': initTowerOfHanoi,
-        'nqueens' : initNQueens,
-        'matrix-calculator': initMatrixCalculator,
-        'sudoku-game': initSudokuGame,
-        'unit-converter': initUnitConverter,
-        'resume-analyzer': initResumeAnalyzer,
-        'reverse-hangman': initReverseHangman,
-        'budget-tracker': initBudgetTracker,
-        'fourier-series': initFourierSeries,
-        'merge-sort': initMergeSort,
-        'pathfinding-visualizer': initPathfindingVisualizer,
-        'tsp-visualizer': initTspVisualizer
-    };
-    
-    if (initializers[projectName]) {
-        initializers[projectName]();
+    const fnName = "init" + toPascalCase(projectName);
+    const init = window[fnName];
+
+    if (typeof init === "function") {
+        init();
     }
 }
 
@@ -716,4 +697,5 @@ function initializeProject(projectName) {
   if (initializerName && typeof window[initializerName] === "function") {
     window[initializerName]();
   }
+}
 }

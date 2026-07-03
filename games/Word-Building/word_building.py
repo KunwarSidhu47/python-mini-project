@@ -35,7 +35,10 @@ The game will continue until one of you can't think of a word or gives an invali
     # Game loop
     while True:
         # User input and validation
-        user_word = input("Your word: ")
+        user_word = input("Your word: ").strip()
+        if not user_word:
+            print("\nPlease enter a valid word!")
+            continue
         if (bot_word is not None) and (user_word[0].lower() != bot_word[-1].lower()):
             print("\nInvalid word! Your word must start with the last letter of bot's word.")
             win = False

@@ -6,7 +6,7 @@
 
 ### _Learn Python by Building Fun, Interactive Games & Tools!_
 
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.10--3.12-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 <p align="center">
@@ -80,13 +80,23 @@ python-mini-project/
 
 ### Prerequisites
 
-- Python 3.10 or higher
+- Python 3.10, 3.11, or 3.12
 - Git (for cloning the repository)
 - pip (Python package manager)
+
+### Encoding Note
+
+This repository uses UTF-8 for documentation, issue templates, and project metadata. If emoji or box-drawing characters appear as mojibake in a Windows terminal, switch the terminal to UTF-8 before viewing or running the files.
 
 ### Installation Steps
 
 #### 1. Clone the Repository
+
+<div align="right">
+
+<button class="copy-btn" data-copy="clone-command">📋 Copy</button>
+
+</div>
 
 ```bash
 git clone https://github.com/steam-bell-92/python-mini-project.git
@@ -96,6 +106,12 @@ cd python-mini-project
 #### 2. Create a Virtual Environment
 
 For Linux/macOS:
+
+<div align="right">
+
+<button class="copy-btn" data-copy="linux-venv">📋 Copy</button>
+
+</div>
 
 ```bash
 python3 -m venv venv
@@ -118,10 +134,18 @@ venv\Scripts\Activate.ps1
 
 #### 3. Install Dependencies
 
+<div align="right">
+
+<button class="copy-btn" data-copy="install-command">📋 Copy</button>
+
+</div>
+
 ```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
+The dependency set is tested on Python 3.10 through 3.12. Newer Python releases may not have compatible wheels for every pinned dependency yet.
 
 ### Running Command-Line Projects
 
@@ -161,6 +185,12 @@ The web app requires Node.js and npm:
 
 #### Steps to Run Web App
 
+<div align="right">
+
+<button class="copy-btn" data-copy="web-command">📋 Copy</button>
+
+</div>
+
 ```bash
 cd web-app
 npm install
@@ -173,6 +203,12 @@ The app will open at `http://localhost:3000` (or your configured port).
 
 To verify that the projects work correctly, run the test suite:
 
+<div align="right">
+
+<button class="copy-btn" data-copy="pytest-command">📋 Copy</button>
+
+</div>
+
 ```bash
 pytest tests/ -v
 ```
@@ -180,7 +216,7 @@ pytest tests/ -v
 For specific test file:
 
 ```bash
-pytest tests/test_armstrong.py -v
+pytest tests/test_smoke.py -v
 ```
 
 ### Development Workflow

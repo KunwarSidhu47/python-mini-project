@@ -50,10 +50,6 @@ def main():
 
         elif choice == '2':
             morse_input = input("\n📻 Enter Morse code (separate letters with space, words with ' / '): ")
-            morse_chars = morse_input.strip().split()
-            morse_input = input(
-                "\n📻 Enter Morse code (separate letters with space, words with ' / '): "
-            )
 
             invalid_chars = [
                 char for char in morse_input
