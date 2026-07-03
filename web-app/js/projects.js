@@ -40,41 +40,22 @@ function getProjectHTML(projectName) {
     return projects[projectName] || '<h2>Project Coming Soon!</h2>';
 }
 
+function toPascalCase(str) {
+    if (str === "2048-game") return "2048Game";
+    if (str === "nqueens") return "NQueens";
+
+    return str
+        .split("-")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join("");
+}
+
 function initializeProject(projectName) {
-    const initializers = {
-        'rock-paper-scissor': initRockPaperScissor,
-        'dice-rolling': initDiceRolling,
-        'coin-flip': initCoinFlip,
-        'number-guessing': initNumberGuessing,
-        'hangman': initHangman,
-        'flames': initFlames,
-        'fibonacci': initFibonacci,
-        'progression-recognizer': initProgressionRecognizer,
-        'pascal-triangle': initPascalTriangle,
-        'armstrong': initArmstrong,
-        'calculator': initCalculator,
-        'collatz': initCollatz,
-        'prime-analyzer': initPrimeAnalyzer,
-        'projectile-motion': initProjectileMotion,
-        'coordinate-polar-transform': initCoordinatePolarTransform,
-        'complete-calculus-engine': initCompleteCalculusEngine,
-        'morse-code': initMorseCode,
-        'tower-of-hanoi': initTowerOfHanoi,
-        'nqueens' : initNQueens,
-        'matrix-calculator': initMatrixCalculator,
-        'sudoku-game': initSudokuGame,
-        'unit-converter': initUnitConverter,
-        'resume-analyzer': initResumeAnalyzer,
-        'reverse-hangman': initReverseHangman,
-        'budget-tracker': initBudgetTracker,
-        'fourier-series': initFourierSeries,
-        'merge-sort': initMergeSort,
-        'pathfinding-visualizer': initPathfindingVisualizer,
-        'tsp-visualizer': initTspVisualizer
-    };
-    
-    if (initializers[projectName]) {
-        initializers[projectName]();
+    const fnName = "init" + toPascalCase(projectName);
+    const init = window[fnName];
+
+    if (typeof init === "function") {
+        init();
     }
 }
 
@@ -3014,64 +2995,4 @@ function initDerivativeCalculator() {
         const value = evaluate(nth, data.x);
         output.textContent = `f(x) = ${polynomialToString(data.coeffs)}\n\nDerivative used: ${polynomialToString(nth)}\nValue at x = ${formatNumber(data.x)} is ${formatNumber(value)}`;
     });
-}
-function initializeProject(projectName) {
-  const initializers = {
-    "tic-tac-toe": "initTicTacToe",
-    "chess": "initChess",
-    "rock-paper-scissor": "initRockPaperScissor",
-    "dice-rolling": "initDiceRolling",
-    "coin-flip": "initCoinFlip",
-    "blackjack-21": "initBlackjack",
-    "number-guessing": "initNumberGuessing",
-    hangman: "initHangman",
-    "word-scramble": "initWordScramble",
-    flames: "initFlames",
-    "dots-boxes": "initDotsBoxes",
-    "emoji-memory": "initEmojiMemoryGame",
-    fibonacci: "initFibonacci",
-    "binary-search": "initBinarySearch",
-    "sorting-visualizer": "initSortingVisualizer",
-    "quick-sort": "initQuickSort",
-    "merge-sort": "initMergeSort",
-    "progression-recognizer": "initProgressionRecognizer",
-    "pascal-triangle": "initPascalTriangle",
-    armstrong: "initArmstrong",
-    calculator: "initCalculator",
-    collatz: "initCollatz",
-    "prime-analyzer": "initPrimeAnalyzer",
-    "projectile-motion": "initProjectileMotion",
-    "coordinate-polar-transform": "initCoordinatePolarTransform",
-    "complete-calculus-engine": "initCompleteCalculusEngine",
-    "morse-code": "initMorseCode",
-    "tower-of-hanoi": "initTowerOfHanoi",
-    "number-converter": "initNumberConverter",
-    "typing-speed-tester": "initTypingSpeedTester",
-    "snake-game": "initSnakeGame",
-    "password-forge": "initPasswordForge",
-    "spot-the-difference": "initSpotTheDifference",
-    "whack-a-mole": "initWhackaMole",
-    "flappy-game": "initFlappyGame",
-    "productive-pet": "initProductivePet",
-    "simon-says": "initSimonSays",
-    "2048-game": "init2048Game",
-    "color-palette": "initColorPalette",
-    "math-quiz": "initMathQuiz",
-    "resume-analyzer": "initAIResumeAnalyzer",
-    "caesar-cipher": "initCaesarCipher",
-    "sudoku-game": "initSudokuGame",
-    "resume-analyzer": "initResumeAnalyzer",
-    "caesar-cipher": "initCaesarCipher",
-    "war-card-game": "initWarCardGame",
-    "number-sliding-puzzle": "initNumberSlidingPuzzle",
-    "budget-tracker": "initBudgetTracker",
-    "fourier-series": "initFourierSeries",
-    "pathfinding-visualizer": "initPathfindingVisualizer",
-    "tsp-visualizer": "initTspVisualizer"
-  };
-
-  const initializerName = initializers[projectName];
-  if (initializerName && typeof window[initializerName] === "function") {
-    window[initializerName]();
-  }
 }

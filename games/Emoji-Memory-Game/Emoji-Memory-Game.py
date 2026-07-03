@@ -4,6 +4,8 @@ import os
 import sys
 import threading
 
+# Note: Works best in a terminal. Browser version (Pyodide) uses simplified input.
+
 EMOJIS = ["🍎", "🚗", "⚽", "🐍", "🎧", "🔥", "🌈", "🚀"]
 HIGH_SCORE_FILE = "highscore.txt"
 
@@ -20,6 +22,11 @@ DIFFICULTY_INPUT_LIMITS = {
 }
 
 
+# Detect if running in browser (Pyodide)
+def is_browser():
+    """Return True if running in a browser environment (Pyodide)."""
+    return sys.platform == "emscripten"
+
 
 # Core, testable logic (no I/O, no global state)
 
@@ -34,11 +41,7 @@ def get_input_limit(choice):
 
 
 def generate_sequence(emojis, level):
-    """Generate a random emoji sequence for the given level.
-
-    Sequence length grows with level (level + 2), matching the
-    original game's difficulty curve.
-    """
+    """Generate a random emoji sequence for the given level."""
     if level < 1:
         raise ValueError("level must be >= 1")
     return random.choices(emojis, k=level + 2)
@@ -72,15 +75,10 @@ def format_countdown_message(remaining_seconds):
 
 
 def calculate_score(level, streak):
-    """Calculate score for a correctly-answered round.
-
-    Base score scales with level; a streak bonus rewards consecutive
-    correct answers.
-    """
+    """Calculate score for a correctly-answered round."""
     base = level * 10
     streak_bonus = streak * 2
     return base + streak_bonus
-
 
 
 # I/O helpers
@@ -110,34 +108,25 @@ def save_high_score(score):
 
 
 def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    """Safe clear screen that works in both terminal and browser."""
+    if is_browser():
+        print("\n" * 3)  # Simple spacing for browser
+    else:
+        os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def run_countdown(duration, stop_event):
-    """Update a single countdown line once per second while waiting for input.
-
-    Runs in a background thread. Instead of printing a new line each
-    tick, it:
-      1. Saves the cursor's current position (which is on the input
-         line, wherever the user has typed so far).
-      2. Moves the cursor up 2 lines to the dedicated countdown line.
-      3. Clears that line and writes the new remaining-time message.
-      4. Restores the cursor back to the input line, so the user's
-         typing is completely undisturbed.
-
-    stop_event is set as soon as the user submits their answer, so the
-    countdown stops immediately rather than continuing to update.
-    """
+    """Original fancy countdown (terminal only)."""
     remaining = duration
     while remaining > 0:
         if stop_event.wait(timeout=1):
-            return  # user already answered, stop counting
+            return
         remaining -= 1
-        sys.stdout.write("\0337")        # save cursor position
-        sys.stdout.write("\033[2A")      # move up 2 lines -> countdown line
-        sys.stdout.write("\r\033[2K")    # jump to col 0 and clear the line
+        sys.stdout.write("\0337")
+        sys.stdout.write("\033[2A")
+        sys.stdout.write("\r\033[2K")
         sys.stdout.write(format_countdown_message(remaining))
-        sys.stdout.write("\0338")        # restore cursor -> back to input line
+        sys.stdout.write("\0338")
         sys.stdout.flush()
 
 
@@ -184,26 +173,33 @@ def main():
             time.sleep(display_time)
             clear_screen()
 
-            # Line 1: countdown line (updated in place by run_countdown)
-            # Line 2: static prompt text
-            # Line 3: "> " where the user actually types
+            # Input Phase
             print(format_countdown_message(input_time))
             print("Type the emojis in order (separated by spaces):")
             sys.stdout.write("> ")
             sys.stdout.flush()
 
-            stop_event = threading.Event()
-            timer_thread = threading.Thread(
-                target=run_countdown, args=(input_time, stop_event), daemon=True
-            )
-            timer_thread.start()
+            if is_browser():
+                # Simplified version for browser (no threads/ANSI)
+                print("\n⚠️ Browser mode active - enter your answer below.")
+                start_time = time.time()
+                user_input_raw = input().strip()
+                elapsed = time.time() - start_time
+            else:
+                # Original fancy terminal version
+                stop_event = threading.Event()
+                timer_thread = threading.Thread(
+                    target=run_countdown, args=(
+                        input_time, stop_event), daemon=True
+                )
+                timer_thread.start()
 
-            start_time = time.time()
-            user_input_raw = input().strip()
-            elapsed = time.time() - start_time
+                start_time = time.time()
+                user_input_raw = input().strip()
+                elapsed = time.time() - start_time
 
-            stop_event.set()
-            timer_thread.join(timeout=0.2)
+                stop_event.set()
+                timer_thread.join(timeout=0.2)
 
             user_input = parse_input(user_input_raw)
             timed_out = is_timeout(elapsed, input_time)

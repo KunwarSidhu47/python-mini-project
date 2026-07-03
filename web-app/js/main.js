@@ -1282,7 +1282,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (typeof initializeProject === "function") {
         initializeProject(name);
       }
-      setupModalInfoButton(name);
+      // setupModalInfoButton(name);
 
       // Inject info button - FIXED for Tic Tac Toe and all projects
       var projectContent = modalBody.querySelector(".project-content");
