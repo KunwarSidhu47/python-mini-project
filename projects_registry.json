@@ -769,5 +769,21 @@
       "images"
     ],
     "path": "games/Spot-the-Difference/Spot-the-Difference.py"
+  },
+  {
+    "name": "Minesweeper",
+    "emoji": "💣",
+    "category": "games",
+    "difficulty": "intermediate",
+    "description": "Classic interactive Minesweeper CLI game with emojis.",
+    "keywords": [
+      "minesweeper",
+      "game",
+      "puzzle",
+      "cli",
+      "terminal",
+      "mines"
+    ],
+    "path": "games/Minesweeper/minesweeper.py"
   }
 ]
