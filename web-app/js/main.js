@@ -1712,7 +1712,9 @@ historyBadge.textContent=`(${recent.length})`;
       var curr = el;
       while (curr && curr !== parent) {
         top += curr.offsetTop || 0;
+
         left += curr.offsetLeft || 0;
+
         curr = curr.offsetParent;
       }
       return { top: top, left: left };
@@ -1739,6 +1741,7 @@ historyBadge.textContent=`(${recent.length})`;
         grad.setAttribute("x1", "0%");
         grad.setAttribute("y1", "0%");
         grad.setAttribute("x2", "0%");
+        
         grad.setAttribute("y2", "100%");
 
         var stop1 = document.createElementNS(svgNamespace, "stop");
