@@ -75,9 +75,17 @@ class Game2048:
         )
         self.restart_button.grid(pady=5)
 
+        self.reset_high_score_button = tk.Button(
+            root,
+            text="Reset High Score",
+            font=("Arial", 12, "bold"),
+            command=self.reset_high_score
+        )
+        self.reset_high_score_button.grid(pady=5)
+
         self.instruction_label = tk.Label(
             root,
-            text="🎮 Controls: ← ↑ → ↓ | Merge same numbers | Goal: 2048 🎯",
+            text="🎮 Controls: WASD / ← ↑ → ↓ | Merge same numbers | Goal: 2048 🎯",
             font=("Arial", 10),
             fg="#6a635b",
         )
@@ -87,6 +95,8 @@ class Game2048:
         self.board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
 
         self.game_over_label = None
+        self.win_label = None
+        self.game_won = False
 
         self.create_grid()
         self.start_new_game()
@@ -106,6 +116,18 @@ class Game2048:
             HIGH_SCORE_PATH.write_text(str(self.high_score))
         except OSError as e:
             print(f"Warning: Could not save high score: {e}")
+
+    def reset_high_score(self):
+        """Reset the high score to 0 and clear the saved high score file."""
+        self.high_score = 0
+        try:
+            if HIGH_SCORE_PATH.exists():
+                HIGH_SCORE_PATH.unlink()
+        except OSError as e:
+            print(f"Warning: Could not delete high score file: {e}")
+        self.score_label.configure(
+            text=f"Score: {self.score}    High Score: {self.high_score}"
+        )
 
     def create_grid(self):
         for row in range(GRID_SIZE):
@@ -146,6 +168,7 @@ class Game2048:
         self.board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
         self.score = 0
         self.moves_left = TOTAL_MOVES
+        self.game_won = False
 
         self.add_new_tile()
         self.add_new_tile()
@@ -261,30 +284,25 @@ class Game2048:
 
         return True
 
+    def check_win(self):
+        return any(2048 in row for row in self.board)
+
     def handle_keypress(self, event):
-        key = event.keysym
-        moved = False
-
-        if key == "Left":
-            moved = self.move_left()
-
-        elif key == "Right":
-            moved = self.move_right()
-
-        elif key == "Up":
-            moved = self.move_up()
-
-        elif key == "Down":
-            moved = self.move_down()
-
-        else:
+        key = event.keysym.lower() if len(event.keysym) == 1 else event.keysym
+        move_map = {
+            "Left": self.move_left,  "a": self.move_left,
+            "Right": self.move_right, "d": self.move_right,
+            "Up": self.move_up,      "w": self.move_up,
+            "Down": self.move_down,  "s": self.move_down,
+        }
+        if key not in move_map:
             return
-        
-        
+
+        moved = move_map[key]()
 
         if moved:
             self.add_new_tile()
-            self.moves_left -=1
+            self.moves_left -= 1
 
             if self.score > self.high_score:
                 self.high_score = self.score
@@ -292,12 +310,31 @@ class Game2048:
 
             self.update_grid()
 
-        # FIXED BUG:
-        # Game over is now checked even when no movement happens
-        if self.check_game_over():
+            if not self.game_won and self.check_win():
+                self.you_win()
+                return
+
+        # Check for game over even if no movement happens
+        if self.check_game_over() or self.moves_left <= 0:
             self.game_over()
-        if self.moves_left<=0:
-            self.game_over()
+
+    def you_win(self):
+
+        if self.game_won:
+            return
+
+        self.game_won = True
+
+        self.root.unbind("<Key>")
+
+        self.win_label = tk.Label(
+            self.root,
+            text="🎉 YOU WIN! 🎉",
+            font=("Arial", 24, "bold"),
+            fg="green"
+        )
+
+        self.win_label.grid(pady=10)
 
     def game_over(self):
 
@@ -324,6 +361,11 @@ class Game2048:
             self.game_over_label.destroy()
             self.game_over_label = None
 
+        # Remove old win label
+        if self.win_label is not None:
+            self.win_label.destroy()
+            self.win_label = None
+
         self.start_new_game()
 
         # Re-enable keyboard controls
@@ -334,6 +376,7 @@ def main():
     root = tk.Tk()
     game = Game2048(root)
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()

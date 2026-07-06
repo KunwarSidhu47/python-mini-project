@@ -1466,6 +1466,14 @@ document.addEventListener("DOMContentLoaded", function () {
   window.closeProjectSafe = closeProjectSafe;
   window.setMainInert = setMainInert;
 
+  function updateFavoritesCountBadge() {
+    const badge = document.getElementById("favoritesCountBadge");
+    if (!badge) return;
+
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    badge.textContent = `(${favorites.length})`;
+  }
+
   /* ═══════════════════════════════════════════════════════════════
        WIRE PROJECT CARDS
        ═══════════════════════════════════════════════════════════════ */

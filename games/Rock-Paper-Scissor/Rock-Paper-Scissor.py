@@ -1,7 +1,79 @@
 import random
+import os
+
+RESULTS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "game_results.txt")
+
+
+def parse_results():
+    """Read game_results.txt and return a list of result dicts."""
+    records = []
+    if not os.path.exists(RESULTS_FILE):
+        return records
+    try:
+        with open(RESULTS_FILE, "r") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                # Expected format:
+                # Player: <name>, Final Score: <wins> - <losses> (User-Computer), Rounds: <rounds>
+                try:
+                    player_part, rest = line.split(", Final Score: ", 1)
+                    name = player_part.replace("Player: ", "").strip()
+                    score_part, rounds_part = rest.split(" (User-Computer), Rounds: ", 1)
+                    wins, losses = score_part.split(" - ", 1)
+                    records.append({
+                        "name": name,
+                        "wins": int(wins.strip()),
+                        "losses": int(losses.strip()),
+                        "rounds": int(rounds_part.strip()),
+                    })
+                except (ValueError, KeyError):
+                    # Skip malformed lines
+                    continue
+    except IOError:
+        pass
+    return records
+
+
+def view_leaderboard():
+    """Display the top 5 sessions sorted by user wins."""
+    records = parse_results()
+    print("\n" + "=" * 44)
+    print("🏆  LEADERBOARD (Top 5)")
+    print("=" * 44)
+    if not records:
+        print("  No records found. Play your first game!")
+        print("=" * 44)
+        return
+    # Sort by wins descending, then losses ascending as tiebreaker
+    top5 = sorted(records, key=lambda r: (-r["wins"], r["losses"]))[:5]
+    print(f"  {'Rank':<5} {'Player':<14} {'Win':<5} {'Loss':<6} {'Rounds'}")
+    print("  " + "-" * 40)
+    for rank, rec in enumerate(top5, start=1):
+        print(
+            f"  {rank:<5} {rec['name']:<14} {rec['wins']:<5} {rec['losses']:<6} {rec['rounds']}"
+        )
+    print("=" * 44)
+
 
 def main():
     global ADAPT_RATE, HISTORY_CAP, MIN_ADAPTIVE, beaten_by, blended, c, choices, computer_choice, computer_score, confidence, fav, freq, i, last_move, mode, move, n, name, pct, play_again_input, player_history, predicted, remaining, result_string, rounds_played, total_trans, trans, user_choice, user_score
+
+    print("Welcome to Rock, Paper, Scissors!")
+    print("The computer will learn your patterns and adapt — good luck! 🧠")
+
+    # ── Leaderboard / Play prompt ──────────────────────────────────────────────
+    while True:
+        action = input("\nPress L to view Leaderboard, or P to Play: ").strip().lower()
+        if action == "l":
+            view_leaderboard()
+        elif action == "p":
+            break
+        else:
+            print("Invalid input. Please enter L or P.")
+    # ──────────────────────────────────────────────────────────────────────────
+
     user_score = 0
     computer_score = 0
     rounds_played = 0
@@ -13,9 +85,6 @@ def main():
     HISTORY_CAP = 20
     MIN_ADAPTIVE = 3
     ADAPT_RATE = 0.70
-
-    print("Welcome to Rock, Paper, Scissors!")
-    print("The computer will learn your patterns and adapt — good luck! 🧠")
 
     while True:
         rounds_played += 1
@@ -39,16 +108,16 @@ def main():
             freq = {"rock": 0, "paper": 0, "scissors": 0}
             for move in player_history:
                 freq[move] += 1
-        
+
             # Get markov transitions
             last_move = player_history[-1]
             trans = {"rock": 0, "paper": 0, "scissors": 0}
             for i in range(n - 1):
                 if player_history[i] == last_move:
                     trans[player_history[i + 1]] += 1
-                
+
             total_trans = sum(trans.values())
-        
+
             if total_trans > 0:
                 blended = {}
                 for c in choices:
@@ -78,7 +147,7 @@ def main():
             for move in player_history:
                 freq[move] += 1
             fav = max(freq, key=freq.get)
-        
+
             print(f"\n  🧠 Computer Brain [{mode.upper()}]")
             print(f"     Your favourite move  : {fav}")
             print(f"     Predicted your move  : {predicted} ({confidence}% confidence)")
@@ -140,12 +209,14 @@ def main():
                 f"(User-Computer), Rounds: {rounds_played}\n"
             )
             try:
-                with open("game_results.txt", "a") as f:
+                with open(RESULTS_FILE, "a") as f:
                     f.write(result_string)
                 print("Game results saved successfully.")
             except IOError:
                 print("Error: Could not save game results to file.")
             break
 
+
 if __name__ == '__main__':
     main()
+
