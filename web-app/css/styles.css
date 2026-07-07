@@ -181,9 +181,6 @@ img {
   opacity: 0 !important;
 }
 
-nav[aria-label="Primary"] {
-  display: none;
-}
 
 main>.hero-section:has(.hero-code-snippets) {
   display: none;
