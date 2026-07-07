@@ -1466,13 +1466,23 @@ document.addEventListener("DOMContentLoaded", function () {
   window.closeProjectSafe = closeProjectSafe;
   window.setMainInert = setMainInert;
 
-  function updateFavoritesCountBadge() {
-    const badge = document.getElementById("favoritesCountBadge");
-    if (!badge) return;
-
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    badge.textContent = `(${favorites.length})`;
+ function updateFavoritesCountBadge() {
+  const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+  const count = favorites.length;
+  
+  // Update sidebar badge
+  const badge = document.getElementById("favoritesCountBadge");
+  if (badge) {
+    badge.textContent = "(" + count + ")";
   }
+  
+  // Update stats dashboard
+  const statsFavorites = document.getElementById("statsFavorites");
+  if (statsFavorites) {
+    statsFavorites.textContent = count;
+  }
+}
+updateFavoritesCountBadge();
 
   /* ═══════════════════════════════════════════════════════════════
        WIRE PROJECT CARDS
@@ -1533,6 +1543,34 @@ card.appendChild(badge);
       localStorage.setItem("favorites", JSON.stringify(favs));
       updateSidebarCategoryCounts();  
     });
+  e.stopPropagation();
+  var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+  var idx = favs.indexOf(name);
+  
+  if (idx === -1) {
+    // Add to favorites
+    favs.push(name);
+    favBtn.classList.add("active");
+    favBtn.innerHTML = '<i class="fas fa-star"></i>';
+    favBtn.style.color = "#f5a623"; // Yellow
+    console.log("⭐ Added " + name + " to favorites");
+  } else {
+    // Remove from favorites
+    favs.splice(idx, 1);
+    favBtn.classList.remove("active");
+    favBtn.innerHTML = '<i class="far fa-star"></i>';
+    favBtn.style.color = ""; // Reset to default
+    console.log("☆ Removed " + name + " from favorites");
+    if (currentCategory === "favorites") {
+      card.style.display = "none";
+    }
+  }
+  
+  localStorage.setItem("favorites", JSON.stringify(favs));
+  
+  // Update badge
+  updateFavoritesCountBadge();
+});
 
     var cardActions = card.querySelector(".card-actions");
     if (cardActions) cardActions.appendChild(favBtn);
@@ -1716,7 +1754,9 @@ historyBadge.textContent=`(${recent.length})`;
       var curr = el;
       while (curr && curr !== parent) {
         top += curr.offsetTop || 0;
+
         left += curr.offsetLeft || 0;
+
         curr = curr.offsetParent;
       }
       return { top: top, left: left };
@@ -1743,6 +1783,7 @@ historyBadge.textContent=`(${recent.length})`;
         grad.setAttribute("x1", "0%");
         grad.setAttribute("y1", "0%");
         grad.setAttribute("x2", "0%");
+        
         grad.setAttribute("y2", "100%");
 
         var stop1 = document.createElementNS(svgNamespace, "stop");

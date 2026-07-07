@@ -421,6 +421,7 @@ const projectInstructions = {
       "Clear individual records using the delete action or wipe out all history securely."
     ]
   },
+  
   "morse-code": {
     title: "📻 How to Use Morse Code",
     steps: [
