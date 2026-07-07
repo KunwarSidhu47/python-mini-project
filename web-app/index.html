@@ -152,7 +152,7 @@
           <span class="sidebar-icon"><svg data-lucide="star"></svg></span>
           <span class="sidebar-label">
             My Favorites
-            <span id="favoritesCountBadge">0</span>
+            <span id="favoritesCountBadge"></span>
           </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="playground" role="tab" tabindex="-1">
@@ -279,11 +279,11 @@
     <section class="stats-dashboard-section">
   <div class="container">
 
-    <div class="section-header">
-      <h2 class="section-heading">
-        📊 Project Statistics Dashboard
-      </h2>
-    </div>
+<div class="section-header">
+  <h2 class="section-heading">
+    <span class="heading-text">Project Statistics</span>
+  </h2>
+</div>
 
     <div class="stats-dashboard">
 
@@ -1120,11 +1120,11 @@
          alt="${proj.title}"
          loading="lazy">
 
-    <div class="card-actions">
-        <button class="btn-play"
-                data-project="${proj.project}">
-            Try It
-        </button>
+  <div class="card-actions">
+
+    <button class="btn-play" data-project="${proj.project}">Try It</button>
+
+  </div>
 
         <button class="btn-favorite"
                 data-project="${proj.project}">
@@ -1181,25 +1181,12 @@ clearInterval(timer);
       if (heroUtils) heroUtils.textContent = utils;
       if (projectBadge) projectBadge.textContent = total + " projects";
       animateCounter("statsTotal",total);
-
 animateCounter("statsGames",games);
-
 animateCounter("statsMath",math);
-
 animateCounter("statsUtilities",utils);
-
-animateCounter(
-"statsFavorites",
-favorites.length
-);
-
-const viewed=
-JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
-
-animateCounter(
-"statsViewed",
-viewed.length
-);
+document.getElementById("statsFavorites").textContent = favorites.length;
+const viewed= JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
+animateCounter("statsViewed",viewed.length);
 
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
@@ -1220,43 +1207,36 @@ viewed.length
 
         // Favorite buttons
         document.querySelectorAll(".btn-favorite").forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const projectName = btn.getAttribute("data-project");
-            const icon = btn.querySelector("i");
+  btn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    const projectName = this.getAttribute("data-project");
+    if (!projectName) {
+      console.error("No project name found for favorite button");
+      return;
+    }
+    
+    const icon = this.querySelector("i");
+    let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+    const index = favs.indexOf(projectName);
 
-            let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-            const index = favs.indexOf(projectName);
+    if (index === -1) {
+      favs.push(projectName);
+      icon.className = "fas fa-star";
+      console.log(`⭐ Added ${projectName} to favorites`);
+    } else {
+      favs.splice(index, 1);
+      icon.className = "far fa-star";
+      console.log(`☆ Removed ${projectName} from favorites`);
+    }
 
-            if (index === -1) {
-              // Add to favorites
-              favs.push(projectName);
-              icon.className = "fas fa-star";
-              btn.setAttribute("aria-label", "Remove from favorites");
-              console.log(`⭐ Added ${projectName} to favorites`);
-            } else {
-              // Remove from favorites
-              favs.splice(index, 1);
-              icon.className = "far fa-star";
-              btn.setAttribute("aria-label", "Add to favorites");
-              console.log(`☆ Removed ${projectName} from favorites`);
-            }
-
-            localStorage.setItem("favorites", JSON.stringify(favs));
-            renderBookmarkedProjects();
-
-            // If we're on favorites tab, refresh the view
-            const activeCategory = document
-              .querySelector(".sidebar-tab.active")
-              ?.getAttribute("data-category");
-            if (
-              activeCategory === "favorites" &&
-              typeof applyCategoryFilter === "function"
-            ) {
-              applyCategoryFilter("favorites");
-            }
-          });
-        });
+    localStorage.setItem("favorites", JSON.stringify(favs));
+    
+    // Update badge
+    if (typeof updateFavoritesCountBadge === "function") {
+      updateFavoritesCountBadge();
+    }
+  });
+});
 
         // Card clicks
         document.querySelectorAll(".project-card").forEach((card) => {
