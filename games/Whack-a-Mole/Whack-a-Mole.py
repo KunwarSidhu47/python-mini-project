@@ -13,7 +13,7 @@ def main():
 
     # Add root directory to sys.path to import utils package
     sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-    from utils import save_score, get_top_scores
+    from utils import save_score, get_top_scores, print_game_over_banner
 
     # Windows only for non-blocking input
     try:
@@ -188,9 +188,7 @@ def main():
             rnd += 1
 
         os.system("cls" if os.name == "nt" else "clear")
-        print("\n╔══════════════════════════════════════╗")
-        print("║         🏁  GAME OVER!               ║")
-        print("╚══════════════════════════════════════╝\n")
+        print_game_over_banner()
         print(f"  🎯 Final Score : {score}")
         print(f"  ❌ Total Misses: {misses}")
         max_score = rounds * n_moles * 10

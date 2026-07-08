@@ -1,5 +1,15 @@
 import random
 import time
+import os
+import sys
+
+# Add project root to sys.path
+if "__file__" in globals():
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+else:
+    sys.path.append(os.path.abspath(os.getcwd()))
+
+from utils.banners import print_game_over_banner
 
 
 def main():
@@ -78,9 +88,7 @@ def main():
                 print(f"❌ You entered: {' '.join(player_sequence)}\n")
                 game_over = True
 
-        print(f"\n{'='*50}")
-        print(f"🏁 GAME OVER!")
-        print(f"{'='*50}")
+        print_game_over_banner()
         print(f"🎯 Rounds Completed: {round_number - 1}")
         print(f"📊 Sequence Length Reached: {len(sequence)}")
 

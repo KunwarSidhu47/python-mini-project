@@ -23,6 +23,7 @@ else:
     sys.path.append(os.path.abspath(os.getcwd()))
 
 from utils.validation import get_choice, get_int
+from utils.banners import print_victory_banner
 
 # Enable ANSI escape sequences on Windows
 if os.name == 'nt':
@@ -254,7 +255,7 @@ def play_game():
             
             # Check if solved
             if find_empty(current_board) is None:
-                print(f"\n🎉 Congratulations! You completed the Sudoku puzzle! 🏆")
+                print_victory_banner()
                 print(f"Hints used: {hints_used}")
                 input("\nPress Enter to return to menu...")
                 break
@@ -352,7 +353,7 @@ def play_game():
                     os.system('cls' if os.name == 'nt' else 'clear')
                     print_header()
                     print_board(current_board, puzzle)
-                    print(f"\n🎉 Congratulations! You completed the Sudoku puzzle! 🏆")
+                    print_victory_banner()
                     print(f"Hints used: {hints_used}")
                     input("\nPress Enter to return to menu...")
                     break

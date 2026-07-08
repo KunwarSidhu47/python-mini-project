@@ -1,4 +1,26 @@
 import random
+import os
+import sys
+
+# Add project root to sys.path
+if "__file__" in globals():
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+else:
+    sys.path.append(os.path.abspath(os.getcwd()))
+
+# Reconfigure stdout/stderr to use UTF-8 encoding (resolves CP1252/Unicode issues on Windows)
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except AttributeError:
+        pass
+if sys.stderr.encoding != 'utf-8':
+    try:
+        sys.stderr.reconfigure(encoding='utf-8')
+    except AttributeError:
+        pass
+
+from utils.banners import print_victory_banner, print_game_over_banner
 
 def main():
     # Cleaned up global variables (not strictly necessary unless modifying in nested scopes, but kept for your structure)
@@ -121,15 +143,13 @@ def main():
             print("-" * 50)
 
         # Endgame sequence
-        print("\n" + "=" * 50)
         if won:
-            print("🎉 CONGRATULATIONS! YOU WON LIGHTNING FAST!")
+            print_victory_banner()
             print(f"The word was: {word}")
             print(f"You guessed it with {max_attempts - attempts} attempts remaining!")
         else:
-            print("😔 GAME OVER! YOU LOST!")
+            print_game_over_banner()
             print(f"The word was: {word}")
-        print("=" * 50)
 
         play_again = input("\n🔄 Do you want to play again? (y/n): ").strip().lower()
         if play_again not in ['y', 'yes']:

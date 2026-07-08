@@ -1,5 +1,14 @@
 import random
+import os
 import sys
+
+# Add project root to sys.path
+if "__file__" in globals():
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+else:
+    sys.path.append(os.path.abspath(os.getcwd()))
+
+from utils.banners import print_victory_banner, print_game_over_banner
 
 # Emojis for cell states
 UNOPENED = "⬜"
@@ -183,10 +192,10 @@ def play_game():
 
     print("\n" + "="*40 + "\n")
     if game.game_over:
-        print("💥 BOOM! You hit a mine. GAME OVER. 💥")
+        print_game_over_banner()
         game.print_board(show_all=True)
     elif game.victory:
-        print("🎉 CONGRATULATIONS! You cleared the minefield! 🎉")
+        print_victory_banner()
         game.print_board(show_all=True)
 
 if __name__ == "__main__":
