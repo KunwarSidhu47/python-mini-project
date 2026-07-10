@@ -1,0 +1,266 @@
+"""
+Unit tests for security module.
+"""
+
+import pytest
+import tarfile
+import tempfile
+import os
+import time
+import io
+from pathlib import Path
+
+from security import (
+    validate_url,
+    safe_extract,
+    InvalidURLError,
+    UnsafeTarError,
+    URLSanitizer,
+    SafeTarExtractor,
+)
+
+
+class TestURLSanitizer:
+    """Tests for URL validation."""
+    
+    def test_valid_urls(self):
+        """Test valid URLs."""
+        valid_urls = [
+            "https://example.com",
+            "http://example.com/path",
+            "https://example.com?query=value",
+        ]
+        
+        for url in valid_urls:
+            sanitized = validate_url(url)
+            assert sanitized is not None
+            assert len(sanitized) > 0
+    
+    def test_empty_url_raises_error(self):
+        with pytest.raises(InvalidURLError):
+            validate_url("")
+    
+    def test_none_url_raises_error(self):
+        with pytest.raises(InvalidURLError):
+            validate_url(None)
+    
+    def test_control_characters(self):
+        with pytest.raises(InvalidURLError):
+            validate_url("http://\0example.com")
+    
+    def test_long_url_raises_error(self):
+        long_url = "https://example.com/" + "a" * 3000
+        with pytest.raises(InvalidURLError):
+            validate_url(long_url)
+    
+    def test_blocked_ip_addresses(self):
+        sanitizer = URLSanitizer(allow_localhost=False, allow_private=False)
+        
+        blocked_ips = [
+            "http://127.0.0.1",
+            "http://10.0.0.1",
+            "http://192.168.1.1",
+        ]
+        
+        for url in blocked_ips:
+            with pytest.raises(InvalidURLError):
+                sanitizer.validate_url(url)
+    
+    def test_allow_localhost(self):
+        sanitizer = URLSanitizer(allow_localhost=True)
+        url = "http://localhost"
+        result = sanitizer.validate_url(url)
+        assert result.startswith("http://localhost")
+    
+    def test_allow_private_ips(self):
+        sanitizer = URLSanitizer(allow_private=True)
+        url = "http://10.0.0.1"
+        result = sanitizer.validate_url(url)
+        assert result.startswith("http://10.0.0.1")
+    
+    def test_blocked_schemes(self):
+        # These should be blocked because they're in BLOCKED_SCHEMES
+        sanitizer = URLSanitizer()
+        
+        # javascript: - should be blocked
+        with pytest.raises(InvalidURLError):
+            sanitizer.validate_url("javascript:alert(1)")
+        
+        # file: - should be blocked
+        with pytest.raises(InvalidURLError):
+            sanitizer.validate_url("file:///etc/passwd")
+
+
+class TestSafeTarExtractor:
+    """Tests for safe tar extraction."""
+    
+    def test_safe_extraction(self, tmp_path):
+        """Test safe extraction of tar file."""
+        test_content = "Hello, World!"
+        
+        # Create a temporary file with content
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
+            f.write(test_content)
+            f.flush()
+            temp_file = f.name
+        
+        # Create tar file
+        tar_file = tmp_path / "test.tar"
+        with tarfile.open(tar_file, 'w') as tar:
+            tar.add(temp_file, arcname='test.txt')
+        
+        # Clean up the temp file
+        os.unlink(temp_file)
+        
+        # Extract safely
+        extract_dir = tmp_path / "extracted"
+        extractor = SafeTarExtractor()
+        extracted = extractor.extract(tar_file, extract_dir)
+        
+        assert len(extracted) > 0
+        extracted_file = extract_dir / "test.txt"
+        assert extracted_file.exists()
+        assert extracted_file.read_text() == test_content
+    
+    def test_path_traversal_prevention(self, tmp_path):
+        """Test path traversal prevention."""
+        tar_file = tmp_path / "malicious.tar"
+        
+        # Create a tar file with path traversal
+        with tarfile.open(tar_file, 'w') as tar:
+            # Create a TarInfo with traversal path
+            info = tarfile.TarInfo(name='../evil.txt')
+            info.size = 10
+            info.type = tarfile.REGTYPE
+            
+            content = b'x' * 10
+            fileobj = io.BytesIO(content)
+            tar.addfile(info, fileobj)
+        
+        # Try to extract - should raise UnsafeTarError
+        extract_dir = tmp_path / "extracted"
+        extractor = SafeTarExtractor()
+        
+        with pytest.raises(UnsafeTarError):
+            extractor.extract(tar_file, extract_dir)
+    
+    def test_size_limits(self, tmp_path):
+        """Test file size limits."""
+        tar_file = tmp_path / "large.tar"
+        
+        with tarfile.open(tar_file, 'w') as tar:
+            # Create a large file (but not too large for testing)
+            info = tarfile.TarInfo(name='large.txt')
+            info.size = 100 * 1024  # 100KB (small enough for test but > limit)
+            info.type = tarfile.REGTYPE
+            content = b'x' * (100 * 1024)
+            fileobj = io.BytesIO(content)
+            tar.addfile(info, fileobj)
+        
+        extract_dir = tmp_path / "extracted"
+        # Set small max file size for testing
+        extractor = SafeTarExtractor(max_file_size=10 * 1024)  # 10KB limit
+        
+        with pytest.raises(UnsafeTarError):
+            extractor.extract(tar_file, extract_dir)
+    
+    def test_max_files_limit(self, tmp_path):
+        """Test maximum files limit."""
+        tar_file = tmp_path / "many_files.tar"
+        
+        with tarfile.open(tar_file, 'w') as tar:
+            for i in range(100):
+                info = tarfile.TarInfo(name=f'file_{i}.txt')
+                info.size = 10
+                info.type = tarfile.REGTYPE
+                content = b'x' * 10
+                fileobj = io.BytesIO(content)
+                tar.addfile(info, fileobj)
+        
+        extract_dir = tmp_path / "extracted"
+        extractor = SafeTarExtractor(max_files=50)
+        
+        with pytest.raises(UnsafeTarError):
+            extractor.extract(tar_file, extract_dir)
+    
+    def test_overwrite_protection(self, tmp_path):
+        """Test that overwriting is prevented."""
+        # Create a tar file
+        tar_file = tmp_path / "test.tar"
+        
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
+            f.write("Test content")
+            f.flush()
+            temp_file = f.name
+        
+        with tarfile.open(tar_file, 'w') as tar:
+            tar.add(temp_file, arcname='test.txt')
+        
+        os.unlink(temp_file)
+        
+        # Create existing file
+        extract_dir = tmp_path / "extracted"
+        extract_dir.mkdir()
+        existing_file = extract_dir / "test.txt"
+        existing_file.write_text("Existing content")
+        
+        extractor = SafeTarExtractor()
+        
+        with pytest.raises(UnsafeTarError):
+            extractor.extract(tar_file, extract_dir, overwrite=False)
+    
+    def test_safe_extraction_with_overwrite(self, tmp_path):
+        """Test safe extraction with overwrite enabled."""
+        test_content = "New content"
+        tar_file = tmp_path / "test.tar"
+        
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
+            f.write(test_content)
+            f.flush()
+            temp_file = f.name
+        
+        with tarfile.open(tar_file, 'w') as tar:
+            tar.add(temp_file, arcname='test.txt')
+        
+        os.unlink(temp_file)
+        
+        extract_dir = tmp_path / "extracted"
+        extract_dir.mkdir()
+        existing_file = extract_dir / "test.txt"
+        existing_file.write_text("Old content")
+        
+        extractor = SafeTarExtractor()
+        extracted = extractor.extract(tar_file, extract_dir, overwrite=True)
+        
+        assert len(extracted) > 0
+        assert existing_file.read_text() == test_content
+    
+    def test_empty_tar_warning(self, tmp_path):
+        """Test that empty tar gives warning."""
+        tar_file = tmp_path / "empty.tar"
+        
+        with tarfile.open(tar_file, 'w') as tar:
+            pass
+        
+        extract_dir = tmp_path / "extracted"
+        extractor = SafeTarExtractor()
+        
+        import warnings
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            extracted = extractor.extract(tar_file, extract_dir)
+            assert len(extracted) == 0
+
+
+@pytest.fixture
+def tmp_path():
+    """Provide temporary path for tests."""
+    import shutil
+    path = Path(tempfile.mkdtemp())
+    yield path
+    for _ in range(3):
+        try:
+            shutil.rmtree(path, ignore_errors=True)
+            break
+        except PermissionError:
+            time.sleep(0.1)

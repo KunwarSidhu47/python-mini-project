@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "python-mini-project"
+version = "0.1.0"
+description = "A collection of python mini projects"
+authors = ["Open Source Contributors"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+pygame = "2.6.1"
+numpy = "1.26.4"
+matplotlib = "3.8.3"
+pillow = "12.2.0"
+requests = "2.34.2"
+markdown2 = "2.5.5"
+reportlab = "4.5.1"
+nltk = "3.9.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
