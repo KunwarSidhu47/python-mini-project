@@ -260,25 +260,73 @@
         </div>
 
         <div class="hero-meta">
-          <span><strong id="heroProjectCount">0</strong> total projects</span>
-          <span><strong id="heroGameCount">0</strong> games</span>
-          <span><strong id="heroMathCount">0</strong> maths</span>
-          <span><strong id="heroUtilityCount">0</strong> utilities</span>
+          <div>
+            <span><strong id="heroProjectCount">0</strong> total projects</span>
+            <span><strong id="heroGameCount">0</strong> games</span>
+            <span><strong id="heroMathCount">0</strong> maths</span>
+            <span><strong id="heroUtilityCount">0</strong> utilities</span>
+          </div>
+          <div>
+            <span data-filter="favorites"><strong id="heroFavoriteCount">0</strong>Favorites</span>
+            <span><strong id="heroViewedCount">0</strong>Recently Viewed</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="stats-dashboard-section">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-heading">
-            <span class="heading-text">Project Statistics</span>
-          </h2>
-        </div>
-        <div class="stats-dashboard">
-          <div class="stats-card" data-filter="all">
-            <h3 id="statsTotal">0</h3>
-            <p>Total Projects</p>
+    <!-- Sticky Filter Bar -->
+    <div class="sticky-filter-bar visible" id="stickyFilterBar" aria-label="Project category filters">
+      <div class="sticky-filter-inner">
+        <button aria-selected="true" class="sticky-tab active" data-sticky-category="all" role="tab" tabindex="0"
+          type="button">
+          All
+        </button>
+        <button aria-selected="false" class="sticky-tab" data-sticky-category="games" role="tab" tabindex="-1"
+          type="button">
+          Games
+        </button>
+        <button aria-selected="false" class="sticky-tab" data-sticky-category="math" role="tab" tabindex="-1"
+          type="button">
+          Math
+        </button>
+        <button aria-selected="false" class="sticky-tab" data-sticky-category="utilities" role="tab" tabindex="-1"
+          type="button">
+          Utilities
+        </button>
+        <button aria-selected="false" class="sticky-tab" data-sticky-category="favorites" role="tab" tabindex="-1"
+          type="button">
+          Favorites
+        </button>
+        <button aria-selected="false" class="sticky-tab" data-sticky-category="playground" role="tab" tabindex="-1"
+          type="button">
+          Playground
+        </button>
+      </div>
+    </div>
+
+    <!-- Timeline Section -->
+    <section class="hero-timeline-section" id="timelineSection">
+      <div class="timeline-background" aria-hidden="true"></div>
+      <div aria-hidden="true" class="timeline-orb timeline-orb-one"></div>
+      <div aria-hidden="true" class="timeline-orb timeline-orb-two"></div>
+      <div class="timeline-container">
+        <div class="timeline-route-badge">TRACK-ROUTE</div>
+        <div class="timeline-grid">
+          <div class="timeline-item" data-reveal>
+            <div class="timeline-content">
+              <span class="timeline-icon" data-lucide="house"></span>
+              <div class="timeline-text">
+                <span class="timeline-step">01</span>
+                <h3 class="timeline-title">Welcome</h3>
+                <p class="timeline-desc">
+                  Jump into a tiny Python arcade built for curious beginners
+                </p>
+              </div>
+            </div>
+            <div class="timeline-node">
+              <div class="timeline-dot"></div>
+            </div>
+            <div></div>
           </div>
           <div class="stats-card" data-filter="games">
             <h3 id="statsGames">0</h3>
@@ -973,24 +1021,32 @@
       
       const games = projectsData.filter((p) => p.category === "games").length;
       const math = projectsData.filter((p) => p.category === "math").length;
-      const utils = projectsData.filter((p) => p.category === "utilities").length;
+      const utils = projectsData.filter(
+        (p) => p.category === "utilities"
+      ).length;
 
-      document.getElementById("heroProjectCount").textContent = total;
-      document.getElementById("heroGameCount").textContent = games;
-      document.getElementById("heroMathCount").textContent = math;
-      document.getElementById("heroUtilityCount").textContent = utils;
-      document.getElementById("projectCountBadge").textContent = total + " projects";
-      
-      animateCounter("statsTotal", total);
-      animateCounter("statsGames", games);
-      animateCounter("statsMath", math);
-      animateCounter("statsUtilities", utils);
-      
-      document.getElementById("statsFavorites").textContent = favorites.length;
-      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-      animateCounter("statsViewed", viewed.length);
+      const heroCount = document.getElementById("heroProjectCount");
+      const heroGames = document.getElementById("heroGameCount");
+      const heroMath = document.getElementById("heroMathCount");
+      const heroUtils = document.getElementById("heroUtilityCount");
+      const projectBadge = document.getElementById("projectCountBadge");
 
-      console.log(`✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`);
+      if (heroCount) heroCount.textContent = total;
+      if (heroGames) heroGames.textContent = games;
+      if (heroMath) heroMath.textContent = math;
+      if (heroUtils) heroUtils.textContent = utils;
+      if (projectBadge) projectBadge.textContent = total + " projects";
+      animateCounter("statsTotal",total);
+animateCounter("statsGames",games);
+animateCounter("statsMath",math);
+animateCounter("statsUtilities",utils);
+document.getElementById("statsFavorites").textContent = favorites.length;
+const viewed= JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
+animateCounter("heroViewedCount",viewed.length);
+
+      console.log(
+        `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
+      );
 
       // Wire up buttons
       setTimeout(() => {
