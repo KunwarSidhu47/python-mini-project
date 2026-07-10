@@ -54,7 +54,7 @@ The game will continue until one of you can't think of a word or gives an invali
         used_words.add(user_word)
         
         # Add user's word to the data if it's not already there
-        if user_word not in data.words[user_word[0]]:
+        if user_word not in data.words[user_word[0].lower()]:
             data.DataAdding(user_word)
         time.sleep(1)
 

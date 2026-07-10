@@ -6,9 +6,9 @@ WORDS_FILE = Path(__file__).with_name("words.bat")
 def DataAdding(word):
     file = open(WORDS_FILE, 'rb')
     words = pickle.load(file)
-    a = words[word[0]]
+    a = words[word[0].lower()]
     a.append(word)
-    b = word[0]
+    b = word[0].lower()
     words[b] = a
     file.close()
     
