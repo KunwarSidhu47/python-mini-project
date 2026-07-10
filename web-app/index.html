@@ -249,10 +249,16 @@
         </div>
 
         <div class="hero-meta">
-          <span><strong id="heroProjectCount">0</strong> total projects</span>
-          <span><strong id="heroGameCount">0</strong> games</span>
-          <span><strong id="heroMathCount">0</strong> maths</span>
-          <span><strong id="heroUtilityCount">0</strong> utilities</span>
+          <div>
+            <span><strong id="heroProjectCount">0</strong> total projects</span>
+            <span><strong id="heroGameCount">0</strong> games</span>
+            <span><strong id="heroMathCount">0</strong> maths</span>
+            <span><strong id="heroUtilityCount">0</strong> utilities</span>
+          </div>
+          <div>
+            <span data-filter="favorites"><strong id="heroFavoriteCount">0</strong>Favorites</span>
+            <span><strong id="heroViewedCount">0</strong>Recently Viewed</span>
+          </div>
         </div>
       </div>
     </section>
@@ -286,52 +292,6 @@
         </button>
       </div>
     </div>
-
-    <section class="stats-dashboard-section">
-  <div class="container">
-
-<div class="section-header">
-  <h2 class="section-heading">
-    <span class="heading-text">Project Statistics</span>
-  </h2>
-</div>
-
-    <div class="stats-dashboard">
-
-      <div class="stats-card" data-filter="all">
-        <h3 id="statsTotal">0</h3>
-        <p>Total Projects</p>
-      </div>
-
-      <div class="stats-card" data-filter="games">
-        <h3 id="statsGames">0</h3>
-        <p>Games</p>
-      </div>
-
-      <div class="stats-card" data-filter="math">
-        <h3 id="statsMath">0</h3>
-        <p>Math</p>
-      </div>
-
-      <div class="stats-card" data-filter="utilities">
-        <h3 id="statsUtilities">0</h3>
-        <p>Utilities</p>
-      </div>
-
-      <div class="stats-card" data-filter="favorites">
-        <h3 id="statsFavorites">0</h3>
-        <p>Favorites</p>
-      </div>
-
-      <div class="stats-card">
-        <h3 id="statsViewed">0</h3>
-        <p>Recently Viewed</p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
 
     <!-- Timeline Section -->
     <section class="hero-timeline-section" id="timelineSection">
@@ -1197,7 +1157,7 @@ animateCounter("statsMath",math);
 animateCounter("statsUtilities",utils);
 document.getElementById("statsFavorites").textContent = favorites.length;
 const viewed= JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
-animateCounter("statsViewed",viewed.length);
+animateCounter("heroViewedCount",viewed.length);
 
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`

@@ -1499,9 +1499,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   
   // Update stats dashboard
-  const statsFavorites = document.getElementById("statsFavorites");
-  if (statsFavorites) {
-    statsFavorites.textContent = count;
+  const heroFavoriteCount = document.getElementById("heroFavoriteCount");
+  if (heroFavoriteCount) {
+    heroFavoriteCount.textContent = count;
   }
 }
 updateFavoritesCountBadge();
