@@ -20,7 +20,24 @@ function safeRun(fn) {
     console.error(e);
   }
 }
+// Import the initSearch function from your updated search module
+import { initSearch } from "./modules/search.js";
 
+document.addEventListener("DOMContentLoaded", () => {
+    // Other initializations...
+
+    // Initialize the search bar
+    initSearch((query) => {
+        // This callback runs whenever a search is triggered
+        console.log("Searching for:", query);
+        
+        // If you have a function that filters projects globally, call it here.
+        // Example:
+        // if (typeof window.applySearchFilter === 'function') {
+        //     window.applySearchFilter(query);
+        // }
+    });
+});
 function debounce(fn, ms) {
   var timer;
   return function () {
@@ -894,81 +911,91 @@ document.addEventListener("DOMContentLoaded", function () {
     if (searchDropdown) searchDropdown.classList.remove("active");
   }
 
-  function renderRecentSearches() {
-    if (noResultsMessage) noResultsMessage.style.display = "none";
-    if (!recentSearchesSection) return;
-
-    if (recentSearches.length === 0) {
-      recentSearchesSection.style.display = "none";
-      if (tipsSection) tipsSection.style.display = "block";
-      if (resultsSection) resultsSection.style.display = "none";
-      return;
-    }
-
-    if (recentSearchesList) {
-      recentSearchesList.innerHTML = "";
-      recentSearches.slice(0, 5).forEach(function (search) {
-        var item = document.createElement("div");
-        item.className = "dropdown-recent-item";
-        var text = document.createElement("div");
-        text.className = "dropdown-recent-text";
-
-        var clock = document.createElement("i");
-        clock.className = "fas fa-history";
-        clock.style.opacity = "0.5";
-        clock.style.fontSize = "0.8rem";
-
-        var label = document.createElement("span");
-        label.textContent = search;
-
-        text.append(clock, label);
-
-        var removeBtn = document.createElement("button");
-        removeBtn.className = "dropdown-recent-remove";
-        removeBtn.setAttribute("aria-label", "Remove search");
-        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
-
-        item.append(text, removeBtn);
-
-        label.addEventListener("click", function () {
-          syncSearchInputs(search, searchInput);
-          currentSearchQuery = search;
-          performSearch(true);
-          closeDropdown();
-        });
-
-        removeBtn.addEventListener("click", function (e) {
-          e.stopPropagation();
-          recentSearches = recentSearches.filter(function (s) {
-            return s !== search;
-          });
+  function wireClearRecentBtn() {
+    var headerClearBtn = document.getElementById("clearRecentBtn");
+    if (!headerClearBtn) return;
+    headerClearBtn.style.display = recentSearches.length
+      ? "inline-flex"
+      : "none";
+    headerClearBtn.onclick = function (e) {
+      e.stopPropagation();
+      if (!recentSearches || recentSearches.length === 0) return;
+      showConfirm(
+        "Clear all recent searches? This cannot be undone.",
+        function () {
+          recentSearches = [];
           localStorage.setItem(
             "recentSearches",
             JSON.stringify(recentSearches)
           );
           renderRecentSearches();
-        });
+          closeDropdown();
+        },
+        function () {}
+      );
+    };
+  }
 
-        recentSearchesList.appendChild(item);
-      });
+  function renderRecentSearches() {
+    if (noResultsMessage) noResultsMessage.style.display = "none";
+    if (!recentSearchesSection) return;
 
-      // Wire up header Clear All button (if present)
-      var headerClearBtn = document.getElementById('clearRecentBtn');
-      if (headerClearBtn) {
-        headerClearBtn.style.display = recentSearches.length ? 'inline-flex' : 'none';
-        headerClearBtn.onclick = function (e) {
-          e.stopPropagation();
-          if (!recentSearches || recentSearches.length === 0) return;
-          showConfirm('Clear all recent searches? This cannot be undone.', function () {
-            recentSearches = [];
-            localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
-            renderRecentSearches();
+    if (recentSearchesList) {
+      recentSearchesList.innerHTML = "";
+
+      if (recentSearches.length === 0) {
+        var emptyEl = document.createElement("p");
+        emptyEl.className = "recent-searches-empty";
+        emptyEl.textContent =
+          "No recent searches yet. Start exploring projects!";
+        recentSearchesList.appendChild(emptyEl);
+      } else {
+        recentSearches.slice(0, 5).forEach(function (search) {
+          var chip = document.createElement("div");
+          chip.className = "recent-search-chip";
+          chip.setAttribute("role", "listitem");
+
+          var labelBtn = document.createElement("button");
+          labelBtn.type = "button";
+          labelBtn.className = "recent-search-chip-label";
+          labelBtn.setAttribute("aria-label", "Search for " + search);
+          var labelSpan = document.createElement("span");
+          labelSpan.textContent = search;
+          labelBtn.appendChild(labelSpan);
+
+          var removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.className = "recent-search-chip-remove";
+          removeBtn.setAttribute("aria-label", "Remove search");
+          removeBtn.innerHTML =
+            '<i class="fas fa-times" aria-hidden="true"></i>';
+
+          chip.append(labelBtn, removeBtn);
+
+          labelBtn.addEventListener("click", function () {
+            syncSearchInputs(search, searchInput);
+            currentSearchQuery = search;
+            performSearch(true);
             closeDropdown();
-          }, function () {
-            // cancelled
           });
-        };
+
+          removeBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            recentSearches = recentSearches.filter(function (s) {
+              return s !== search;
+            });
+            localStorage.setItem(
+              "recentSearches",
+              JSON.stringify(recentSearches)
+            );
+            renderRecentSearches();
+          });
+
+          recentSearchesList.appendChild(chip);
+        });
       }
+
+      wireClearRecentBtn();
     }
 
     recentSearchesSection.style.display = "block";
@@ -1375,41 +1402,7 @@ document.addEventListener("DOMContentLoaded", function () {
       removeTrap = null;
     }
     
-    recentSearchesList.innerHTML = '';
-    recentSearches.slice(0, 5).forEach((search) => {
-        const item = document.createElement('div');
-        item.className = 'dropdown-recent-item';
-        item.innerHTML = `
-            <button type="button" class="dropdown-recent-text" aria-label="Search ${search}">
-                <i class="fas fa-history" style="opacity: 0.5; font-size: 0.9rem;"></i>
-                <span style="flex: 1; color: var(--text-secondary);">${search}</span>
-            </button>
-            <button type="button" class="dropdown-recent-remove" aria-label="Remove search">
-                <i class="fas fa-x"></i>
-            </button>
-        `;
-        
-        const textButton = item.querySelector('.dropdown-recent-text');
-        const removeBtn = item.querySelector('.dropdown-recent-remove');
-        
-        if (textButton) {
-            textButton.addEventListener('click', () => {
-                searchInput.value = search;
-                currentSearchQuery = search;
-                performSearch();
-                closeDropdown();
-            });
-        }
-        
-        if (removeBtn) {
-            removeBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                recentSearches = recentSearches.filter(s => s !== search);
-                localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
-                renderRecentSearches();
-            });
-        }
-    });
+    renderRecentSearches();
     // Clear content
     if (modalBody) {
       modalBody.innerHTML = "";

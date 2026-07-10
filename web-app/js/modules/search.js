@@ -1,7 +1,3 @@
-/*
-  search.js - Interactive search suggestions, history, and keyboard navigations.
-*/
-
 import { debounce, prefersReducedMotion } from "./utils.js";
 
 let recentSearches = JSON.parse(localStorage.getItem("recentSearches") || "[]");
@@ -16,6 +12,7 @@ export function initSearch(onSearchChange) {
   const searchDropdown = document.getElementById("searchDropdown");
   const searchLoader = document.getElementById("searchLoader");
   const recentSearchesList = document.getElementById("recentSearchesList");
+  const recentSearchesDropdownList = document.getElementById("recentSearchesDropdownList");
   const recentSearchesSection = document.getElementById(
     "recentSearchesSection"
   );
@@ -83,59 +80,92 @@ export function initSearch(onSearchChange) {
     if (noResultsMessage) noResultsMessage.style.display = "none";
     if (!recentSearchesSection) return;
 
-    if (recentSearches.length === 0) {
-      recentSearchesSection.style.display = "none";
-      if (tipsSection) tipsSection.style.display = "block";
-      if (resultsSection) resultsSection.style.display = "none";
-      return;
-    }
-
     if (recentSearchesList) {
       recentSearchesList.innerHTML = "";
-      recentSearches.slice(0, 5).forEach((search) => {
-        const item = document.createElement("div");
-        item.className = "dropdown-recent-item";
+      
+      // REQUIREMENT 3: Render empty state instead of hiding the section
+      if (recentSearches.length === 0) {
+        const emptyState = document.createElement("div");
+        emptyState.className = "recent-searches-empty";
+        emptyState.textContent = "No recent searches yet. Start exploring projects!";
+        // Basic fallback styling for empty state
+        emptyState.style.padding = "12px 0";
+        emptyState.style.color = "var(--text-muted, #666)";
+        emptyState.style.fontSize = "0.9rem";
+        
+        recentSearchesList.appendChild(emptyState);
+      } else {
+        // Apply flex layout to list for chips
+        recentSearchesList.style.display = "flex";
+        recentSearchesList.style.flexWrap = "wrap";
+        recentSearchesList.style.gap = "8px";
+        
+        // REQUIREMENT 4: Keep showing max 5 recent searches
+        recentSearches.slice(0, 5).forEach((search) => {
+          // REQUIREMENT 1 & 2: Create a modern rounded search chip
+          const chip = document.createElement("div");
+          chip.className = "search-chip";
+          // Basic inline styles for chips (ensure standard rendering)
+          chip.style.display = "inline-flex";
+          chip.style.alignItems = "center";
+          chip.style.gap = "6px";
+          chip.style.padding = "6px 12px";
+          chip.style.backgroundColor = "var(--bg-secondary, #f0f0f0)";
+          chip.style.borderRadius = "20px";
+          chip.style.cursor = "pointer";
+          chip.style.fontSize = "0.85rem";
 
-        const text = document.createElement("div");
-        text.className = "dropdown-recent-text";
+          // Add history icon
+          const clock = document.createElement("i");
+          clock.className = "fas fa-history";
+          clock.style.opacity = "0.6";
+          clock.style.fontSize = "0.8rem";
 
-        const clock = document.createElement("i");
-        clock.className = "fas fa-history";
-        clock.style.opacity = "0.5";
-        clock.style.fontSize = "0.8rem";
+          // Add text
+          const label = document.createElement("span");
+          label.textContent = search;
+          
+          // Add small remove button
+          const removeBtn = document.createElement("button");
+          removeBtn.className = "chip-remove-btn";
+          removeBtn.setAttribute("aria-label", "Remove search");
+          removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+          removeBtn.style.background = "transparent";
+          removeBtn.style.border = "none";
+          removeBtn.style.cursor = "pointer";
+          removeBtn.style.color = "inherit";
+          removeBtn.style.opacity = "0.5";
+          removeBtn.style.padding = "0 2px";
+          
+          removeBtn.onmouseenter = () => removeBtn.style.opacity = "1";
+          removeBtn.onmouseleave = () => removeBtn.style.opacity = "0.5";
 
-        const label = document.createElement("span");
-        label.textContent = search;
+          chip.append(clock, label, removeBtn);
 
-        text.append(clock, label);
+          // REQUIREMENT 6: Clicking chip searches, fills input, closes dropdown
+          chip.addEventListener("click", () => {
+            searchInput.value = search;
+            triggerSearch(search);
+            closeDropdown();
+          });
 
-        const removeBtn = document.createElement("button");
-        removeBtn.className = "dropdown-recent-remove";
-        removeBtn.setAttribute("aria-label", "Remove search");
-        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+          // REQUIREMENT 7: Clicking × removes that search, updates storage, re-renders
+          removeBtn.addEventListener("click", (e) => {
+            e.stopPropagation(); // Prevents triggering the chip search action
+            recentSearches = recentSearches.filter((s) => s !== search);
+            localStorage.setItem(
+              "recentSearches",
+              JSON.stringify(recentSearches)
+            );
+            renderRecentSearches();
+          });
 
-        item.append(text, removeBtn);
-
-        label.addEventListener("click", () => {
-          searchInput.value = search;
-          triggerSearch(search);
-          closeDropdown();
+          recentSearchesList.appendChild(chip);
         });
-
-        removeBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          recentSearches = recentSearches.filter((s) => s !== search);
-          localStorage.setItem(
-            "recentSearches",
-            JSON.stringify(recentSearches)
-          );
-          renderRecentSearches();
-        });
-
-        recentSearchesList.appendChild(item);
-      });
+      }
     }
 
+    // REQUIREMENT 3: Always show recentSearchesSection and tipsSection when triggering recent searches
     recentSearchesSection.style.display = "block";
     if (resultsSection) resultsSection.style.display = "none";
     if (tipsSection) tipsSection.style.display = "block";
@@ -339,6 +369,16 @@ export function initSearch(onSearchChange) {
       closeDropdown();
       triggerSearch("");
       searchInput.focus();
+    });
+  }
+
+  // REQUIREMENT 8: Add support for "Clear All" recent searches button
+  const clearRecentBtn = document.getElementById("clearRecentBtn");
+  if (clearRecentBtn) {
+    clearRecentBtn.addEventListener("click", () => {
+      recentSearches = [];
+      localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+      renderRecentSearches(); // Re-render the UI to display empty state
     });
   }
 

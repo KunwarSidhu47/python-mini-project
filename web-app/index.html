@@ -86,6 +86,7 @@
     <button class="sidebar-mobile-close" id="sidebarMobileClose" aria-label="Close sidebar" type="button">
       <i class="fas fa-times" aria-hidden="true"></i>
     </button>
+    
     <div class="sidebar-search">
       <div class="search-box" style="position: relative">
         <i class="fas fa-search" aria-hidden="true"></i>
@@ -96,13 +97,7 @@
             <div class="search-loader" id="searchLoader" style="display: none">
               <div class="spinner"></div>
             </div>
-            <div class="recent-searches-section" id="recentSearchesSection">
-              <div class="dropdown-section-title">
-                <span>Recent</span>
-                <button id="clearRecentBtn" class="recent-clear-all-btn" aria-label="Clear recent searches">Clear
-                  All</button>
-              </div>
-              <div class="dropdown-list" id="recentSearchesList"></div>
+            <div class="recent-searches-chips" id="recentSearchesDropdownList" role="list"></div>
             </div>
             <div class="results-section" id="resultsSection" style="display: none">
               <div class="dropdown-section-title">Projects</div>
@@ -127,7 +122,18 @@
         </div>
       </div>
     </div>
-
+<div class="recent-searches-section" id="recentSearchesSection">
+  <div class="dropdown-section-title recent-searches-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <span class="recent-searches-heading" style="color: #e2e8f0; font-weight: 500;">
+      <i class="fas fa-history" aria-hidden="true" style="margin-right: 6px; color: #a78bfa;"></i>
+      Search History
+    </span>
+    <button id="clearRecentBtn" class="recent-clear-all-btn" aria-label="Clear recent searches" style="background: none; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+      <i class="fas fa-trash-alt"></i> Clear History
+    </button>
+  </div>
+  <div class="recent-searches-chips" id="recentSearchesList" role="list"></div>
+</div>
     <div class="sidebar-menu-wrapper">
       <div class="sidebar-menu-title">Categories</div>
       <nav class="sidebar-menu" role="tablist" aria-label="Filter by category">
