@@ -22,6 +22,65 @@ if sys.stderr.encoding != 'utf-8':
 
 from utils.banners import print_victory_banner, print_game_over_banner
 
+HANGMAN_STAGES = [
+    """
+     -----
+     |   |
+     |
+     |
+     |
+     |
+    """,
+    """
+     -----
+     |   |
+     |   O
+     |
+     |
+     |
+    """,
+    """
+     -----
+     |   |
+     |   O
+     |   |
+     |
+     |
+    """,
+    """
+     -----
+     |   |
+     |   O
+     |  /|
+     |
+     |
+    """,
+    """
+     -----
+     |   |
+     |   O
+     |  /|\\
+     |
+     |
+    """,
+    """
+     -----
+     |   |
+     |   O
+     |  /|\\
+     |  /
+     |
+    """,
+    """
+     -----
+     |   |
+     |   O
+     |  /|\\
+     |  / \\
+     |
+    """,
+]
+
 def main():
     # Cleaned up global variables (not strictly necessary unless modifying in nested scopes, but kept for your structure)
     global all_guessed, attempts, correct_letters, display, guess, guessed_letters, hint, letter, max_attempts, selected, won, word, word_data, word_length
@@ -108,6 +167,7 @@ def main():
                 else:
                     display += "_ "
         
+            print(HANGMAN_STAGES[attempts])
             print(f"Word: {display}")
             
             # 2. CHECK WIN CONDITION HERE BEFORE ASKING FOR A NEW GUESS
