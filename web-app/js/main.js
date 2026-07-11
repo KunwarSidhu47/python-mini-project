@@ -318,8 +318,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var emptyStateHint = document.getElementById("emptyStateHint");
   var projectCountBadge = document.getElementById("projectCountBadge");
   var mobileMenuToggle = document.getElementById("mobileMenuToggle");
-  var navControls = document.getElementById("navControls");
-  var navbar = document.getElementById("mainNavbar");
 
   function syncSearchInputs(value, sourceInput) {
     [searchInput, navSearchInput].forEach(function (input) {
@@ -800,14 +798,6 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     heroObserver.observe(heroSection);
 
-    window.addEventListener(
-      "scroll",
-      function () {
-        var navH = navbar ? navbar.getBoundingClientRect().height : 72;
-        stickyFilterBar.style.top = navH + 16 + "px";
-      },
-      { passive: true }
-    );
   }
 
   /* ── Random Project ───────────────────────────────────────── */
@@ -1422,11 +1412,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Update recently viewed
     if (name) {
-      var recent = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      var recent = JSON.parse(localStorage.getItem("recentProjects") || "[]");
       recent = recent.filter(function (r) { return r !== name; });
       recent.unshift(name);
       recent = recent.slice(0, 4);
-      localStorage.setItem("recentlyViewed", JSON.stringify(recent));
+      localStorage.setItem("recentProjects", JSON.stringify(recent));
       if (typeof window.updateRecentlyViewed === "function") window.updateRecentlyViewed();
     }
   }
