@@ -1052,28 +1052,8 @@ main>.hero-section:has(.hero-code-snippets) {
   animation: pulseKicker 2s ease-in-out infinite;
 }
 
-@keyframes pulseKicker {
-
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-
-  50% {
-    opacity: 0.4;
-    transform: scale(0.85);
-  }
-}
-
-[data-theme="dark"] .hero-kicker {
-  background: linear-gradient(135deg,
-      rgba(106, 191, 141, 0.18),
-      rgba(242, 194, 108, 0.1));
-  border-color: rgba(255, 243, 224, 0.1);
-  color: #d4b48a;
-}
-
+/* ── Hero Badge Row (Glassified Kicker & Status Button) ──────── */
+.hero-kicker,
 .hero-status {
   display: inline-flex;
   align-items: center;

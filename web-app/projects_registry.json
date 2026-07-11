@@ -488,21 +488,6 @@
     "path": "math/Quadratic-Solver/Quadratic-Solver.py"
   },
   {
-    "name": "AI Resume Analyzer",
-    "emoji": "📄",
-    "category": "utilities",
-    "difficulty": "advanced",
-    "description": "Analyze resumes using NLTK to extract key skills and suggestions.",
-    "keywords": [
-      "resume",
-      "analyzer",
-      "nltk",
-      "skills",
-      "parser"
-    ],
-    "path": "utilities/AI-Resume-Analyzer/AI-Resume-Analyzer.py"
-  },
-  {
     "name": "Budget Tracker",
     "emoji": "💰",
     "category": "utilities",

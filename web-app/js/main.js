@@ -1354,8 +1354,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Info button already exists, skip injection
         console.log('ℹ️ Info button already exists for', name);
       } else {
-        // Look for any heading element
-        var firstHeading = projectContent.querySelector("h2, h3, .resume-analyzer-copy h2, .pet-title");
+        var firstHeading = projectContent.querySelector("h2, h3, .pet-title");
     
         // Special case for Tic Tac Toe - look for the heading inside project-content
         if (!firstHeading) {

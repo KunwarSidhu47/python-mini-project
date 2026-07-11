@@ -143,7 +143,7 @@ export function openProjectSafe(name, trigger) {
     const projectContent = modalBody.querySelector(".project-content");
     if (projectContent) {
       let firstHeading = projectContent.querySelector(
-        "h2, h3, .resume-analyzer-copy h2, .pet-title"
+        "h2, h3, .pet-title"
       );
       if (!firstHeading) {
         firstHeading = projectContent.querySelector(

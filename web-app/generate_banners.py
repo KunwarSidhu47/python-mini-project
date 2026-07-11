@@ -468,18 +468,6 @@ def generate_banner(name, category, filename):
             x = 220 + i * 80
             y = 175
             v_draw.ellipse([x, y, x + 65, y + 65], fill=col, outline=(255,255,255,100), width=2)
-    elif "resume" in n_lower or "analyzer" in n_lower:
-        # Resume analyzer dashboard
-        v_draw.rounded_rectangle([250, 100, 550, 350], radius=24, fill=(255,255,255,12), outline=color_accent, width=3)
-        v_draw.rounded_rectangle([285, 135, 515, 315], radius=18, fill=(255,255,255,8), outline=(255,255,255,50), width=2)
-        v_draw.polygon([(332, 135), (515, 135), (515, 190)], fill=(255,255,255,20), outline=color_accent)
-        v_draw.ellipse([280, 145, 390, 255], outline=color_accent, width=8)
-        v_draw.text((335, 200), "82%", fill=color_accent, anchor="mm")
-        for i, w in enumerate([90, 75, 65]):
-            y = 275 + i * 18
-            v_draw.rounded_rectangle([410, y, 410 + w, y + 10], radius=4, fill=color_accent)
-        v_draw.text((430, 165), "AI RESUME", fill=color_accent, anchor="lm")
-        v_draw.text((430, 188), "ANALYZER", fill=(255,255,255), anchor="lm")
     elif "caesar" in n_lower:
         # Cipher wheel and shifting letters
         cx, cy = 400, 225
@@ -720,7 +708,6 @@ projects = [
     ("Number Converter", "utilities", "number-converter.webp"),
     ("Typing Speed Tester", "utilities", "typing-speed-tester.webp"),
     ("Color Palette Suggestor", "utilities", "color-palette.webp"),
-    ("AI Resume Analyzer", "utilities", "resume-analyzer.webp"),
     ("Caesar Cipher", "utilities", "caesar-cipher.webp"),
     ("Unit Converter", "utilities", "unit-converter.webp"),
     ("Budget Tracker", "utilities", "budget-tracker.webp"),

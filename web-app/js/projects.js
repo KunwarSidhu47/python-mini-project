@@ -25,7 +25,6 @@ function getProjectHTML(projectName) {
         'matrix-calculator': () => getMatrixCalculatorHTML(),
         'sudoku-game': getSudokuGameHTML(),
         'unit-converter': getUnitConverterHTML(),
-        'resume-analyzer': getResumeAnalyzerHTML(),
         'reverse-hangman': () => getReverseHangmanHTML(),
         'budget-tracker': getBudgetTrackerHTML(),
         'snake-game': getSnakeGameHTML(),
@@ -463,15 +462,6 @@ const projectInstructions = {
       "Select character types",
       "Click Generate",
       "Copy the secure password"
-    ]
-  },
-  "resume-analyzer": {
-    title: "📄 How to Use AI Resume Analyzer",
-    steps: [
-      "Upload your resume (PDF, DOC, or TXT)",
-      "Click 'Analyze Resume'",
-      "View your ATS score and keyword matches",
-      "Check suggestions to improve your resume"
     ]
   },
   "typing-speed-tester": {
