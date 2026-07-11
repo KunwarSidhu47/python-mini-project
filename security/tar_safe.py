@@ -134,17 +134,27 @@ class SafeTarExtractor:
         try:
             target_abs = target_path.resolve()
             extract_abs = extract_path.resolve()
-            if not str(target_abs).startswith(str(extract_abs)):
+            if os.path.commonpath([str(target_abs), str(extract_abs)]) != str(extract_abs):
                 raise UnsafeTarError(
                     f"Path traversal detected: {member.name} -> {target_path}"
                 )
-        except (OSError, ValueError):
+        except (OSError, RuntimeError):
             target_str = str(target_path.absolute())
             extract_str = str(extract_path.absolute())
-            if not target_str.startswith(extract_str):
+            try:
+                if os.path.commonpath([target_str, extract_str]) != extract_str:
+                    raise UnsafeTarError(
+                        f"Path traversal detected: {member.name} -> {target_path}"
+                    )
+            except ValueError:
                 raise UnsafeTarError(
-                    f"Path traversal detected: {member.name} -> {target_path}"
+                    f"Path traversal detected (different drives): {member.name} -> {target_path}"
                 )
+        except ValueError:
+            # os.path.commonpath raises ValueError on Windows for different drives
+            raise UnsafeTarError(
+                f"Path traversal detected (different drives): {member.name} -> {target_path}"
+            )
         
         if target_path.exists() and not overwrite:
             raise UnsafeTarError(

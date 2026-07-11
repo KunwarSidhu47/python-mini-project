@@ -143,6 +143,79 @@ class TestSafeTarExtractor:
         
         with pytest.raises(UnsafeTarError):
             extractor.extract(tar_file, extract_dir)
+            
+    def test_sibling_directory_traversal(self, tmp_path):
+        """Test sibling directory traversal (partial path traversal)."""
+        tar_file = tmp_path / "sibling_traversal.tar"
+        
+        with tarfile.open(tar_file, 'w') as tar:
+            # If extracting to 'extracted', a sibling directory could be 'extracted_evil'
+            # Using absolute paths in tar is rare but we can simulate by making the 
+            # tar path resolve to a sibling directory when combined with the extract dir.
+            # But SafeTarExtractor uses: extract_path / member.name
+            # So if member.name is '../extracted_evil/file.txt', and extract_path is '/tmp/extracted'
+            # target_path is '/tmp/extracted/../extracted_evil/file.txt' -> '/tmp/extracted_evil/file.txt'
+            # The vulnerability was that this bypassed string prefix checking.
+            info = tarfile.TarInfo(name='../extracted_evil/evil.txt')
+            info.size = 10
+            info.type = tarfile.REGTYPE
+            
+            content = b'x' * 10
+            fileobj = io.BytesIO(content)
+            tar.addfile(info, fileobj)
+            
+        extract_dir = tmp_path / "extracted"
+        # Create the sibling directory to simulate attack scenario
+        sibling_dir = tmp_path / "extracted_evil"
+        sibling_dir.mkdir(exist_ok=True)
+        
+        extractor = SafeTarExtractor()
+        
+        with pytest.raises(UnsafeTarError):
+            extractor.extract(tar_file, extract_dir)
+            
+    def test_absolute_path_traversal(self, tmp_path):
+        """Test absolute path traversal prevention."""
+        tar_file = tmp_path / "absolute_traversal.tar"
+        
+        with tarfile.open(tar_file, 'w') as tar:
+            # Create a TarInfo with an absolute path
+            # Need to use a generic absolute path for testing
+            info = tarfile.TarInfo(name='/tmp/evil_absolute.txt')
+            info.size = 10
+            info.type = tarfile.REGTYPE
+            
+            content = b'x' * 10
+            fileobj = io.BytesIO(content)
+            tar.addfile(info, fileobj)
+            
+        extract_dir = tmp_path / "extracted"
+        extractor = SafeTarExtractor(allow_absolute_paths=False)
+        
+        with pytest.raises(UnsafeTarError):
+            extractor.extract(tar_file, extract_dir)
+            
+    def test_nested_valid_directories(self, tmp_path):
+        """Test that nested valid directories are correctly extracted."""
+        tar_file = tmp_path / "nested_valid.tar"
+        
+        with tarfile.open(tar_file, 'w') as tar:
+            # Create nested structure
+            info = tarfile.TarInfo(name='dir1/dir2/file.txt')
+            info.size = 10
+            info.type = tarfile.REGTYPE
+            
+            content = b'x' * 10
+            fileobj = io.BytesIO(content)
+            tar.addfile(info, fileobj)
+            
+        extract_dir = tmp_path / "extracted"
+        extractor = SafeTarExtractor()
+        
+        extracted = extractor.extract(tar_file, extract_dir)
+        
+        assert len(extracted) == 1
+        assert (extract_dir / 'dir1' / 'dir2' / 'file.txt').exists()
     
     def test_size_limits(self, tmp_path):
         """Test file size limits."""
