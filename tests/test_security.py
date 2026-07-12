@@ -78,6 +78,52 @@ class TestURLSanitizer:
         result = sanitizer.validate_url(url)
         assert result.startswith("http://10.0.0.1")
     
+    def test_hostname_resolves_to_private_ip(self):
+        """Test that hostnames resolving to private IPs are blocked."""
+        sanitizer = URLSanitizer(allow_localhost=False, allow_private=False)
+        with pytest.raises(InvalidURLError):
+            sanitizer.validate_url("http://localhost")
+
+    def test_hostname_resolves_to_private_ip_with_allow_localhost(self):
+        sanitizer = URLSanitizer(allow_localhost=True)
+        result = sanitizer.validate_url("http://localhost")
+        assert result.startswith("http://localhost")
+
+    def test_hostname_resolves_to_private_ip_with_allow_private(self):
+        sanitizer = URLSanitizer(allow_private=True)
+        result = sanitizer.validate_url("http://localhost")
+        assert result.startswith("http://localhost")
+
+    def test_unresolvable_hostname_raises_error(self):
+        sanitizer = URLSanitizer()
+        with pytest.raises(InvalidURLError):
+            sanitizer.validate_url("http://this-domain-does-not-exist-12345.com")
+
+    def test_blocked_port(self):
+        sanitizer = URLSanitizer()
+        with pytest.raises(InvalidURLError):
+            sanitizer.validate_url("http://example.com:22")
+
+    def test_blocked_port_with_hostname_private_ip(self):
+        sanitizer = URLSanitizer(allow_localhost=True)
+        with pytest.raises(InvalidURLError):
+            sanitizer.validate_url("http://localhost:22")
+
+    def test_allowed_ports_allowlist(self):
+        sanitizer = URLSanitizer(allowed_ports=[80, 443])
+        result = sanitizer.validate_url("http://example.com:80")
+        assert result.startswith("http://example.com:80")
+
+    def test_allowed_ports_rejects_non_allowed(self):
+        sanitizer = URLSanitizer(allowed_ports=[80, 443])
+        with pytest.raises(InvalidURLError):
+            sanitizer.validate_url("http://example.com:8080")
+
+    def test_valid_port_not_blocked(self):
+        sanitizer = URLSanitizer()
+        result = sanitizer.validate_url("http://example.com:8888")
+        assert result.startswith("http://example.com:8888")
+
     def test_blocked_schemes(self):
         # These should be blocked because they're in BLOCKED_SCHEMES
         sanitizer = URLSanitizer()
