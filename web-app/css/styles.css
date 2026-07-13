@@ -796,6 +796,13 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer span {
   display: none !important;
 }
 
+body.sidebar-collapsed .recent-searches-heading{
+  display: none !important;
+}
+body.sidebar-collapsed .recent-clear-all-btn {
+  display: none !important;
+}
+
 body.sidebar-collapsed .sidebar-dock .sidebar-footer button {
   justify-content: center !important;
   padding-top: 8px;
