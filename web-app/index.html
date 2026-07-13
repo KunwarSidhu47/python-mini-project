@@ -62,6 +62,14 @@
         <i class="fas fa-search" aria-hidden="true"></i>
         <input aria-label="Search projects" id="searchInput" placeholder="Search projects or tags..." type="text"
           role="combobox" aria-autocomplete="list" aria-controls="resultsList" aria-expanded="false" />
+          <button
+            id="clearSearchBtn"
+            class="clear-search-btn"
+            type="button"
+            aria-label="Clear search"
+            hidden>
+            <i class="fas fa-times"></i>
+          </button>
         <div class="search-dropdown" id="searchDropdown" aria-live="polite">
           <div class="dropdown-content" id="searchDropdownContent">
             <div class="search-loader" id="searchLoader" style="display: none">

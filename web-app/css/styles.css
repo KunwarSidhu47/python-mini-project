@@ -3869,6 +3869,40 @@ textarea:focus-visible,
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
 }
 
+.clear-search-btn {
+    position: absolute;
+    top: 50%;
+    right: 0.85rem;
+    transform: translateY(-50%);
+    width: 1.4rem;
+    height: 1.4rem;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    z-index: 5;
+}
+
+.clear-search-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-color);
+}
+
+.clear-search-btn:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+.search-box input {
+    padding-right: 3rem;
+}
+
 /* Search dropdown items — keyboard highlight */
 .dropdown-item:focus-visible,
 .dropdown-item.selected {
@@ -3946,6 +3980,7 @@ button:focus-visible,
 
 
   .search-box {
+    position: relative;
     max-width: none;
     width: 100%;
   }
