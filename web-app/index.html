@@ -54,9 +54,6 @@
   <div aria-hidden="true" class="cursor-glow" id="cursorGlow"></div>
 
   <aside class="sidebar-dock" id="mainSidebar">
-    <button class="sidebar-mobile-close" id="sidebarMobileClose" aria-label="Close sidebar" type="button">
-      <i class="fas fa-times" aria-hidden="true"></i>
-    </button>
     <div class="sidebar-search">
       <div class="search-box" style="position: relative">
         <i class="fas fa-search" aria-hidden="true"></i>
@@ -533,6 +530,7 @@
   <script defer src="js/projects/war-card-game.js"></script>
   <script defer src="js/projects/number-sliding-puzzle.js"></script>
   <script defer src="js/projects/budget-tracker.js"></script>
+  <script defer src="js/projects/minesweeper.js"></script>
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -659,6 +657,13 @@
           category: "games",
           desc: "Find differences between images",
           tags: "game,puzzle",
+        },
+        {
+          project: "minesweeper",
+          title: "Minesweeper",
+          category: "games",
+          desc: "Clear the minefield without detonating any mines!",
+          tags: "game,puzzle,logic,minesweeper",
         },
         {
           project: "flames",

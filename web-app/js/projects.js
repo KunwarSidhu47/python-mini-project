@@ -36,6 +36,7 @@ function getProjectHTML(projectName) {
     "merge-sort": getMergeSortHTML(),
     "pathfinding-visualizer": getPathfindingVisualizerHTML(),
     "tsp-visualizer": getTspVisualizerHTML(),
+    'minesweeper': getMinesweeperHTML()
   };
 
   return projects[projectName] || "<h2>Project Coming Soon!</h2>";
@@ -162,6 +163,18 @@ const projectInstructions = {
       "Rock beats Scissors, Scissors beats Paper, Paper beats Rock",
       "Play against the computer",
     ],
+  },
+  "minesweeper": {
+    title: "💣 How to Play Minesweeper",
+    steps: [
+      "Left-click on a cell to reveal it",
+      "If you reveal a mine — game over! ",
+      "Right-click (or long press on mobile) to place/remove a 🚩 flag on suspected mines",
+      "Numbers on revealed cells show how many mines are adjacent",
+      "Use logic to deduce where mines are hidden",
+      "Clear all non-mine cells to win! ",
+      "Choose difficulty: Easy (9×9, 10 mines), Medium (16×16, 40 mines), Hard (30×16, 99 mines)"
+    ]
   },
   "simon-says": {
     title: "🎮 How to Play Simon Says",

@@ -410,7 +410,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  var sidebarMobileClose = document.getElementById("sidebarMobileClose");
   var sidebarBackdrop = document.getElementById("sidebarBackdrop");
 
   function closeMobileSidebar() {
@@ -437,9 +436,6 @@ document.addEventListener("DOMContentLoaded", function () {
     closeMobileSidebar();
   }
 
-  if (sidebarMobileClose) {
-    sidebarMobileClose.addEventListener("click", closeMobileSidebar);
-  }
   if (sidebarBackdrop) {
     sidebarBackdrop.addEventListener("click", closeMobileSidebar);
   }

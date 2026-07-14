@@ -686,6 +686,59 @@ def generate_banner(name, category, filename):
         v_draw.line(pts, fill=color_accent, width=4, joint="round")
         # draw a wall
         v_draw.rectangle([cx - 20, cy - 100, cx + 15, cy + 15], fill=color_accent)
+    elif "minesweeper" in n_lower:
+        cx, cy = 400, 225
+        v_draw.rounded_rectangle(
+            [250, 120, 550, 330],
+            radius=12,
+            fill=(255,255,255,10),
+            outline=color_accent,
+            width=3
+        )
+        cell_size = 35
+        start_x = 295
+        start_y = 145
+        rows, cols = 6, 6
+        for i in range(rows + 1):
+            x = start_x + i * cell_size
+            v_draw.line([(x, start_y), (x, start_y + rows * cell_size)], fill=color_accent_dim, width=1)
+        for i in range(cols + 1):
+            y = start_y + i * cell_size
+            v_draw.line([(start_x, y), (start_x + cols * cell_size, y)], fill=color_accent_dim, width=1)
+        mine_x = start_x + 2 * cell_size + cell_size // 2
+        mine_y = start_y + 2 * cell_size + cell_size // 2
+        v_draw.ellipse(
+            [mine_x - 10, mine_y - 10, mine_x + 10, mine_y + 10],
+            fill=(239, 68, 68),
+            outline=(255,255,255),
+            width=2
+        )
+        num_x = start_x + 1 * cell_size + cell_size // 2
+        num_y = start_y + 3 * cell_size + cell_size // 2
+        v_draw.text((num_x, num_y), "3", fill=color_accent, anchor="mm", font=font_title)
+        flag_x = start_x + 4 * cell_size + cell_size // 2
+        flag_y = start_y + 2 * cell_size + cell_size // 2
+        v_draw.text((flag_x, flag_y), "🚩", fill=color_accent, anchor="mm")
+        one_x = start_x + 3 * cell_size + cell_size // 2
+        one_y = start_y + 4 * cell_size + cell_size // 2
+        v_draw.text((one_x, one_y), "1", fill=(59, 130, 246), anchor="mm", font=font_title)
+        two_x = start_x + 5 * cell_size + cell_size // 2
+        two_y = start_y + 1 * cell_size + cell_size // 2
+        v_draw.text((two_x, two_y), "2", fill=(34, 197, 94), anchor="mm", font=font_title)
+        unopened_x = start_x + 0 * cell_size + cell_size // 2
+        unopened_y = start_y + 0 * cell_size + cell_size // 2
+        v_draw.rounded_rectangle(
+            [unopened_x - 12, unopened_y - 12, unopened_x + 12, unopened_y + 12],
+            radius=4,
+            fill=(255,255,255,20),
+            outline=color_accent_dim,
+            width=2
+        )
+        v_draw.ellipse([385, 210, 415, 240], fill=(239, 68, 68), outline=(255,255,255,150), width=3)
+        v_draw.text((400, 225), "💣", fill=color_accent, anchor="mm")
+        for x, y in [(430, 160), (340, 280), (460, 280)]:
+            v_draw.line([(x-6, y-6), (x+6, y+6)], fill=color_accent_dim, width=2)
+            v_draw.line([(x+6, y-6), (x-6, y+6)], fill=color_accent_dim, width=2)
     else:
         # Default nice abstract waves
         points = []

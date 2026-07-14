@@ -731,24 +731,6 @@ body.sidebar-active .sidebar-dock {
 }
 
 
-.sidebar-mobile-close {
-  display: none;
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: 50%;
-  background: var(--bg-glass);
-  color: var(--text-primary);
-  font-size: 16px;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 1001;
-}
-
 .sidebar-backdrop {
   display: none;
   position: fixed;
@@ -4518,9 +4500,6 @@ button:focus-visible,
 }
 
 @media (max-width: 768px) {
-  .sidebar-mobile-close {
-    display: flex;
-  }
 
   body.sidebar-active .sidebar-backdrop {
     display: block;
