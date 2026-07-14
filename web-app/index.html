@@ -964,26 +964,20 @@
       // Update counts
       const total = projectsData.length;
       function animateCounter(id,value){
+        const element=document.getElementById(id);
+        if(!element){
+          return;
+        }
+        let start=0;
+        const timer=setInterval(()=>{
+        start++;
+        element.textContent=start;
+        if(start>=value){
+          clearInterval(timer);
+        }
+      },25);
+        }
 
-let start=0;
-
-const element=document.getElementById(id);
-
-const timer=setInterval(()=>{
-
-start++;
-
-element.textContent=start;
-
-if(start>=value){
-
-clearInterval(timer);
-
-}
-
-},25);
-
-}
       const games = projectsData.filter((p) => p.category === "games").length;
       const math = projectsData.filter((p) => p.category === "math").length;
       const utils = projectsData.filter(
@@ -1005,9 +999,8 @@ clearInterval(timer);
 animateCounter("statsGames",games);
 animateCounter("statsMath",math);
 animateCounter("statsUtilities",utils);
-document.getElementById("statsFavorites").textContent = favorites.length;
 const viewed= JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
-animateCounter("statsViewed",viewed.length);
+animateCounter("heroViewedCount",viewed.length);
 
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
