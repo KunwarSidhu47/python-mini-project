@@ -968,51 +968,52 @@
 
       // Update counts
       const total = projectsData.length;
-      function animateCounter(id,value){
+      function animateCounter(id, value) {
+        const element = document.getElementById(id);
+        if (!element) return;
 
-let start=0;
+        let start = 0;
+        // If target value is 0, set immediately and exit
+        if (value <= 0) {
+          element.textContent = "0";
+          return;
+        }
 
-const element=document.getElementById(id);
-
-const timer=setInterval(()=>{
-
-start++;
-
-element.textContent=start;
-
-if(start>=value){
-
-clearInterval(timer);
-
-}
-
-},25);
-
-}
+        const timer = setInterval(() => {
+          start++;
+          element.textContent = start;
+          if (start >= value) {
+            clearInterval(timer);
+          }
+        }, 25);
+      }
       const games = projectsData.filter((p) => p.category === "games").length;
       const math = projectsData.filter((p) => p.category === "math").length;
       const utils = projectsData.filter(
         (p) => p.category === "utilities"
       ).length;
 
-      const heroCount = document.getElementById("heroProjectCount");
-      const heroGames = document.getElementById("heroGameCount");
-      const heroMath = document.getElementById("heroMathCount");
-      const heroUtils = document.getElementById("heroUtilityCount");
       const projectBadge = document.getElementById("projectCountBadge");
-
-      if (heroCount) heroCount.textContent = total;
-      if (heroGames) heroGames.textContent = games;
-      if (heroMath) heroMath.textContent = math;
-      if (heroUtils) heroUtils.textContent = utils;
       if (projectBadge) projectBadge.textContent = total + " projects";
-      animateCounter("statsTotal",total);
-animateCounter("statsGames",games);
-animateCounter("statsMath",math);
-animateCounter("statsUtilities",utils);
-document.getElementById("statsFavorites").textContent = favorites.length;
-const viewed= JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
-animateCounter("statsViewed",viewed.length);
+
+      // Animate the actual hero counters that exist on the page
+      animateCounter("heroProjectCount", total);
+      animateCounter("heroGameCount", games);
+      animateCounter("heroMathCount", math);
+      animateCounter("heroUtilityCount", utils);
+      animateCounter("heroFavoriteCount", favorites.length);
+
+      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      animateCounter("heroViewedCount", viewed.length);
+
+      // Safe updates for the statistics dashboard cards in case they exist
+      animateCounter("statsTotal", total);
+      animateCounter("statsGames", games);
+      animateCounter("statsMath", math);
+      animateCounter("statsUtilities", utils);
+      const statsFavoritesEl = document.getElementById("statsFavorites");
+      if (statsFavoritesEl) statsFavoritesEl.textContent = favorites.length;
+      animateCounter("statsViewed", viewed.length);
 
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
