@@ -1,6 +1,43 @@
 // Project Registry
 // Each project's HTML and logic lives in its own file under js/projects/
 
+function getProjectHTML(projectName) {
+  const projects = {
+    "rock-paper-scissor": getRockPaperScissorHTML(),
+    "dice-rolling": getDiceRollingHTML(),
+    "coin-flip": getCoinFlipHTML(),
+    "number-guessing": getNumberGuessingHTML(),
+    hangman: getHangmanHTML(),
+    flames: getFlamesHTML(),
+    fibonacci: getFibonacciHTML(),
+    "progression-recognizer": getProgressionRecognizerHTML(),
+    "pascal-triangle": getPascalTriangleHTML(),
+    armstrong: getArmstrongHTML(),
+    calculator: getCalculatorHTML(),
+    collatz: getCollatzHTML(),
+    "prime-analyzer": getPrimeAnalyzerHTML(),
+    "projectile-motion": getProjectileMotionHTML(),
+    "coordinate-polar-transform": getCoordinatePolarTransformHTML(),
+    "complete-calculus-engine": getCompleteCalculusEngineHTML(),
+    "morse-code": getMorseCodeHTML(),
+    "tower-of-hanoi": getTowerOfHanoiHTML(),
+    nqueens: getNQueensHTML(),
+    "queens-logic-puzzle": getQueensLogicPuzzleHTML(),
+    "matrix-calculator": () => getMatrixCalculatorHTML(),
+    "sudoku-game": getSudokuGameHTML(),
+    "unit-converter": getUnitConverterHTML(),
+    "resume-analyzer": getResumeAnalyzerHTML(),
+    "reverse-hangman": () => getReverseHangmanHTML(),
+    "budget-tracker": getBudgetTrackerHTML(),
+    "snake-game": getSnakeGameHTML(),
+    "sorting-visualizer": getSortingVisualizerHTML(),
+    "quick-sort": getQuickSortHTML(),
+    "fourier-series": getFourierSeriesHTML(),
+    "merge-sort": getMergeSortHTML(),
+    "pathfinding-visualizer": getPathfindingVisualizerHTML(),
+    "tsp-visualizer": getTspVisualizerHTML(),
+    'minesweeper': getMinesweeperHTML()
+  };
 
 
 function toPascalCase(str) {
@@ -16,6 +53,11 @@ function toPascalCase(str) {
 function initializeProject(projectName) {
   if (projectName === "number-sliding-puzzle") {
     initNumberSlidingPuzzle();
+    return;
+  }
+
+  if (projectName === "queens-logic-puzzle") {
+    initQueensLogicPuzzle();
     return;
   }
 
@@ -172,6 +214,17 @@ const projectInstructions = {
       "Click or press spacebar to make the bird fly",
       "Avoid hitting the pipes",
       "Try to get the highest score",
+    ],
+  },
+  "queens-logic-puzzle": {
+    title: "👑 How to Play Queens Logic Puzzle",
+    steps: [
+      "Place one queen in each row, column, and colored region",
+      "Queens cannot touch horizontally, vertically, or diagonally",
+      "Click a cell to place a queen, click again to remove it",
+      "Use Hint to highlight a valid placement",
+      "Use Undo to revert your last move",
+      "Solve the puzzle to win!",
     ],
   },
   "dice-rolling": {

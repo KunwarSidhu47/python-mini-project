@@ -158,14 +158,14 @@
               >
                 <div class="spinner"></div>
               </div>
-              <div class="recent-searches-section" id="recentSearchesSection">
+              <div class="recent-searches-section" id="dropdownRecentSearchesSection">
                 <div class="dropdown-section-title recent-searches-header">
                   <span class="recent-searches-heading">
                     <i class="fas fa-history" aria-hidden="true"></i>
                     Recent Searches
                   </span>
                 </div>
-                <div class="recent-searches-chips" id="recentSearchesList" role="list"></div>
+                <div class="recent-searches-chips" id="dropdownRecentSearchesList" role="list"></div>
               </div>
               <div
                 class="results-section"
@@ -636,6 +636,25 @@
               <p>Interactive Sudoku puzzle with levels and visual backtracking solver.</p>
             </div>
 
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="queens-logic-puzzle"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/queens-logic-puzzle.webp"
+                alt="Queens Logic Puzzle"
+                loading="lazy"
+              />
+              <div class="card-actions">
+                <button class="btn-play" aria-label="Play Queens Logic Puzzle">Try It</button>
+              </div>
+
+              <h3>Queens Logic Puzzle</h3>
+              <p>Place queens following row, column, region, and adjacency rules!</p>
+            </div>
+
 
             <div
               class="project-card"
@@ -844,6 +863,7 @@
     <script defer src="js/projects/word-scramble.js"></script>
     <script defer src="js/projects/spot-the-difference.js"></script>
     <script defer src="js/projects/sudoku-game.js"></script>
+    <script defer src="js/projects/queens-logic-puzzle.js"></script>
     <script defer src="js/projects/number-sliding-puzzle.js"></script>
     <script defer src="js/projects/chess.js"></script>
     <script defer src="js/projects/war-card-game.js"></script>

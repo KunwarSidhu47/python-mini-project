@@ -20,24 +20,7 @@ function safeRun(fn) {
     console.error(e);
   }
 }
-// Import the initSearch function from your updated search module
-import { initSearch } from "./modules/search.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Other initializations...
-
-    // Initialize the search bar
-    initSearch((query) => {
-        // This callback runs whenever a search is triggered
-        console.log("Searching for:", query);
-        
-        // If you have a function that filters projects globally, call it here.
-        // Example:
-        // if (typeof window.applySearchFilter === 'function') {
-        //     window.applySearchFilter(query);
-        // }
-    });
-});
 function debounce(fn, ms) {
   var timer;
   return function () {
@@ -874,8 +857,10 @@ document.addEventListener("DOMContentLoaded", function () {
 var searchInput = document.querySelector(".sidebar-dock #searchInput");
 var searchDropdown = document.getElementById("searchDropdown");
 var searchLoader = document.getElementById("searchLoader");
-var recentSearchesList = document.getElementById("recentSearchesList");
-var recentSearchesSection = document.getElementById("recentSearchesSection");
+// Select all list containers and sections for dropdown and sidebar variants (including fallbacks)
+var recentSearchesLists = document.querySelectorAll("#recentSearchesList, #dropdownRecentSearchesList, #sidebarRecentSearchesList");
+var recentSearchesSections = document.querySelectorAll("#recentSearchesSection, #dropdownRecentSearchesSection, #sidebarRecentSearchesSection");
+var dropdownRecentSearchesSection = document.getElementById("dropdownRecentSearchesSection") || document.getElementById("recentSearchesSection");
 var resultsList = document.getElementById("resultsList");
 var resultsSection = document.getElementById("resultsSection");
 var tipsSection = document.getElementById("tipsSection");
@@ -980,16 +965,17 @@ function openDropdown() {
 // Render recent searches
 function renderRecentSearches() {
   if (noResultsMessage) noResultsMessage.style.display = "none";
-  if (!recentSearchesSection) return;
+  if (recentSearchesSections.length === 0) return;
 
-  if (recentSearchesList) {
-    recentSearchesList.innerHTML = "";
+  recentSearchesLists.forEach(function (listContainer) {
+    if (!listContainer) return;
+    listContainer.innerHTML = "";
 
     if (recentSearches.length === 0) {
       var emptyEl = document.createElement("p");
       emptyEl.className = "recent-searches-empty";
       emptyEl.textContent = "No recent searches yet. Start exploring projects!";
-      recentSearchesList.appendChild(emptyEl);
+      listContainer.appendChild(emptyEl);
     } else {
       recentSearches.slice(0, 5).forEach(function (search) {
         var chip = document.createElement("div");
@@ -1030,32 +1016,36 @@ function renderRecentSearches() {
           renderRecentSearches();
         });
 
-        recentSearchesList.appendChild(chip);
+        listContainer.appendChild(chip);
       });
     }
+  });
 
-    // Clear recent button
-    var headerClearBtn = document.getElementById("clearRecentBtn");
-    if (headerClearBtn) {
-      headerClearBtn.style.display = recentSearches.length ? "inline-flex" : "none";
-      headerClearBtn.onclick = function (e) {
-        e.stopPropagation();
-        if (!recentSearches || recentSearches.length === 0) return;
-        showConfirm(
-          "Clear all recent searches? This cannot be undone.",
-          function () {
-            recentSearches = [];
-            localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
-            renderRecentSearches();
-            closeDropdown();
-          },
-          function () {}
-        );
-      };
-    }
-  }
+  // Clear recent buttons
+  var clearRecentBtns = document.querySelectorAll("#clearRecentBtn, #clearRecentDropdownBtn, #clearRecentSidebarBtn");
+  clearRecentBtns.forEach(function (btn) {
+    if (!btn) return;
+    btn.style.display = recentSearches.length ? "inline-flex" : "none";
+    btn.onclick = function (e) {
+      e.stopPropagation();
+      if (!recentSearches || recentSearches.length === 0) return;
+      showConfirm(
+        "Clear all recent searches? This cannot be undone.",
+        function () {
+          recentSearches = [];
+          localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+          renderRecentSearches();
+          closeDropdown();
+        },
+        function () {}
+      );
+    };
+  });
 
-  recentSearchesSection.style.display = "block";
+  recentSearchesSections.forEach(function (section) {
+    if (!section) return;
+    section.style.display = "block";
+  });
   if (resultsSection) resultsSection.style.display = "none";
   if (tipsSection) tipsSection.style.display = "block";
 }
@@ -1073,7 +1063,7 @@ function renderSuggestions(query) {
 
   if (matches.length === 0) {
     if (resultsSection) resultsSection.style.display = "none";
-    if (recentSearchesSection) recentSearchesSection.style.display = "none";
+    if (dropdownRecentSearchesSection) dropdownRecentSearchesSection.style.display = "none";
     if (tipsSection) tipsSection.style.display = "block";
     if (noResultsMessage) {
       noResultsMessage.style.display = "block";
@@ -1137,7 +1127,7 @@ function renderSuggestions(query) {
   }
 
   if (resultsSection) resultsSection.style.display = "block";
-  if (recentSearchesSection) recentSearchesSection.style.display = "none";
+  if (dropdownRecentSearchesSection) dropdownRecentSearchesSection.style.display = "none";
   if (tipsSection) tipsSection.style.display = "none";
   selectedSuggestionIndex = -1;
 }

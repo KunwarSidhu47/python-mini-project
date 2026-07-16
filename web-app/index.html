@@ -72,13 +72,13 @@
             <div class="search-loader" id="searchLoader" style="display: none">
               <div class="spinner"></div>
             </div>
-            <div class="recent-searches-section" id="recentSearchesSection">
+            <div class="recent-searches-section" id="dropdownRecentSearchesSection">
               <div class="dropdown-section-title">
                 <span>Recent</span>
-                <button id="clearRecentBtn" class="recent-clear-all-btn" aria-label="Clear recent searches">Clear
+                <button id="clearRecentDropdownBtn" class="recent-clear-all-btn" aria-label="Clear recent searches">Clear
                   All</button>
               </div>
-              <div class="dropdown-list" id="recentSearchesList"></div>
+              <div class="dropdown-list" id="dropdownRecentSearchesList"></div>
             </div>
             <div class="results-section" id="resultsSection" style="display: none">
               <div class="dropdown-section-title">Projects</div>
@@ -104,17 +104,17 @@
       </div>
     </div>
 
-    <div class="recent-searches-section" id="recentSearchesSection">
+    <div class="recent-searches-section" id="sidebarRecentSearchesSection">
   <div class="dropdown-section-title recent-searches-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
     <span class="recent-searches-heading" style="color: #e2e8f0; font-weight: 500;">
       <i class="fas fa-history" aria-hidden="true" style="margin-right: 6px; color: #a78bfa;"></i>
       Search History
     </span>
-    <button id="clearRecentBtn" class="recent-clear-all-btn" aria-label="Clear recent searches" style="background: none; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+    <button id="clearRecentSidebarBtn" class="recent-clear-all-btn" aria-label="Clear recent searches" style="background: none; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
       <i class="fas fa-trash-alt"></i> Clear History
     </button>
   </div>
-  <div class="recent-searches-chips" id="recentSearchesList" role="list"></div>
+  <div class="recent-searches-chips" id="sidebarRecentSearchesList" role="list"></div>
 </div>
 
     <div class="sidebar-menu-wrapper">
@@ -512,6 +512,8 @@
   <script defer src="js/projects/snake.js"></script>
   <script defer src="js/projects/spot-the-difference.js"></script>
   <script defer src="js/projects/sudoku-game.js"></script>
+  <script defer src="js/projects/queens-logic-puzzle.js"></script>
+  <script defer src="js/projects/pattern-recall-game.js"></script>
   <script defer src="js/projects/color-palette.js"></script>
   <script src="js/projects/caesar-cipher.js"></script>
   <script src="js/projects/matrix-calculator.js"></script>
@@ -676,6 +678,20 @@
           category: "games",
           desc: "Interactive Sudoku with difficulty levels and visual backtracking solver",
           tags: "game,puzzle,backtracking,solver",
+        },
+        {
+          project: "queens-logic-puzzle",
+          title: "Queens Logic Puzzle",
+          category: "games",
+          desc: "Place queens following row, column, region, and adjacency rules!",
+          tags: "game,puzzle,logic,queens,strategy",
+        },
+        {
+          project: "pattern-recall-game",
+          title: "Pattern Recall Game",
+          category: "games",
+          desc: "Watch and recreate the pattern within 10 seconds!",
+          tags: "game,memory,pattern,recall,puzzle",
         },
         {
           project: "chess",
@@ -968,25 +984,21 @@
 
       // Update counts
       const total = projectsData.length;
-      function animateCounter(id, value) {
-        const element = document.getElementById(id);
-        if (!element) return;
-
-        let start = 0;
-        // If target value is 0, set immediately and exit
-        if (value <= 0) {
-          element.textContent = "0";
+      function animateCounter(id,value){
+        const element=document.getElementById(id);
+        if(!element){
           return;
         }
+        let start=0;
+        const timer=setInterval(()=>{
+        start++;
+        element.textContent=start;
+        if(start>=value){
+          clearInterval(timer);
+        }
+      },25);
+        }
 
-        const timer = setInterval(() => {
-          start++;
-          element.textContent = start;
-          if (start >= value) {
-            clearInterval(timer);
-          }
-        }, 25);
-      }
       const games = projectsData.filter((p) => p.category === "games").length;
       const math = projectsData.filter((p) => p.category === "math").length;
       const utils = projectsData.filter(
@@ -995,25 +1007,12 @@
 
       const projectBadge = document.getElementById("projectCountBadge");
       if (projectBadge) projectBadge.textContent = total + " projects";
-
-      // Animate the actual hero counters that exist on the page
-      animateCounter("heroProjectCount", total);
-      animateCounter("heroGameCount", games);
-      animateCounter("heroMathCount", math);
-      animateCounter("heroUtilityCount", utils);
-      animateCounter("heroFavoriteCount", favorites.length);
-
-      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-      animateCounter("heroViewedCount", viewed.length);
-
-      // Safe updates for the statistics dashboard cards in case they exist
-      animateCounter("statsTotal", total);
-      animateCounter("statsGames", games);
-      animateCounter("statsMath", math);
-      animateCounter("statsUtilities", utils);
-      const statsFavoritesEl = document.getElementById("statsFavorites");
-      if (statsFavoritesEl) statsFavoritesEl.textContent = favorites.length;
-      animateCounter("statsViewed", viewed.length);
+      animateCounter("statsTotal",total);
+animateCounter("statsGames",games);
+animateCounter("statsMath",math);
+animateCounter("statsUtilities",utils);
+const viewed= JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
+animateCounter("heroViewedCount",viewed.length);
 
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
