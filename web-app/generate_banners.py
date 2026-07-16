@@ -582,6 +582,8 @@ def generate_banner(name, category, filename):
         v_draw.ellipse([cx-30, cy-30, cx+30, cy+30], outline=color_accent, width=3)
         v_draw.ellipse([cx-15, cy-15, cx+15, cy+15], outline=color_accent, width=2)
         v_draw.text((cx, cy), "AI", fill=color_accent, anchor="mm")
+        # Add "REVERSE" text
+        v_draw.text((400, 280), "REVERSE", fill=color_accent, anchor="mm", font=font_title)
     elif "unit converter" in n_lower:
         cx, cy = 400, 225
 
@@ -739,6 +741,37 @@ def generate_banner(name, category, filename):
         for x, y in [(430, 160), (340, 280), (460, 280)]:
             v_draw.line([(x-6, y-6), (x+6, y+6)], fill=color_accent_dim, width=2)
             v_draw.line([(x+6, y-6), (x-6, y+6)], fill=color_accent_dim, width=2)
+    elif "sorting" in n_lower or "visualizer" in n_lower:
+        # Sorting bars visualization
+        cx, cy = 400, 225
+        # Draw sorting bars
+        bar_values = [30, 50, 20, 80, 40, 60, 10, 70, 35, 55, 25, 75]
+        bar_width = 30
+        total_width = len(bar_values) * (bar_width + 6)
+        start_x = cx - total_width // 2
+        for i, val in enumerate(bar_values):
+            x = start_x + i * (bar_width + 6)
+            height = val * 1.2
+            y = cy + 60 - height
+            # Different colors for different heights
+            if val > 60:
+                color = (239, 68, 68)  # Red for tall
+            elif val > 35:
+                color = (245, 158, 11)  # Yellow for medium
+            else:
+                color = (16, 185, 129)  # Green for short
+            v_draw.rounded_rectangle(
+                [x, y, x + bar_width, cy + 60],
+                radius=4,
+                fill=color,
+                outline=color_accent_dim,
+                width=1
+            )
+        # Add sorting arrows
+        v_draw.line([(cx - 100, cy - 80), (cx + 100, cy - 80)], fill=color_accent, width=2)
+        v_draw.polygon([(cx + 100, cy - 85), (cx + 115, cy - 80), (cx + 100, cy - 75)], fill=color_accent)
+        # Text
+        v_draw.text((400, 300), "SORTING", fill=color_accent, anchor="mm", font=font_title)
     else:
         # Default nice abstract waves
         points = []
