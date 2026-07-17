@@ -352,10 +352,34 @@ function initCalculator() {
     function compileMathFunction(expr, isGraphing) {
         let sanitized = expr.toLowerCase();
 
+        // Function names are protected as opaque placeholders BEFORE any
+        // implicit-multiplication or constant substitution runs. Without
+        // this, the single-letter matchers for the constants "e" and "x"
+        // would tokenize *inside* a function name -- e.g. "exp(" would get
+        // split into "e" + "xp(" and mangled into "Math.E*xp(", which is
+        // exactly why exp(1) used to fail. Placeholders use a control
+        // character + uppercase letter so they can never collide with a
+        // digit, "x", "e", "pi"/"π", or a real parenthesis.
+        const FUNCS = ['sin', 'cos', 'tan', 'sqrt', 'log', 'ln', 'abs', 'exp'];
+        const FUNC_REPLACEMENTS = [
+            'Math.sin(', 'Math.cos(', 'Math.tan(', 'Math.sqrt(',
+            'Math.log10(', 'Math.log(', 'Math.abs(', 'Math.exp('
+        ];
+        const FUNC_TAGS = ['S', 'C', 'T', 'Q', 'G', 'N', 'A', 'X'];
+        const placeholder = (i) => `\u0001${FUNC_TAGS[i]}`;
+
+        FUNCS.forEach((name, i) => {
+            sanitized = sanitized.split(name + '(').join(placeholder(i) + '(');
+        });
+
         // Implicit multiplication (e.g., 3pi -> 3*pi, 3sin -> 3*sin, (x)(y) -> (x)*(y))
-        sanitized = sanitized.replace(/(\d)(pi|π|e|x|sin|cos|tan|log|ln|sqrt|abs|exp|\()/g, '$1*$2');
-        sanitized = sanitized.replace(/(\))(pi|π|e|x|sin|cos|tan|log|ln|sqrt|abs|exp|\(|\d)/g, '$1*$2');
-        sanitized = sanitized.replace(/(x|pi|π|e)(\d|sin|cos|tan|log|ln|sqrt|abs|exp|\(|x|pi|π|e)/g, '$1*$2');
+        // Function placeholders are matched as a single unit (control char +
+        // uppercase letter) so they're never split apart like the old
+        // literal "sin|cos|...|exp" alternatives could be.
+        const FUNC_MARKER = '\\u0001[A-Z]';
+        sanitized = sanitized.replace(new RegExp(`(\\d)(pi|\u03c0|e|x|${FUNC_MARKER}|\\()`, 'g'), '$1*$2');
+        sanitized = sanitized.replace(new RegExp(`(\\))(pi|\u03c0|e|x|${FUNC_MARKER}|\\(|\\d)`, 'g'), '$1*$2');
+        sanitized = sanitized.replace(new RegExp(`(x|pi|\u03c0|e)(\\d|${FUNC_MARKER}|\\(|x|pi|\u03c0|e)`, 'g'), '$1*$2');
 
         // Fix JS SyntaxError for unary minus and bind minus to numbers for exponentiation (e.g. -1^2 becomes (-1)^2 = 1)
         sanitized = sanitized.replace(/(^|[\(\+\-\*\/\%\^])\s*-([\d\.]+|x|pi|π|e)/g, '$1(-$2)');
@@ -365,18 +389,16 @@ function initCalculator() {
         sanitized = sanitized.replace(/(^|[\(\+\-\*\/\%\^])\s*-(?![\d\.]|x|pi|π|e)/g, '$1(-1)*');
         sanitized = sanitized.replace(/(^|[\(\+\-\*\/\%\^])\s*-(?![\d\.]|x|pi|π|e)/g, '$1(-1)*');
 
-        // Functions
-        sanitized = sanitized.replace(/sin\(/g, 'Math.sin(');
-        sanitized = sanitized.replace(/cos\(/g, 'Math.cos(');
-        sanitized = sanitized.replace(/tan\(/g, 'Math.tan(');
-        sanitized = sanitized.replace(/sqrt\(/g, 'Math.sqrt(');
-        sanitized = sanitized.replace(/log\(/g, 'Math.log10(');
-        sanitized = sanitized.replace(/ln\(/g, 'Math.log(');
-        sanitized = sanitized.replace(/abs\(/g, 'Math.abs(');
-        sanitized = sanitized.replace(/exp\(/g, 'Math.exp(');
+        // Constants -- these now only ever match a standalone "e" or "pi"/"π",
+        // since every function name is already an opaque placeholder.
         sanitized = sanitized.replace(/pi/g, 'Math.PI');
         sanitized = sanitized.replace(/π/g, 'Math.PI');
         sanitized = sanitized.replace(/e/g, 'Math.E');
+
+        // Restore function placeholders to their real Math.* calls.
+        FUNCS.forEach((name, i) => {
+            sanitized = sanitized.split(placeholder(i) + '(').join(FUNC_REPLACEMENTS[i]);
+        });
 
         // Power operator
         sanitized = sanitized.replace(/\^/g, '**');
