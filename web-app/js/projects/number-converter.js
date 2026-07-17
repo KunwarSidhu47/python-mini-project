@@ -62,6 +62,34 @@ function getNumberConverterHTML() {
     `;
 }
 
+// Parses a validated base-N string ("-"? + one-or-more valid digits) into a
+// BigInt using manual digit-by-digit accumulation instead of parseInt/Number,
+// which are backed by IEEE-754 doubles and silently lose precision once the
+// value exceeds Number.MAX_SAFE_INTEGER (2^53 - 1). This keeps arbitrarily
+// large binary/octal/decimal/hex inputs exact.
+function parseBigIntInBase(str, base) {
+    const baseBig = BigInt(base);
+    let negative = false;
+    let digits = str;
+
+    if (digits.startsWith('-')) {
+        negative = true;
+        digits = digits.slice(1);
+    }
+
+    let result = 0n;
+    for (const ch of digits) {
+        // parseInt(char, base) correctly maps a single character to its
+        // digit value (0-9, a-z/A-Z) for any radix up to 36; the digits
+        // themselves were already validated against BASE_PATTERNS before
+        // this function is called, so this never falls through to NaN.
+        const digitValue = parseInt(ch, base);
+        result = result * baseBig + BigInt(digitValue);
+    }
+
+    return negative ? -result : result;
+}
+
 function initNumberConverter() {
     const input = document.getElementById('converterInput');
     const sourceBase = document.getElementById('sourceBase');
@@ -115,12 +143,19 @@ function initNumberConverter() {
             return;
         }
 
-        const parsed = parseInt(value, fromBase);
-        if (Number.isNaN(parsed)) {
+        let parsed;
+        try {
+            // BigInt-based parsing keeps full precision for arbitrarily
+            // large values (e.g. 64-bit+ hex/binary), unlike parseInt()
+            // which silently rounds once a value exceeds 2^53 - 1.
+            parsed = parseBigIntInBase(value, fromBase);
+        } catch (err) {
             setError('Invalid input for the selected base.');
             return;
         }
 
+        // BigInt.prototype.toString supports radixes 2-36 natively and
+        // produces the exact digit sequence with no precision loss.
         setSuccess(`Result: ${parsed.toString(toBase).toUpperCase()}`);
     };
 
