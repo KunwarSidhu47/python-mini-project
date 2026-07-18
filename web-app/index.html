@@ -237,17 +237,61 @@
           </a>
         </div>
 
-        <div class="hero-meta">
-          <div>
-            <span><strong id="heroProjectCount">0</strong> total projects</span>
-            <span><strong id="heroGameCount">0</strong> games</span>
-            <span><strong id="heroMathCount">0</strong> maths</span>
-            <span><strong id="heroUtilityCount">0</strong> utilities</span>
-          </div>
-          <div>
-            <span data-filter="favorites"><strong id="heroFavoriteCount">0</strong>Favorites</span>
-            <span><strong id="heroViewedCount">0</strong>Recently Viewed</span>
-          </div>
+        <div class="stats-dashboard">
+          <button class="stats-card active" data-filter="all" type="button" aria-label="Show all projects">
+            <div class="stats-icon">
+              <svg data-lucide="layers"></svg>
+            </div>
+            <div class="stats-info">
+              <strong id="heroProjectCount">0</strong>
+              <span>Total Projects</span>
+            </div>
+          </button>
+          <button class="stats-card" data-filter="games" type="button" aria-label="Filter games">
+            <div class="stats-icon">
+              <svg data-lucide="gamepad-2"></svg>
+            </div>
+            <div class="stats-info">
+              <strong id="heroGameCount">0</strong>
+              <span>Games</span>
+            </div>
+          </button>
+          <button class="stats-card" data-filter="math" type="button" aria-label="Filter mathematics projects">
+            <div class="stats-icon">
+              <svg data-lucide="calculator"></svg>
+            </div>
+            <div class="stats-info">
+              <strong id="heroMathCount">0</strong>
+              <span>Maths</span>
+            </div>
+          </button>
+          <button class="stats-card" data-filter="utilities" type="button" aria-label="Filter utilities">
+            <div class="stats-icon">
+              <svg data-lucide="wrench"></svg>
+            </div>
+            <div class="stats-info">
+              <strong id="heroUtilityCount">0</strong>
+              <span>Utilities</span>
+            </div>
+          </button>
+          <button class="stats-card" data-filter="favorites" type="button" aria-label="Filter favorite projects">
+            <div class="stats-icon">
+              <svg data-lucide="star"></svg>
+            </div>
+            <div class="stats-info">
+              <strong id="heroFavoriteCount">0</strong>
+              <span>Favorites</span>
+            </div>
+          </button>
+          <button class="stats-card" data-filter="recent" type="button" aria-label="Scroll to recently viewed projects">
+            <div class="stats-icon">
+              <svg data-lucide="history"></svg>
+            </div>
+            <div class="stats-info">
+              <strong id="heroViewedCount">0</strong>
+              <span>Recently Viewed</span>
+            </div>
+          </button>
         </div>
       </div>
     </section>
@@ -1011,7 +1055,7 @@
 animateCounter("statsGames",games);
 animateCounter("statsMath",math);
 animateCounter("statsUtilities",utils);
-const viewed= JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
+const viewed= JSON.parse(localStorage.getItem("recentProjects")||"[]");
 animateCounter("heroViewedCount",viewed.length);
 
       console.log(

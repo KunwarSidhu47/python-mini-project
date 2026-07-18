@@ -588,6 +588,13 @@ document.addEventListener("DOMContentLoaded", function () {
     currentCategory = category;
     syncSidebarTabs(category);
     syncStickyTabs(category);
+    
+    // Sync stats cards highlight
+    var statsCards = document.querySelectorAll(".stats-card");
+    statsCards.forEach(function (card) {
+      card.classList.toggle("active", card.getAttribute("data-filter") === category);
+    });
+
     var visibleCount = 0;
     var favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
     projectCards.forEach(function (card) {
@@ -647,6 +654,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function showPlaygroundSection() {
     playgroundActive = true;
     syncStickyTabs("playground");
+    var statsCards = document.querySelectorAll(".stats-card");
+    statsCards.forEach(function (card) {
+      card.classList.remove("active");
+    });
     if (projectsSection) projectsSection.style.display = "none";
     if (playgroundSection) {
       playgroundSection.style.display = "";
@@ -762,6 +773,35 @@ document.addEventListener("DOMContentLoaded", function () {
             behavior: "smooth",
             block: "start",
           });
+      }
+    });
+  });
+
+  /* ── Stats Cards ──────────────────────────────────────────── */
+  var statsCards = document.querySelectorAll(".stats-card");
+  statsCards.forEach(function (card) {
+    card.addEventListener("click", function () {
+      var category = card.getAttribute("data-filter");
+      
+      // Update active highlight class on stats cards
+      statsCards.forEach(function (c) {
+        c.classList.toggle("active", c === card);
+      });
+
+      if (category === "recent") {
+        var section = document.getElementById("recentlyViewedSection");
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      } else {
+        showProjectsSection();
+        applyCategoryFilter(category);
+        if (projectsSection) {
+          projectsSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
       }
     });
   });
@@ -1793,11 +1833,13 @@ card.appendChild(badge);
     const historyBadge =
 document.getElementById("historyCountBadge");
 
-if(historyBadge){
-
-historyBadge.textContent=`(${recent.length})`;
-
-}
+    if(historyBadge){
+      historyBadge.textContent=`(${recent.length})`;
+    }
+    const heroViewedCount = document.getElementById("heroViewedCount");
+    if (heroViewedCount) {
+      heroViewedCount.textContent = String(recent.length);
+    }
     console.log("[DEBUG] recentProjects array:", recent); if (recent.length === 0) {
       section.style.display = "none";
       return;
