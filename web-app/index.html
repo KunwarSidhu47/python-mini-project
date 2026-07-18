@@ -1011,9 +1011,37 @@
 animateCounter("statsGames",games);
 animateCounter("statsMath",math);
 animateCounter("statsUtilities",utils);
-const viewed= JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
-animateCounter("heroViewedCount",viewed.length);
+// === FIX: Recently Viewed Counter ===
+const viewed = JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
+const heroCounter = document.getElementById("heroViewedCount");
+if (heroCounter) {
+  heroCounter.textContent = viewed.length;
+}
 
+// Function to update counter when projects are viewed
+function updateRecentlyViewedCounter() {
+  const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+  const heroCounter = document.getElementById("heroViewedCount");
+  if (heroCounter) {
+    heroCounter.textContent = viewed.length;
+  }
+  // Also update the grid if the function exists
+  if (window.renderRecentlyViewedGrid) {
+    window.renderRecentlyViewedGrid();
+  }
+  return viewed.length;
+}
+window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
+
+// Watch for changes to localStorage
+const originalSetItem = localStorage.setItem;
+localStorage.setItem = function(key, value) {
+  originalSetItem.apply(this, arguments);
+  if (key === "recentlyViewed") {
+    setTimeout(updateRecentlyViewedCounter, 50);
+  }
+};
+// === END FIX ===
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
       );
@@ -1022,14 +1050,20 @@ animateCounter("heroViewedCount",viewed.length);
       setTimeout(() => {
         // Play buttons
         document.querySelectorAll(".btn-play").forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const projectName = btn.getAttribute("data-project");
-            if (projectName && window.openProjectSafe) {
-              window.openProjectSafe(projectName, btn);
-            }
-          });
-        });
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const projectName = btn.getAttribute("data-project");
+    if (projectName && window.openProjectSafe) {
+      window.openProjectSafe(projectName, btn);
+      // Update counter after opening project
+      setTimeout(() => {
+        if (window.updateRecentlyViewedCounter) {
+          window.updateRecentlyViewedCounter();
+        }
+      }, 200);
+    }
+  });
+});
 
         // Favorite buttons
         document.querySelectorAll(".btn-favorite").forEach((btn) => {
@@ -1159,7 +1193,34 @@ animateCounter("heroViewedCount",viewed.length);
       };
       console.log('✅ toPascalCase function added');
     }
+    // Complete recently viewed update
+function refreshRecentlyViewed() {
+  const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+  const grid = document.getElementById("recentlyViewedGrid");
+  
+  // Update counter
+  const heroCounter = document.getElementById("heroViewedCount");
+  if (heroCounter) {
+    heroCounter.textContent = viewed.length;
+  }
+  
+  // Update grid (if you want to refresh it too)
+  if (grid && window.renderRecentlyViewedGrid) {
+    window.renderRecentlyViewedGrid();
+  }
+}
+// Function to update recently viewed counter
+function updateRecentlyViewedCounter() {
+  const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+  const heroCounter = document.getElementById("heroViewedCount");
+  if (heroCounter) {
+    heroCounter.textContent = viewed.length;
+  }
+  return viewed.length;
+}
 
+// Make it globally accessible
+window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
     // FIX 2: Fix modal focus error
     setTimeout(function () {
       const modal = document.getElementById('projectModal');
