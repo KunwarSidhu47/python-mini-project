@@ -588,6 +588,13 @@ document.addEventListener("DOMContentLoaded", function () {
     currentCategory = category;
     syncSidebarTabs(category);
     syncStickyTabs(category);
+    
+    // Sync stats cards highlight
+    var statsCards = document.querySelectorAll(".stats-card");
+    statsCards.forEach(function (card) {
+      card.classList.toggle("active", card.getAttribute("data-filter") === category);
+    });
+
     var visibleCount = 0;
     var favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
     projectCards.forEach(function (card) {
@@ -647,6 +654,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function showPlaygroundSection() {
     playgroundActive = true;
     syncStickyTabs("playground");
+    var statsCards = document.querySelectorAll(".stats-card");
+    statsCards.forEach(function (card) {
+      card.classList.remove("active");
+    });
     if (projectsSection) projectsSection.style.display = "none";
     if (playgroundSection) {
       playgroundSection.style.display = "";
@@ -766,6 +777,35 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  /* ── Stats Cards ──────────────────────────────────────────── */
+  var statsCards = document.querySelectorAll(".stats-card");
+  statsCards.forEach(function (card) {
+    card.addEventListener("click", function () {
+      var category = card.getAttribute("data-filter");
+      
+      // Update active highlight class on stats cards
+      statsCards.forEach(function (c) {
+        c.classList.toggle("active", c === card);
+      });
+
+      if (category === "recent") {
+        var section = document.getElementById("recentlyViewedSection");
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      } else {
+        showProjectsSection();
+        applyCategoryFilter(category);
+        if (projectsSection) {
+          projectsSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+    });
+  });
+
   /* ── Sticky Filter Bar Visibility ─────────────────────────── */
   if (stickyFilterBar && heroSection) {
     var heroObserver = new IntersectionObserver(
@@ -816,10 +856,20 @@ document.addEventListener("DOMContentLoaded", function () {
   if (stickyTabs.length) syncStickyTabs("all");
 
   /* ── Sidebar Active Scroll Observer ───────────────────────── */
-  if (!pageCategory && projectsSection) {
+if (!pageCategory && projectsSection) {
     console.log('Setting up sidebar observer');
  
     const checkAndToggleSidebar = () => {
+      // FIX #1364: Never show sidebar if Playground is active
+      if (playgroundActive) {
+        document.body.classList.remove("sidebar-active");
+        const fixedThemeToggle = document.getElementById("fixed-theme-toggle");
+        if (fixedThemeToggle) {
+          fixedThemeToggle.style.display = "block";
+        }
+        return;
+      }
+
       if (window.innerWidth <= 768) {
         return;
       }
@@ -830,10 +880,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const showSidebar = rect.top < window.innerHeight && window.scrollY > heroBottom - 100;
  
       document.body.classList.toggle("sidebar-active", showSidebar);
-      console.log('Sidebar active:', showSidebar, 'scrollY:', window.scrollY);
+      console.log('Sidebar active:', showSidebar, 'scrollY:', window.scrollY, 'playgroundActive:', playgroundActive);
 
       // Hide fixed-theme-toggle if sidebar is active
-
       const fixedThemeToggle = document.getElementById("fixed-theme-toggle");
       if (fixedThemeToggle) {
         if (showSidebar) {
@@ -843,12 +892,12 @@ document.addEventListener("DOMContentLoaded", function () {
           fixedThemeToggle.style.display = "block";
         }
       }
-
     };
  
     window.addEventListener('scroll', checkAndToggleSidebar);
     checkAndToggleSidebar();
-  }
+}
+
  /* ═══════════════════════════════════════════════════════════════
    SEARCH - FIXED & IMPROVED
    ═══════════════════════════════════════════════════════════════ */
@@ -1784,11 +1833,13 @@ card.appendChild(badge);
     const historyBadge =
 document.getElementById("historyCountBadge");
 
-if(historyBadge){
-
-historyBadge.textContent=`(${recent.length})`;
-
-}
+    if(historyBadge){
+      historyBadge.textContent=`(${recent.length})`;
+    }
+    const heroViewedCount = document.getElementById("heroViewedCount");
+    if (heroViewedCount) {
+      heroViewedCount.textContent = String(recent.length);
+    }
     console.log("[DEBUG] recentProjects array:", recent); if (recent.length === 0) {
       section.style.display = "none";
       return;
