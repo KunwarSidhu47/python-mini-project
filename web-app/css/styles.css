@@ -1716,10 +1716,22 @@ main>.hero-section:has(.hero-code-snippets) {
   align-items: center;
   gap: 8px;
 }
-
-.editor-actions {
+.editor-actions,
+.console-actions {
   display: flex;
   gap: 6px;
+}
+
+.btn-panel-action.copy-success {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  color: #10b981 !important;
+}
+
+.btn-panel-action.copy-error {
+  background: rgba(239, 68, 68, 0.12) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  color: #ef4444 !important;
 }
 
 .draft-selector {

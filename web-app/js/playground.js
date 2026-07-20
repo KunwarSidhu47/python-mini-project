@@ -129,6 +129,7 @@
   var statusDot = $id("statusDot");
   var statusText = $id("statusText");
   var clearConsoleBtn = $id("clearConsole");
+  var copyConsoleBtn = $id("copyConsole");
   var clearEditorBtn = $id("clearEditor");
   var loadExampleBtn = $id("loadExample");
   var draftSelector = $id("draftSelector");
@@ -897,6 +898,106 @@
             copyEditorCodeBtn.setAttribute(
               "aria-label",
               "Copy code to clipboard"
+            );
+          }, 2000);
+        });
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     Copy Console Button — Issue #1715
+     Copy console output to clipboard with visual feedback
+     ────────────────────────────────────────────────────────────── */
+  if (copyConsoleBtn) {
+    copyConsoleBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+
+      var hasPlaceholder = consoleEl.querySelector(".pg-placeholder");
+      var textToCopy = "";
+      if (!hasPlaceholder) {
+        textToCopy = consoleEl.innerText || consoleEl.textContent || "";
+      }
+      textToCopy = textToCopy.trim();
+
+      if (!textToCopy) {
+        copyConsoleBtn.textContent = "Nothing to copy";
+        copyConsoleBtn.classList.add("copy-error");
+        copyConsoleBtn.setAttribute("aria-label", "Console is empty, nothing to copy");
+        setTimeout(function () {
+          copyConsoleBtn.innerHTML =
+            '<i aria-hidden="true" class="fas fa-copy"></i> Copy';
+          copyConsoleBtn.classList.remove("copy-error");
+          copyConsoleBtn.setAttribute(
+            "aria-label",
+            "Copy console output to clipboard"
+          );
+        }, 1500);
+        return;
+      }
+
+      function fallbackCopy(text) {
+        return new Promise(function (resolve, reject) {
+          var textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          textarea.style.opacity = "0";
+          textarea.setAttribute("aria-hidden", "true");
+          textarea.setAttribute("tabindex", "-1");
+
+          document.body.appendChild(textarea);
+
+          try {
+            textarea.select();
+            var success = document.execCommand("copy");
+            if (success) {
+              resolve();
+            } else {
+              reject(new Error("execCommand copy failed"));
+            }
+          } catch (error) {
+            reject(error);
+          } finally {
+            document.body.removeChild(textarea);
+          }
+        });
+      }
+
+      var copyPromise =
+        navigator.clipboard && navigator.clipboard.writeText
+          ? navigator.clipboard.writeText(textToCopy)
+          : fallbackCopy(textToCopy);
+
+      copyPromise
+        .then(function () {
+          copyConsoleBtn.innerHTML =
+            '<i aria-hidden="true" class="fas fa-check"></i> Copied!';
+          copyConsoleBtn.classList.add("copy-success");
+          copyConsoleBtn.setAttribute("aria-label", "Console output copied to clipboard");
+
+          setTimeout(function () {
+            copyConsoleBtn.innerHTML =
+              '<i aria-hidden="true" class="fas fa-copy"></i> Copy';
+            copyConsoleBtn.classList.remove("copy-success");
+            copyConsoleBtn.setAttribute(
+              "aria-label",
+              "Copy console output to clipboard"
+            );
+          }, 2000);
+        })
+        .catch(function (error) {
+          console.error("Copy failed:", error);
+          copyConsoleBtn.textContent = "Copy failed";
+          copyConsoleBtn.classList.add("copy-error");
+          copyConsoleBtn.setAttribute("aria-label", "Copy failed, try again");
+
+          setTimeout(function () {
+            copyConsoleBtn.innerHTML =
+              '<i aria-hidden="true" class="fas fa-copy"></i> Copy';
+            copyConsoleBtn.classList.remove("copy-error");
+            copyConsoleBtn.setAttribute(
+              "aria-label",
+              "Copy console output to clipboard"
             );
           }, 2000);
         });

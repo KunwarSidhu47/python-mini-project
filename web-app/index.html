@@ -377,9 +377,16 @@
             <div class="panel-header">
               <span><i aria-hidden="true" class="fas fa-terminal"></i> Output
                 Console</span>
-              <button class="btn-panel-action" id="clearConsole" title="Clear the console" type="button">
-                <i aria-hidden="true" class="fas fa-times-circle"></i> Clear
-              </button>
+              <div class="console-actions">
+                <button class="btn-panel-action" id="copyConsole" title="Copy console output to clipboard" type="button"
+                  aria-label="Copy console output to clipboard">
+                  <i aria-hidden="true" class="fas fa-copy"></i> Copy
+                </button>
+                <button class="btn-panel-action" id="clearConsole" title="Clear the console" type="button"
+                  aria-label="Clear console output">
+                  <i aria-hidden="true" class="fas fa-times-circle"></i> Clear
+                </button>
+              </div>
             </div>
             <pre aria-label="Console output" aria-live="polite" class="console-output" id="consoleOutput"></pre>
           </div>
